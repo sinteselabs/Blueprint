@@ -1,0 +1,24 @@
+# Generic — replace with a .gitignore for your actual stack.
+# https://github.com/github/gitignore has per-language templates.
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# Env & secrets — never commit
+.env
+.env.*
+!.env.example
+**/serviceAccountKey.json
+**/service-account*.json
+
+# Dependencies & build output (examples)
+node_modules/
+dist/
+build/
+.dart_tool/
+__pycache__/
+*.log

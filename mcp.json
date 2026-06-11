@@ -1,0 +1,14 @@
+{
+  "_comment": "Declare the MCP servers this project uses. Delete the ones you don't need and add your own. This file is read by AI tooling (e.g. Claude Code) to connect external systems like Notion, Firebase, Railway, Supabase, etc.",
+  "servers": {
+    "notion": {
+      "type": "http",
+      "url": "https://mcp.notion.com/mcp"
+    },
+    "firebase": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "firebase-tools@latest", "mcp", "--dir", "./firebase", "--only", "firestore,functions,auth,storage"]
+    }
+  }
+}
