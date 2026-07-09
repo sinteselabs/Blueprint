@@ -2,6 +2,11 @@
 
 Sequential task list. Process **top to bottom** — only start the next task after the current one is fully complete and committed.
 
+> **Ordering:** tasks are named `[Phase X] Task name` (or `[Epic name X] Task name`
+> for epics) per the Task Naming & Ordering convention in `notion-workflow.md`, so
+> listing them **alphabetically by title yields execution order**. Keep this list
+> in that order.
+
 ## How to process
 
 For each task URL below:

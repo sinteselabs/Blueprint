@@ -28,7 +28,7 @@ Without a convention, AI context ends up scattered across READMEs, stale comment
 6. **Pick a `.gitignore`** appropriate to your stack (the included one is generic).
 7. **Keep it alive** — when a decision changes, update `architecture.md` / `docs/ARD.md`. These files are meant to be maintained, not written once.
 
-> Tip: the fastest way to fill the template is to point your AI assistant at `.ai/ai.md` and have it interview you / read your design docs, then write each file.
+> Tip: for a brand-new project, point your AI assistant at [`.ai/workflows/project-kickoff.md`](.ai/workflows/project-kickoff.md). It runs a guided, step-by-step interview and produces the core Software Engineering documents in order — System Description → SRS → Use Cases → Data Model → Wireframes → Architecture → Design Doc — saving each to your chosen store (Notion by default). For an existing project, point it at `.ai/ai.md` and have it read your design docs, then write each file.
 
 ---
 
@@ -48,10 +48,15 @@ Without a convention, AI context ends up scattered across READMEs, stale comment
     ├── config/
     │   └── system.md            the AI's role, behaviour, and hard rules (system prompt)
     ├── docs/
-    │   ├── ARD.md               Architecture Decision Records (summary of decisions + rationale)
+    │   ├── system-description.md wide-angle system overview (users, goals, scope)
     │   ├── SRS.md               Software Requirements Specification (features, NFRs, scope)
+    │   ├── use-cases.md         actors, use cases, diagrams, user flows
+    │   ├── data-model.md        entities, schema, types, ERD, class diagrams
+    │   ├── wireframes.md        low-fidelity screens per target device
+    │   ├── ARD.md               Architecture Decision Records (summary of decisions + rationale)
     │   └── design-doc.md        visual system & component spec summary
     ├── workflows/
+    │   ├── project-kickoff.md   guided, step-by-step generation of the docs above for a new project
     │   ├── notion-workflow.md   how to read/update tasks & docs in Notion (or your PM tool)
     │   └── task-queue.md        sequential list of what to work on next
     ├── templates/               reusable snippets/boilerplate for the project (optional)
@@ -70,10 +75,15 @@ Without a convention, AI context ends up scattered across READMEs, stale comment
 | `.ai/coding_conventions.md` | Language/framework standards, naming, testing, git, security. | Before writing code. |
 | `.ai/ui_guidelines.md` | Colour tokens, typography, components, screens, interaction patterns. | Before UI work. |
 | `.ai/config/system.md` | The AI's role, behaviour constraints, and hard rules — the "system prompt". | As standing instructions. |
+| `.ai/docs/system-description.md` | Wide-angle system overview: problem, users/actors, goals, scope. | First, when framing a new project. |
 | `.ai/docs/ARD.md` | Decisions and their rationale (ADRs). Local summary of the authoritative source. | When a decision's "why" is needed. |
 | `.ai/docs/SRS.md` | Requirements, user stories, NFRs, scope, out-of-scope. | When clarifying what to build. |
+| `.ai/docs/use-cases.md` | Actors, use cases, use-case diagrams, and user flows. | When clarifying how users interact. |
+| `.ai/docs/data-model.md` | Entities, fields/types, ERD, class diagrams, data rules. | When clarifying what the system stores. |
+| `.ai/docs/wireframes.md` | Low-fidelity screen layouts per target device. | When clarifying screen structure/flow. |
 | `.ai/docs/design-doc.md` | Visual identity, screens, components, prototypes. | When clarifying how it should look. |
-| `.ai/workflows/notion-workflow.md` | How to fetch/update tasks and docs in the PM tool. | When picking up or closing a task. |
+| `.ai/workflows/project-kickoff.md` | Guided, step-by-step interview that generates all the docs above, in order, for a new project. | When starting a brand-new project. |
+| `.ai/workflows/notion-workflow.md` | How to fetch/update tasks and docs — Notion **or** local Markdown; Documents Hub / Task Tracker schemas + task naming/ordering. | When picking up or closing a task. |
 | `.ai/workflows/task-queue.md` | Ordered list of tasks to process top-to-bottom. | To decide what's next. |
 | `.ai/templates/` | Reusable boilerplate (PR templates, code snippets, doc skeletons). | When generating repetitive artifacts. |
 | `.ai/tools/` | Project-specific helper scripts for AI workflows. | When a workflow needs them. |

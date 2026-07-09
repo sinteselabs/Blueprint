@@ -9,6 +9,10 @@
 
 This file is the **single entry point** for any AI assistant working in this repository. Read this first, then navigate to the specific file listed for the topic you need.
 
+> **Starting a brand-new project?** Follow [workflows/project-kickoff.md](workflows/project-kickoff.md) —
+> a guided, step-by-step interview that produces the core Software Engineering
+> documents in order and saves them to your chosen store (Notion by default).
+
 ---
 
 ## Project at a Glance
@@ -34,14 +38,19 @@ This file is the **single entry point** for any AI assistant working in this rep
 
 | Topic | Local file | Source link |
 |---|---|---|
+| **Start a new project** (guided doc generation) | [workflows/project-kickoff.md](workflows/project-kickoff.md) | — |
+| **System description** (wide-angle: what, who, why) | [docs/system-description.md](docs/system-description.md) | {{LINK}} |
 | **System architecture**, structure, data model, hosting | [architecture.md](architecture.md) | {{LINK}} |
 | **Architecture decisions** (ADRs, rationale) | [docs/ARD.md](docs/ARD.md) | {{LINK}} |
 | **Feature requirements**, user stories, NFRs, scope | [docs/SRS.md](docs/SRS.md) | {{LINK}} |
+| **Use cases & user flows** (actors, diagrams) | [docs/use-cases.md](docs/use-cases.md) | {{LINK}} |
+| **Data model** (entities, schema, ERD, classes) | [docs/data-model.md](docs/data-model.md) | {{LINK}} |
+| **Wireframes** (low-fi screens per device) | [docs/wireframes.md](docs/wireframes.md) | {{LINK}} |
 | **UI components**, colour tokens, typography, screens | [ui_guidelines.md](ui_guidelines.md) | {{LINK}} |
 | **Design system** (component specs, prototypes) | [docs/design-doc.md](docs/design-doc.md) | {{LINK}} |
 | **Coding standards** (language, DB, git, security) | [coding_conventions.md](coding_conventions.md) | — |
 | **AI/LLM role and hard rules** | [config/system.md](config/system.md) | — |
-| **How to read/update tasks** | [workflows/notion-workflow.md](workflows/notion-workflow.md) | {{LINK}} |
+| **How to read/update tasks & docs** | [workflows/notion-workflow.md](workflows/notion-workflow.md) | {{LINK}} |
 | **Sequential task queue** (what's next) | [workflows/task-queue.md](workflows/task-queue.md) | {{LINK}} |
 
 ---
