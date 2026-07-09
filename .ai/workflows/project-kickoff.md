@@ -10,6 +10,34 @@
   gap — if you lack information to write a section safely, STOP and ask.
 -->
 
+## ⛔ How to run this — READ BEFORE DOING ANYTHING
+
+This is an **interactive interview**, not a batch job. The failure mode to avoid:
+reading this file and then generating every document in one go, inventing the
+answers (especially the tech stack). **Do not do that.**
+
+**The run protocol — non-negotiable:**
+
+1. **One step per turn.** Do the current step, then **stop and wait** for the
+   user. Never run ahead to the next document in the same turn.
+2. **Ask, then WAIT.** For each step, ask that step's questions (in small
+   batches — a wall of 15 questions is as bad as asking none). **End your turn
+   and wait for the user's answers.** Do not draft the document until they reply.
+3. **Never assume, never dictate.** You may *recommend* with rationale, but every
+   decision the user hasn't made — **especially the tech stack, framework,
+   hosting, and architecture** (e.g. "Vercel + Nuxt")— must be **presented as
+   options and chosen by the user.** Picking a stack for them is a bug, not a
+   convenience. If unsure whether something is decided, ask.
+4. **Get an explicit "approved"** on each drafted document before moving on.
+   Silence is not approval.
+5. **When in doubt, stop and ask.** Missing information is a reason to pause, not
+   to invent.
+
+If you catch yourself about to produce multiple documents at once, or writing a
+stack/architecture choice the user never made — **stop and ask instead.**
+
+---
+
 ## What this is
 
 A step-by-step protocol for turning an idea into a documented software project.
@@ -33,12 +61,17 @@ sub-order, after the SRS is signed off.
 
 ## Ground rules (apply to every step)
 
-1. **One document at a time.** Do not start the next document until the current
-   one is drafted, reviewed by the user, and saved.
-2. **Interview first, write second.** Ask the questions listed for each step.
-   Ask follow-ups whenever an answer is vague, contradictory, or incomplete.
-3. **Never invent.** If the user hasn't decided something, record it as an
-   **Open Question** in the doc rather than guessing. Flag assumptions explicitly.
+1. **One document at a time, one step per turn.** Do not start — or draft — the
+   next document until the current one is interviewed, drafted, reviewed by the
+   user, and saved. Never emit several documents in a single turn.
+2. **Interview first, write second — and WAIT.** Ask the step's questions, then
+   end your turn and wait for answers. Do not draft from assumptions. Ask
+   follow-ups whenever an answer is vague, contradictory, or incomplete.
+3. **Never invent; never dictate decisions.** If the user hasn't decided
+   something, ask — or record it as an **Open Question** rather than guessing.
+   **Tech stack, frameworks, hosting, and architecture are the user's decisions**
+   — present options with a recommendation and let them choose. Flag every
+   assumption explicitly.
 4. **Each doc builds on the prior ones.** Re-read the earlier documents before
    drafting; keep terminology, actor names, and entity names consistent.
 5. **Two copies stay in sync.** The authoritative copy lives in the chosen

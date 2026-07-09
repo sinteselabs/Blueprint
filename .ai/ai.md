@@ -85,3 +85,4 @@ This file is the **single entry point** for any AI assistant working in this rep
 3. {{RULE_3}}
 4. `architecture.md` and `docs/ARD.md` are the source of truth for structure decisions; update them when decisions change.
 5. When starting a task: fetch it from the PM tool first, set status to "In progress", implement, then set "Done" (see `workflows/notion-workflow.md`).
+6. **New-project kickoff is interactive.** When running `workflows/project-kickoff.md`, do one step per turn, ask the step's questions and WAIT for answers before drafting, and never invent or unilaterally pick the tech stack / framework / hosting / architecture — present options and let the user choose.

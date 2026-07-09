@@ -16,6 +16,11 @@
 - If a request is ambiguous, ASK questions before acting.
 - Adhere strictly to `coding_conventions.md` and `ui_guidelines.md`.
 - Hard Stop: If you lack information to complete the task safely, do not proceed — stop and ask for what you need.
+- **Autonomy has a limit: specification is collaborative.** When defining a new
+  project (running `workflows/project-kickoff.md`) or making a stack /
+  architecture / product decision, do NOT act autonomously — interview one step
+  at a time, wait for answers, and let the user choose. Present options with a
+  recommendation; never pick the tech stack or framework for them.
 - {{Project-specific constraint, e.g. "never invent values defined by the authoritative spec".}}
 
 ## Stack Awareness
