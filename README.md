@@ -14,7 +14,7 @@ Without a convention, AI context ends up scattered across READMEs, stale comment
 - **Separation of concerns** — architecture, conventions, UI, requirements, and decisions each live in a dedicated file.
 - **Source-of-truth links** — every doc points back to its authoritative source (e.g. a Notion page) so local files stay summaries, not forks.
 - **Hard rules up front** — non-negotiable constraints are listed where they can't be missed.
-- **Tooling wired in** — `mcp.json` declares the MCP servers (Notion, Firebase, etc.) the project uses.
+- **Tooling wired in** — `.mcp.json` declares the MCP servers (Notion, Firebase, etc.) the project uses.
 
 ---
 
@@ -24,7 +24,7 @@ Without a convention, AI context ends up scattered across READMEs, stale comment
 2. **Find & replace** every `{{PLACEHOLDER}}` token and every `TODO:` / `<!-- ... -->` guidance comment with real project content.
 3. **Set the entry point** — fill in `.ai/ai.md`: project summary, tech stack, source-of-truth links, the navigation map, and hard rules.
 4. **Fill the topic files** — `architecture.md`, `coding_conventions.md`, `ui_guidelines.md`, and the `docs/` summaries. Delete sections that don't apply.
-5. **Wire tooling** — edit `mcp.json` for the MCP servers you actually use; delete the rest.
+5. **Wire tooling** — edit `.mcp.json` for the MCP servers you actually use; delete the rest.
 6. **Pick a `.gitignore`** appropriate to your stack (the included one is generic).
 7. **Keep it alive** — when a decision changes, update `architecture.md` / `docs/ARD.md`. These files are meant to be maintained, not written once.
 
@@ -38,7 +38,7 @@ Without a convention, AI context ends up scattered across READMEs, stale comment
 .
 ├── AGENTS.md                    → points to .ai/ai.md (entry point for any AI assistant)
 ├── CLAUDE.md                    → points to .ai/ai.md (Claude Code reads this by default)
-├── mcp.json                     MCP servers the project uses (Notion, Firebase, …)
+├── .mcp.json                    MCP servers the project uses (Notion, Firebase, …)
 ├── .gitignore                   generic; replace with one for your stack
 └── .ai/
     ├── ai.md                    THE ENTRY POINT — project at a glance + navigation map + hard rules

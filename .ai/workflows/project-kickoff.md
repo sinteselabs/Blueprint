@@ -90,11 +90,11 @@ Before writing any document, decide where the authoritative copies live.
 
 **Ask the user:**
 - Where should project documents be stored? Options:
-  - **Notion (default, recommended)** — via the Notion MCP already declared in `mcp.json`.
+  - **Notion (default, recommended)** — via the Notion MCP already declared in `.mcp.json`.
   - **Local Markdown** — the `.ai/**` files are themselves the source of truth.
   - **Other MCP-connected store** — e.g. Confluence, GitHub wiki, Linear docs.
 - If a store other than local: is the MCP connector authorised and loaded?
-  (If not, ask the user to enable it in `mcp.json` and restart the agent.)
+  (If not, ask the user to enable it in `.mcp.json` and restart the agent.)
 
 ### If Notion (default)
 

@@ -25,7 +25,7 @@ Regardless of mode, every project has the same two collections:
 
 All project management lives in: {{LINK to Notion workspace, or the in-repo path}}
 
-> **Notion setup:** the PM MCP server is declared in `mcp.json`. Enable/authorise
+> **Notion setup:** the PM MCP server is declared in `.mcp.json`. Enable/authorise
 > the connector and restart the agent so the tools load. Fill in the IDs below on
 > first authenticated read.
 >

@@ -1,0 +1,22 @@
+{
+  "_comment": "Declare the MCP servers this project uses. Delete the ones you don't need and add your own. The filename MUST be `.mcp.json` (dotfile) and the root key MUST be `mcpServers` — that is the project-scoped format AI tooling (e.g. Claude Code) looks for; anything else is silently ignored. NEVER hardcode API keys or tokens here: this file is committed to git. Use ${ENV_VAR} expansion and export the value in your shell, as in the _example_with_secret entry below (delete it).",
+  "mcpServers": {
+    "notion": {
+      "type": "http",
+      "url": "https://mcp.notion.com/mcp"
+    },
+    "firebase": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "firebase-tools@latest", "mcp", "--dir", "./firebase", "--only", "firestore,functions,auth,storage"]
+    },
+    "_example_with_secret": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "some-mcp-server", "--header", "Authorization:Bearer ${SOME_MCP_TOKEN}"],
+      "env": {
+        "SOME_MCP_TOKEN": "${SOME_MCP_TOKEN}"
+      }
+    }
+  }
+}
