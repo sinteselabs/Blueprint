@@ -1,4 +1,4 @@
-# ARD — Architecture Records of Decisions
+# ARD — Architecture Decision Records
 
 <!--
   A running log of decisions and WHY they were made. This is the local summary;

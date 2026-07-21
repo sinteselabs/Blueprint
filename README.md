@@ -53,7 +53,7 @@ Without a convention, AI context ends up scattered across READMEs, stale comment
     │   ├── use-cases.md         actors, use cases, diagrams, user flows
     │   ├── data-model.md        entities, schema, types, ERD, class diagrams
     │   ├── wireframes.md        low-fidelity screens per target device
-    │   ├── ARD.md               Architecture Records of Decisions (summary of decisions + rationale)
+    │   ├── ARD.md               Architecture Decision Records (summary of decisions + rationale)
     │   └── design-doc.md        visual system & component spec summary
     ├── workflows/
     │   ├── project-kickoff.md   guided, step-by-step generation of the docs above for a new project
