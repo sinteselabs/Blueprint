@@ -12,13 +12,16 @@ Sequential task list. Process **top to bottom** — only start the next task aft
 For each task URL below:
 
 1. **Fetch** the task page to read the spec and deliverables.
-2. **If the task status is `ReFix`:** find the **"After tests"** section — work on the problems described there.
+2. **If the task status is `ReFix`:** find the **"After tests"** section — work on the problems described there (see the Status lifecycle table in `notion-workflow.md`).
 3. **Follow `notion-workflow.md`** to work on it (set status, implement, update deliverables/plan).
 4. **Commit** all changes with a conventional commit message once the task is done.
-5. **Mark the task as done** below by changing `- [ ]` to `- [x]`.
+5. **Mark the task as handled** below by changing `- [ ]` to `- [x]`. Note this tracks *your* pass through the queue — the task itself lands on `To test`, and only the user promotes it to `Done`.
 6. **Move to the next task.**
 
 ## Tasks
 
 <!-- Add task URLs below, one per line, as a checkbox list. -->
-<!-- Example: [ ] - https://app.notion.com/p/TASK_PAGE_ID -->
+<!-- Example:
+- [ ] https://app.notion.com/p/TASK_PAGE_ID
+- [x] https://app.notion.com/p/ANOTHER_TASK_PAGE_ID
+-->

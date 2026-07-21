@@ -10,7 +10,9 @@
 
 > **Primary source:** {{LINK to authoritative copy}}
 >
-> Always consult the source for the authoritative version. This file is a quick-reference summary.
+> Always consult the source for the authoritative version; this file is a quick-reference summary.
+>
+> **Local Markdown mode:** if the project stores docs in-repo (Step 0 of project-kickoff.md), THIS file is the source of truth — delete the "Primary source" line above rather than pointing it at itself.
 
 **Project:** {{PROJECT_NAME}}
 **Version:** {{0.1 — Draft}}
@@ -38,29 +40,30 @@
 
 ## Entity-Relationship Diagram
 
-```mermaid
-erDiagram
-  ENTITY_A ||--o{ ENTITY_B : "relationship"
-  ENTITY_A {
-    uuid id PK
-    string name
-  }
-  ENTITY_B {
-    uuid id PK
-    uuid entity_a_id FK
-  }
+<!-- ASCII is the default (see ground rule 6 in workflows/project-kickoff.md).
+     Use Mermaid `erDiagram` only if the authoritative store renders it. -->
+
+```
+  ┌──────────────────────┐               ┌──────────────────────┐
+  │ ENTITY_A             │ 1           N │ ENTITY_B             │
+  ├──────────────────────┤──────────────▶├──────────────────────┤
+  │ id          uuid  PK │ {{relation}}  │ id          uuid  PK │
+  │ name        string   │               │ entity_a_id uuid  FK │
+  └──────────────────────┘               └──────────────────────┘
 ```
 
 ---
 
 ## Class Diagram (if object-oriented)
 
-```mermaid
-classDiagram
-  class {{ClassName}} {
-    +{{type}} {{field}}
-    +{{returnType}} {{method}}()
-  }
+```
+  ┌────────────────────────────┐
+  │ {{ClassName}}              │
+  ├────────────────────────────┤
+  │ + {{field}}: {{type}}      │
+  ├────────────────────────────┤
+  │ + {{method}}(): {{return}} │
+  └────────────────────────────┘
 ```
 
 ---

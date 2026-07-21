@@ -59,7 +59,7 @@ One row per document produced by `project-kickoff.md`. Register each document he
 as soon as it is saved.
 
 - **Doc name** — title
-- **Category** — select — one of: `System Description` / `SRS` / `Use Cases` / `Data Model` / `Wireframes` / `Architecture` / `ADR` / `Design Doc`
+- **Category** — select — one of: `System Description` / `SRS` / `Use Cases` / `Data Model` / `Wireframes` / `Architecture` / `ARD` / `Design Doc`
 - **Created by** — created by (Notion auto)
 - **Created time** — created time (Notion auto)
 - **Last edited by** — last edited by (Notion auto)
@@ -73,12 +73,44 @@ as soon as it is saved.
 ## Task Schema
 
 - **Task name** — title
-- **Status** — status — `Not started` / `In progress` / `Done`
+- **Status** — status — `Not started` / `In progress` / `Done` / `To test` / `ReFix` / `Postpone`
 - **Assignee** — person
 - **Due date** — date
 - **Priority** — select — `High` / `Medium` / `Low`
 - **Task type** — select — `🐞 Bug` / `💬 Feature request` / `💅 Polish`
 - **Phase** — select — {{your project phases}}
+
+### Status lifecycle
+
+The six status values are not interchangeable labels — they encode who the task
+is waiting on:
+
+| Status | Meaning | Who moves it next |
+|---|---|---|
+| `Not started` | Specced, not begun. | The assistant, when it picks the task up. |
+| `In progress` | Being worked on **right now**. Set this *before* touching code. | The assistant, when the work is done. |
+| `To test` | Implemented; awaiting human verification. | The user, after testing. |
+| `ReFix` | Tested and **failed**. The problems are written in the task's **"After tests"** section. | The assistant, by fixing what's listed there. |
+| `Done` | Implemented **and** verified. | — terminal. |
+| `Postpone` | Deliberately parked. Record *why* and what would unblock it in the task body. | The user, when it becomes relevant again. |
+
+Only the user moves a task to `ReFix` or `Done` after verification — the
+assistant never self-certifies a task as tested.
+
+### The "After tests" section
+
+When a task comes back as `ReFix`, the user writes what failed under an
+**"After tests"** heading in the task body:
+
+```markdown
+## After tests
+
+- [ ] {{What broke, with steps to reproduce or the wrong output observed}}
+- [ ] {{Next problem}}
+```
+
+The assistant reads that section first, fixes each item, checks it off, and sets
+the status back to `To test` — not to `Done`.
 
 ## Task Naming & Ordering
 
@@ -146,19 +178,22 @@ lifecycle below — is identical; read "database/row/property" as
 ## Working on a Task
 
 1. **Fetch the task** to read the spec and deliverables.
-2. **Set status to "In progress"** before starting work.
-3. **Check off deliverables** as you complete each one (`- [ ]` → `- [x]`).
-4. **Set status to "Done"** once all deliverables are complete and verified.
+2. **Set status to "In progress"** before starting work — before touching any code.
+3. **If the status was `ReFix`,** read the **"After tests"** section first: it lists what failed verification. Fix those items and check them off.
+4. **Check off deliverables** as you complete each one (`- [ ]` → `- [x]`) — *only if the task has a Deliverables section*. Many tasks don't; skip this step for those.
+5. **Set status to "To test"** once the work is complete. The user verifies and moves it to `Done` or back to `ReFix` — the assistant does not mark its own work `Done`.
 
 ## Closing a Bug Task
 
-Before setting a `🐞 Bug` to "Done", record in the task's **Plan** section:
+Before moving a `🐞 Bug` out of `In progress`, record in the task's **Plan** section:
 
 1. **Root Cause** — why it happened.
 2. **Solution** — each file changed + a brief description.
 3. **Result** — outcome and any safety improvements.
-4. Set status to **"To test"** after writing the above.
+4. Set status to **`To test`** after writing the above.
 
 ## Updating a Task
 
-Use the PM tool's update API to change properties. Status values: `Not started`, `In progress`, `Done`.
+Use the PM tool's update API to change properties. Status values: `Not started`,
+`In progress`, `To test`, `ReFix`, `Done`, `Postpone` — see the Status lifecycle
+table above for what each one means and who moves it.

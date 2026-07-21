@@ -53,7 +53,7 @@ Without a convention, AI context ends up scattered across READMEs, stale comment
     │   ├── use-cases.md         actors, use cases, diagrams, user flows
     │   ├── data-model.md        entities, schema, types, ERD, class diagrams
     │   ├── wireframes.md        low-fidelity screens per target device
-    │   ├── ARD.md               Architecture Decision Records (summary of decisions + rationale)
+    │   ├── ARD.md               Architecture Records of Decisions (summary of decisions + rationale)
     │   └── design-doc.md        visual system & component spec summary
     ├── workflows/
     │   ├── project-kickoff.md   guided, step-by-step generation of the docs above for a new project
@@ -76,7 +76,7 @@ Without a convention, AI context ends up scattered across READMEs, stale comment
 | `.ai/ui_guidelines.md` | Colour tokens, typography, components, screens, interaction patterns. | Before UI work. |
 | `.ai/config/system.md` | The AI's role, behaviour constraints, and hard rules — the "system prompt". | As standing instructions. |
 | `.ai/docs/system-description.md` | Wide-angle system overview: problem, users/actors, goals, scope. | First, when framing a new project. |
-| `.ai/docs/ARD.md` | Decisions and their rationale (ADRs). Local summary of the authoritative source. | When a decision's "why" is needed. |
+| `.ai/docs/ARD.md` | Decisions and their rationale (ARD entries, `ARD-01`…). Local summary of the authoritative source. | When a decision's "why" is needed. |
 | `.ai/docs/SRS.md` | Requirements, user stories, NFRs, scope, out-of-scope. | When clarifying what to build. |
 | `.ai/docs/use-cases.md` | Actors, use cases, use-case diagrams, and user flows. | When clarifying how users interact. |
 | `.ai/docs/data-model.md` | Entities, fields/types, ERD, class diagrams, data rules. | When clarifying what the system stores. |

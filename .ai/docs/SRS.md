@@ -8,7 +8,9 @@
 
 > **Primary source:** {{LINK to authoritative SRS}}
 >
-> Always consult the source for the authoritative version. This file is a quick-reference summary.
+> Always consult the source for the authoritative version; this file is a quick-reference summary.
+>
+> **Local Markdown mode:** if the project stores docs in-repo (Step 0 of project-kickoff.md), THIS file is the source of truth — delete the "Primary source" line above rather than pointing it at itself.
 
 **Project:** {{PROJECT_NAME}}
 **Version:** {{0.1 — Draft}}

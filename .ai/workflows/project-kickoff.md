@@ -74,12 +74,20 @@ sub-order, after the SRS is signed off.
    assumption explicitly.
 4. **Each doc builds on the prior ones.** Re-read the earlier documents before
    drafting; keep terminology, actor names, and entity names consistent.
-5. **Two copies stay in sync.** The authoritative copy lives in the chosen
-   storage (see Step 0); the `.ai/**` file is a local summary that links to it.
-   Update both.
-6. **Register every document** in the Documents Hub (see `notion-workflow.md`)
+5. **Two copies stay in sync — *unless* storage is Local Markdown.** When the
+   authoritative copy lives in an external store (see Step 0), the `.ai/**` file
+   is a local summary that links to it, and you update both. If the user chose
+   **Local Markdown** there is only one copy: the `.ai/**` file *is* the source
+   of truth — drop the `{{LINK to authoritative copy}}` header instead of
+   filling it with a self-reference.
+6. **Diagrams are ASCII by default.** A plain ASCII/box sketch inside a fenced
+   block is the standard: it renders everywhere — plain Markdown, a terminal, a
+   diff. Use **Mermaid only when the chosen storage renders it** (Notion, or
+   another store with Mermaid support). Even then, keep the ASCII version in the
+   `.ai/**` copy so the in-repo file stays readable.
+7. **Register every document** in the Documents Hub (see `notion-workflow.md`)
    as soon as it is saved.
-7. **Get an explicit "approved"** from the user before advancing. Offer to
+8. **Get an explicit "approved"** from the user before advancing. Offer to
    revise; do not assume silence is approval.
 
 ---
@@ -221,8 +229,8 @@ diagrams), and the step-by-step workflows for the key journeys.
 
 **Produce:** fill [docs/use-cases.md](../docs/use-cases.md):
 - Actor list, use-case table (ID, actor, goal, priority).
-- **Use-case diagram(s)** — as Mermaid (`graph`/`flowchart`) or PlantUML text so
-  they render in the store and version cleanly.
+- **Use-case diagram(s)** — ASCII by default; Mermaid (`graph`/`flowchart`) only
+  if the chosen store renders it (see ground rule 6).
 - Step-by-step **workflows** for the critical journeys (main + alternate paths).
 
 ### 3b — Data Model
@@ -240,7 +248,7 @@ and (if OOP) classes.
 
 **Produce:** fill [docs/data-model.md](../docs/data-model.md):
 - Entity/table definitions with field name, type, constraints, description.
-- **ERD** as Mermaid `erDiagram` (or PlantUML).
+- **ERD** — ASCII by default; Mermaid `erDiagram` only if the chosen store renders it (see ground rule 6).
 - Class diagram(s) if the design is object-oriented.
 - Enumerations and shared value types.
 
@@ -283,12 +291,12 @@ and pass data, and the infrastructure it runs on.
 - Budget / scaling ceiling that constrains infra choices?
 
 Where the user is unsure, present 2–3 viable options with trade-offs and a
-recommendation. Record the *why* for each significant choice as an ADR.
+recommendation. Record the *why* for each significant choice as an ARD entry.
 
 **Produce:**
-- Fill [architecture.md](../architecture.md): system-overview diagram (Mermaid),
-  services & hosting table, code structure, data flow, key flows, security,
-  infrastructure.
+- Fill [architecture.md](../architecture.md), section by section: System Overview
+  (ASCII diagram — see ground rule 6), Services & Hosting, Code Structure,
+  Data Model, Key Flows, Security, Open Architecture Questions.
 - Log each significant decision as an entry in [docs/ARD.md](../docs/ARD.md)
   (decision + rationale + consequences).
 

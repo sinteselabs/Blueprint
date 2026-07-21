@@ -41,7 +41,7 @@ This file is the **single entry point** for any AI assistant working in this rep
 | **Start a new project** (guided doc generation) | [workflows/project-kickoff.md](workflows/project-kickoff.md) | — |
 | **System description** (wide-angle: what, who, why) | [docs/system-description.md](docs/system-description.md) | {{LINK}} |
 | **System architecture**, structure, data model, hosting | [architecture.md](architecture.md) | {{LINK}} |
-| **Architecture decisions** (ADRs, rationale) | [docs/ARD.md](docs/ARD.md) | {{LINK}} |
+| **Architecture decisions** (ARDs, rationale) | [docs/ARD.md](docs/ARD.md) | {{LINK}} |
 | **Feature requirements**, user stories, NFRs, scope | [docs/SRS.md](docs/SRS.md) | {{LINK}} |
 | **Use cases & user flows** (actors, diagrams) | [docs/use-cases.md](docs/use-cases.md) | {{LINK}} |
 | **Data model** (entities, schema, ERD, classes) | [docs/data-model.md](docs/data-model.md) | {{LINK}} |
@@ -84,5 +84,5 @@ This file is the **single entry point** for any AI assistant working in this rep
 2. {{RULE_2}}
 3. {{RULE_3}}
 4. `architecture.md` and `docs/ARD.md` are the source of truth for structure decisions; update them when decisions change.
-5. When starting a task: fetch it from the PM tool first, set status to "In progress", implement, then set "Done" (see `workflows/notion-workflow.md`).
+5. When starting a task: fetch it from the PM tool first, **set status to `In progress` before touching any code**, implement, then set `To test` — only the user promotes a task to `Done` (see [workflows/notion-workflow.md](workflows/notion-workflow.md) for the full status lifecycle).
 6. **New-project kickoff is interactive.** When running `workflows/project-kickoff.md`, do one step per turn, ask the step's questions and WAIT for answers before drafting, and never invent or unilaterally pick the tech stack / framework / hosting / architecture — present options and let the user choose.

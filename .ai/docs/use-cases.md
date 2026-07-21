@@ -9,7 +9,9 @@
 
 > **Primary source:** {{LINK to authoritative copy}}
 >
-> Always consult the source for the authoritative version. This file is a quick-reference summary.
+> Always consult the source for the authoritative version; this file is a quick-reference summary.
+>
+> **Local Markdown mode:** if the project stores docs in-repo (Step 0 of project-kickoff.md), THIS file is the source of truth — delete the "Primary source" line above rather than pointing it at itself.
 
 **Project:** {{PROJECT_NAME}}
 **Version:** {{0.1 — Draft}}
@@ -37,13 +39,15 @@
 
 ## Use-Case Diagram
 
-<!-- Keep diagrams as text (Mermaid / PlantUML) so they render and version cleanly. -->
+<!-- Keep diagrams as TEXT so they version cleanly. ASCII is the default — it
+     renders everywhere. Swap in Mermaid only if the authoritative store renders
+     it (see ground rule 6 in workflows/project-kickoff.md). -->
 
-```mermaid
-flowchart LR
-  actor([{{Actor}}])
-  actor --> UC1([UC-01: {{goal}}])
-  actor --> UC2([UC-02: {{goal}}])
+```
+  {{Actor}}
+     │
+     ├──▶ UC-01: {{goal}}
+     └──▶ UC-02: {{goal}}
 ```
 
 ---

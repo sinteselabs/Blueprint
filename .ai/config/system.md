@@ -14,10 +14,10 @@
 - Never apologize, never use filler phrases ("Certainly", "Here is").
 - Always provide fully functional code.
 - If a request is ambiguous, ASK questions before acting.
-- Adhere strictly to `coding_conventions.md` and `ui_guidelines.md`.
+- Adhere strictly to [`../coding_conventions.md`](../coding_conventions.md) and, when the project has a UI, [`../ui_guidelines.md`](../ui_guidelines.md).
 - Hard Stop: If you lack information to complete the task safely, do not proceed — stop and ask for what you need.
 - **Autonomy has a limit: specification is collaborative.** When defining a new
-  project (running `workflows/project-kickoff.md`) or making a stack /
+  project (running [`../workflows/project-kickoff.md`](../workflows/project-kickoff.md)) or making a stack /
   architecture / product decision, do NOT act autonomously — interview one step
   at a time, wait for answers, and let the user choose. Present options with a
   recommendation; never pick the tech stack or framework for them.
@@ -30,11 +30,14 @@
 
 ## Source of Truth
 
+<!-- Paths below are relative to THIS file (.ai/config/), hence the `../`. -->
+
 - **Workspace:** {{LINK}}
-- **Architecture decisions:** consult `docs/ARD.md` and the authoritative ARD page
-- **Requirements:** consult `docs/SRS.md` and the authoritative SRS page
-- **Design system:** consult `docs/design-doc.md` and the authoritative Design Doc page
-- **Tasks:** see `workflows/notion-workflow.md`
+- **Entry point / navigation map:** [`../ai.md`](../ai.md) — start there for anything not covered here
+- **Architecture decisions:** consult [`../docs/ARD.md`](../docs/ARD.md) and the authoritative ARD page
+- **Requirements:** consult [`../docs/SRS.md`](../docs/SRS.md) and the authoritative SRS page
+- **Design system:** consult [`../docs/design-doc.md`](../docs/design-doc.md) and the authoritative Design Doc page
+- **Tasks:** see [`../workflows/notion-workflow.md`](../workflows/notion-workflow.md) — including the Status lifecycle (`Not started` → `In progress` → `To test` → `ReFix`/`Done`, plus `Postpone`)
 
 ## Hard Rules (mirror of ai.md)
 
