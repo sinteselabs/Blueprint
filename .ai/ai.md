@@ -52,6 +52,7 @@ This file is the **single entry point** for any AI assistant working in this rep
 | **AI/LLM role and hard rules** | [config/system.md](config/system.md) | — |
 | **How to read/update tasks & docs** | [workflows/notion-workflow.md](workflows/notion-workflow.md) | {{LINK}} |
 | **Sequential task queue** (what's next) | [workflows/task-queue.md](workflows/task-queue.md) | {{LINK}} |
+| **Running agents in parallel** (git worktree isolation) | [workflows/parallel-agents.md](workflows/parallel-agents.md) | — |
 
 ---
 
@@ -85,4 +86,7 @@ This file is the **single entry point** for any AI assistant working in this rep
 3. {{RULE_3}}
 4. `architecture.md` and `docs/ARD.md` are the source of truth for structure decisions; update them when decisions change.
 5. When starting a task: fetch it from the PM tool first, **set status to `In progress` before touching any code**, implement, then set `To test` — only the user promotes a task to `Done` (see [workflows/notion-workflow.md](workflows/notion-workflow.md) for the full status lifecycle).
-6. **New-project kickoff is interactive.** When running `workflows/project-kickoff.md`, do one step per turn, ask the step's questions and WAIT for answers before drafting, and never invent or unilaterally pick the tech stack / framework / hosting / architecture — present options and let the user choose.
+6. **Parallel agents work in separate git worktrees.** Never run two writing agents in the same working directory — one agent = one worktree = one branch, integrated one at a time by the orchestrator (see [workflows/parallel-agents.md](workflows/parallel-agents.md)). If the tasks aren't independent, don't parallelise them: sequence them through [workflows/task-queue.md](workflows/task-queue.md).
+7. **New-project kickoff is interactive.** When running `workflows/project-kickoff.md`, do one step per turn, ask the step's questions and WAIT for answers before drafting, and never invent or unilaterally pick the tech stack / framework / hosting / architecture — present options and let the user choose.
+8. **Measure before asserting; correct yourself out loud when the measurement disproves you.** Never state a cause, a size, or an improvement you haven't verified — and when a number contradicts something you already told the user, say so plainly and move on. One real measurement beats three plausible explanations. A hypothesis that survives only because nobody checked it is worse than no hypothesis: it sends the next person down the wrong path. This applies to your own past claims in the same conversation — if you said the bottleneck was X and the data says Y, lead with the correction.
+9. **Prefer loud failure to silent degradation.** When code meets an unexpected state, fail with a message that names what is missing rather than defaulting, skipping, or swallowing. Guards against bad data must also *report* it — a defence that stays quiet turns a loud error into a slow, invisible loss. Let the asymmetry decide: forgetting a permission breaks visibly and points at the fix, while forgetting a revoke does nothing and leaves a hole nobody sees. Choose the failure mode that gets noticed.
