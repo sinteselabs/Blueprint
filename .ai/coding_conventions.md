@@ -45,6 +45,8 @@
 - Branch naming: `feat/`, `fix/`, `chore/`, `infra/` prefixes
 - Commit messages: conventional commits — `feat(scope): summary`
 - No secrets committed; use `.env.example` with placeholders
+- Parallel agents work in separate worktrees under `.worktrees/` (git-ignored),
+  one branch each — see [workflows/parallel-agents.md](workflows/parallel-agents.md)
 
 ---
 

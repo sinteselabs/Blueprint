@@ -15,6 +15,9 @@ Thumbs.db
 **/serviceAccountKey.json
 **/service-account*.json
 
+# Git worktrees used to isolate parallel agents (see .ai/workflows/parallel-agents.md)
+.worktrees/
+
 # Dependencies & build output (examples)
 node_modules/
 dist/

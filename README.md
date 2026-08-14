@@ -58,7 +58,8 @@ Without a convention, AI context ends up scattered across READMEs, stale comment
     ├── workflows/
     │   ├── project-kickoff.md   guided, step-by-step generation of the docs above for a new project
     │   ├── notion-workflow.md   how to read/update tasks & docs in Notion (or your PM tool)
-    │   └── task-queue.md        sequential list of what to work on next
+    │   ├── task-queue.md        sequential list of what to work on next
+    │   └── parallel-agents.md   git worktree isolation when several agents run at once
     ├── templates/               reusable snippets/boilerplate for the project (optional)
     └── tools/                   project-specific scripts/helpers for AI workflows (optional)
 ```
@@ -85,6 +86,7 @@ Without a convention, AI context ends up scattered across READMEs, stale comment
 | `.ai/workflows/project-kickoff.md` | Guided, step-by-step interview that generates all the docs above, in order, for a new project. | When starting a brand-new project. |
 | `.ai/workflows/notion-workflow.md` | How to fetch/update tasks and docs — Notion **or** local Markdown; Documents Hub / Task Tracker schemas + task naming/ordering. | When picking up or closing a task. |
 | `.ai/workflows/task-queue.md` | Ordered list of tasks to process top-to-bottom. | To decide what's next. |
+| `.ai/workflows/parallel-agents.md` | How to isolate concurrent agents: one git worktree + one branch each, shared-state caveats, integration and cleanup. | Before spawning agents that work in parallel. |
 | `.ai/templates/` | Reusable boilerplate (PR templates, code snippets, doc skeletons). | When generating repetitive artifacts. |
 | `.ai/tools/` | Project-specific helper scripts for AI workflows. | When a workflow needs them. |
 

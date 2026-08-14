@@ -2,6 +2,12 @@
 
 Sequential task list. Process **top to bottom** — only start the next task after the current one is fully complete and committed.
 
+> **Running tasks in parallel?** This queue is sequential by default. If the user
+> asks for parallel execution — or a batch of tasks is demonstrably independent —
+> each concurrent agent MUST get its own git worktree and branch. See
+> [parallel-agents.md](parallel-agents.md); never run two writing agents in the
+> same working directory.
+
 > **Ordering:** tasks are named `[Phase X] Task name` (or `[Epic name X] Task name`
 > for epics) per the Task Naming & Ordering convention in `notion-workflow.md`, so
 > listing them **alphabetically by title yields execution order**. Keep this list
