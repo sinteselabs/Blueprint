@@ -148,8 +148,27 @@ The same two collections live in the repo instead of Notion — see
   (Documents Hub, Task Tracker) onto that tool's equivalent of pages/databases —
   same check-or-create discipline. Note the location in `.ai/ai.md`.
 
+### Project memory (lore) — always, whatever the storage above
+
+lore is the project's memory by default. It does not replace the store chosen
+above: that holds the plan and the documents, lore holds what happened and who is
+working on what (see [project-memory.md](project-memory.md)).
+
+**Ask the user:** which lore server, workspace and project name to use. Suggest
+their own workspace (named after their username) and the repository's name.
+
+1. Confirm lore's MCP tools are loaded (it is registered per machine, never in
+   `.mcp.json`; setup is in [project-memory.md](project-memory.md) → "Once per
+   machine"). If they are not, give the user the setup steps and wait.
+2. Fill `.ai-memory.toml` at the repo root with the workspace and project, and keep
+   it committed.
+3. Check the connection with `memory_status` for that workspace and project.
+4. Record the server, workspace and project in `.ai/ai.md` ("Project memory"), in
+   `config/system.md` and in `project-memory.md` ("This project").
+
 **Gate:** storage is chosen and reachable, and the two collections (Documents Hub
 + Task Tracker) exist — created if missing, reused if present, IDs/paths recorded.
+Project memory answers for the recorded workspace and project.
 Only then proceed to Step 1.
 
 ---

@@ -19,9 +19,9 @@ For each task URL below:
 
 1. **Fetch** the task page to read the spec and deliverables.
 2. **If the task status is `ReFix`:** find the **"After tests"** section — work on the problems described there (see the Status lifecycle table in `notion-workflow.md`).
-3. **Follow `notion-workflow.md`** to work on it (set status, implement, update deliverables/plan).
+3. **Follow `notion-workflow.md`** to work on it (set status, declare your work in project memory per `project-memory.md`, implement, update deliverables/plan).
 4. **Commit** all changes with a conventional commit message once the task is done.
-5. **Mark the task as handled** below by changing `- [ ]` to `- [x]`. Note this tracks *your* pass through the queue — the task itself lands on `To test`, and only the user promotes it to `Done`.
+5. **Mark the task as handled** below by changing `- [ ]` to `- [x]`. Note this tracks *your* pass through the queue — the task itself lands on `To test`, and reaches `Done` once the user says it is tested (the assistant may then set it).
 6. **Move to the next task.**
 
 ## Tasks

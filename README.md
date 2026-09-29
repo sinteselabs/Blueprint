@@ -15,6 +15,7 @@ Without a convention, AI context ends up scattered across READMEs, stale comment
 - **Source-of-truth links** — every doc points back to its authoritative source (e.g. a Notion page) so local files stay summaries, not forks.
 - **Hard rules up front** — non-negotiable constraints are listed where they can't be missed.
 - **Tooling wired in** — `.mcp.json` declares the MCP servers (Notion, Firebase, etc.) the project uses.
+- **Project memory by default** — every project uses [lore](.ai/workflows/project-memory.md) as the agents' shared long-term memory: what happened, handoffs between agents, and who is working on what right now. It sits beside the PM tool and the repo docs; it doesn't replace them.
 
 ---
 
@@ -25,8 +26,9 @@ Without a convention, AI context ends up scattered across READMEs, stale comment
 3. **Set the entry point** — fill in `.ai/ai.md`: project summary, tech stack, source-of-truth links, the navigation map, and hard rules.
 4. **Fill the topic files** — `architecture.md`, `coding_conventions.md`, `ui_guidelines.md`, and the `docs/` summaries. Delete sections that don't apply.
 5. **Wire tooling** — edit `.mcp.json` for the MCP servers you actually use; delete the rest.
-6. **Pick a `.gitignore`** appropriate to your stack (the included one is generic).
-7. **Keep it alive** — when a decision changes, update `architecture.md` / `docs/ARD.md`. These files are meant to be maintained, not written once.
+6. **Connect project memory** — fill `.ai-memory.toml` with the lore workspace and project, commit it, and register lore once per machine (never in `.mcp.json`). Steps in [`.ai/workflows/project-memory.md`](.ai/workflows/project-memory.md).
+7. **Pick a `.gitignore`** appropriate to your stack (the included one is generic).
+8. **Keep it alive** — when a decision changes, update `architecture.md` / `docs/ARD.md`. These files are meant to be maintained, not written once.
 
 > Tip: for a brand-new project, point your AI assistant at [`.ai/workflows/project-kickoff.md`](.ai/workflows/project-kickoff.md). It runs a guided, step-by-step interview and produces the core Software Engineering documents in order — System Description → SRS → Use Cases → Data Model → Wireframes → Architecture → Design Doc — saving each to your chosen store (Notion by default). For an existing project, point it at `.ai/ai.md` and have it read your design docs, then write each file.
 
@@ -38,7 +40,8 @@ Without a convention, AI context ends up scattered across READMEs, stale comment
 .
 ├── AGENTS.md                    → points to .ai/ai.md (entry point for any AI assistant)
 ├── CLAUDE.md                    → points to .ai/ai.md (Claude Code reads this by default)
-├── .mcp.json                    MCP servers the project uses (Notion, Firebase, …)
+├── .mcp.json                    MCP servers the project uses (Notion, Firebase, …); lore is registered per machine instead
+├── .ai-memory.toml              names this repo's project memory in lore (workspace + project); committed
 ├── .gitignore                   generic; replace with one for your stack
 └── .ai/
     ├── ai.md                    THE ENTRY POINT — project at a glance + navigation map + hard rules
@@ -59,7 +62,8 @@ Without a convention, AI context ends up scattered across READMEs, stale comment
     │   ├── project-kickoff.md   guided, step-by-step generation of the docs above for a new project
     │   ├── notion-workflow.md   how to read/update tasks & docs in Notion (or your PM tool)
     │   ├── task-queue.md        sequential list of what to work on next
-    │   └── parallel-agents.md   git worktree isolation when several agents run at once
+    │   ├── parallel-agents.md   git worktree isolation when several agents run at once
+    │   └── project-memory.md    lore: what it's for, setup, and the declare-your-work rule
     ├── templates/               reusable snippets/boilerplate for the project (optional)
     └── tools/                   project-specific scripts/helpers for AI workflows (optional)
 ```
@@ -86,6 +90,8 @@ Without a convention, AI context ends up scattered across READMEs, stale comment
 | `.ai/workflows/project-kickoff.md` | Guided, step-by-step interview that generates all the docs above, in order, for a new project. | When starting a brand-new project. |
 | `.ai/workflows/notion-workflow.md` | How to fetch/update tasks and docs — Notion **or** local Markdown; Documents Hub / Task Tracker schemas + task naming/ordering. | When picking up or closing a task. |
 | `.ai/workflows/task-queue.md` | Ordered list of tasks to process top-to-bottom. | To decide what's next. |
+| `.ai-memory.toml` | Names the repo's project memory in lore (`workspace`, `project`). Committed, so every clone shares one memory. | By the capture hooks and MCP clients, automatically. |
+| `.ai/workflows/project-memory.md` | lore as project memory: what goes there vs. the PM tool and the repo, per-machine setup, and the rule that every agent declares its work before starting and waits on overlaps. | Before starting any task. |
 | `.ai/workflows/parallel-agents.md` | How to isolate concurrent agents: one git worktree + one branch each, shared-state caveats, integration and cleanup. | Before spawning agents that work in parallel. |
 | `.ai/templates/` | Reusable boilerplate (PR templates, code snippets, doc skeletons). | When generating repetitive artifacts. |
 | `.ai/tools/` | Project-specific helper scripts for AI workflows. | When a workflow needs them. |
@@ -97,6 +103,9 @@ Without a convention, AI context ends up scattered across READMEs, stale comment
 - **Local files are summaries, not sources of truth.** Each links to its authoritative source (Notion, a design tool, etc.). Update both when something changes.
 - **Hard rules are explicit and numbered.** They live in `.ai/ai.md` and `.ai/config/system.md` so they can't be missed.
 - **`architecture.md` + `docs/ARD.md` are the structural source of truth in-repo.** Change them when decisions change.
+- **Plan in the PM tool, decide in the repo, remember and coordinate in lore.** One fact lives in one place.
+- **Agents declare their work in project memory** before starting, wait on their own when another agent holds what they need, and close their page when they stop.
+- **`Done` follows the user's test.** Agents set `To test`; when the user says a task is tested and done, the agent may set `Done`.
 - **One topic per file.** Don't dump everything into `ai.md`; it's a map, not the territory.
 
 ---

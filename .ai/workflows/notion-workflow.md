@@ -89,18 +89,21 @@ is waiting on:
 |---|---|---|
 | `Not started` | Specced, not begun. | The assistant, when it picks the task up. |
 | `In progress` | Being worked on **right now**. Set this *before* touching code. | The assistant, when the work is done. |
-| `To test` | Implemented; awaiting human verification. | The user, after testing. |
+| `To test` | Implemented; awaiting human verification. | The user tests it. The assistant moves it on the user's word: `Done` when the user says it passed, `ReFix` when the user reports failures. |
 | `ReFix` | Tested and **failed**. The problems are written in the task's **"After tests"** section. | The assistant, by fixing what's listed there. |
-| `Done` | Implemented **and** verified. | — terminal. |
+| `Done` | Implemented **and** verified by the user. | — terminal. |
 | `Postpone` | Deliberately parked. Record *why* and what would unblock it in the task body. | The user, when it becomes relevant again. |
 
-Only the user moves a task to `ReFix` or `Done` after verification — the
-assistant never self-certifies a task as tested.
+The user does the testing; either the user or the assistant may then record the
+result. When the user says a task is tested and done, the assistant sets `Done`.
+The assistant never marks its own work `Done` because its own checks passed:
+`To test` is the step where a person verifies it.
 
 ### The "After tests" section
 
-When a task comes back as `ReFix`, the user writes what failed under an
-**"After tests"** heading in the task body:
+When a task comes back as `ReFix`, what failed goes under an **"After tests"**
+heading in the task body. The user writes it, or tells the assistant, who records
+it there and sets `ReFix`:
 
 ```markdown
 ## After tests
@@ -110,7 +113,8 @@ When a task comes back as `ReFix`, the user writes what failed under an
 ```
 
 The assistant reads that section first, fixes each item, checks it off, and sets
-the status back to `To test` — not to `Done`.
+the status back to `To test`: the fix needs the user's test just as the first
+version did.
 
 ## Task Naming & Ordering
 
@@ -178,10 +182,17 @@ lifecycle below — is identical; read "database/row/property" as
 ## Working on a Task
 
 1. **Fetch the task** to read the spec and deliverables.
-2. **Set status to "In progress"** before starting work — before touching any code.
+2. **Set status to "In progress"** before starting work — before touching any code —
+   and **declare your work in project memory** (check other agents' `work/` pages,
+   then write yours; see [project-memory.md](project-memory.md)). If another agent's
+   page overlaps, wait and keep checking until it is released.
 3. **If the status was `ReFix`,** read the **"After tests"** section first: it lists what failed verification. Fix those items and check them off.
 4. **Check off deliverables** as you complete each one (`- [ ]` → `- [x]`) — *only if the task has a Deliverables section*. Many tasks don't; skip this step for those.
-5. **Set status to "To test"** once the work is complete. The user verifies and moves it to `Done` or back to `ReFix` — the assistant does not mark its own work `Done`.
+5. **Set status to "To test"** once the work is complete, and close your
+   agent-work page as `done` (say the task is at `To test`). Nobody holds the
+   files while the user tests; a `ReFix` later is new work with a new page.
+6. **When the user says it is tested and done, set `Done`.** If the user reports
+   failures instead, record them under "After tests" and set `ReFix`.
 
 ## Closing a Bug Task
 

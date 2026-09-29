@@ -82,7 +82,10 @@ Every parallel agent must be told, in its prompt:
 - **its branch name**;
 - **the exact scope** of its task (files/areas it owns);
 - that it must **never** `cd` into the main checkout or another worktree, and
-  never touch another agent's branch.
+  never touch another agent's branch;
+- that it **declares its own agent-work page** in project memory (worktree,
+  branch, areas) before starting, and closes it when it stops — see
+  [project-memory.md](project-memory.md).
 
 ### 3. Each agent commits on its own branch
 
@@ -129,6 +132,7 @@ its own or serialise the work:
 | **Local database, seeds, migrations** | Concurrent migrations corrupt shared state | One database per worktree, or serialise migration tasks |
 | **External services** (PM tool, deploys, cloud resources) | Two agents mutating the same remote record | The orchestrator owns these; agents don't touch them concurrently |
 | **Task tracker statuses** | Duplicate/conflicting status updates | One agent per task — see [notion-workflow.md](notion-workflow.md) |
+| **Work claimed by agents in other sessions** (other harnesses, other machines) | Two agents take the same files, branch or production without seeing each other | Every agent declares a `work/` page in project memory and waits on an overlap — see [project-memory.md](project-memory.md) |
 
 If two tasks contend for anything in this table and it can't be split, they are
 **not** independent — run them sequentially.
@@ -157,6 +161,7 @@ demonstrably independent. In that case:
 - [ ] One worktree + one branch per writing agent, based on `origin/main`.
 - [ ] `.worktrees/` is git-ignored.
 - [ ] Each agent briefed with its path, branch, and scope — and told not to leave it.
+- [ ] Each agent declares its own agent-work page in project memory, and closes it when it stops.
 - [ ] Untracked prerequisites (`.env`, deps) present in each worktree.
 - [ ] Shared resources (ports, DB, remote records) split or serialised.
 - [ ] Branches integrated one at a time by the orchestrator.

@@ -24,6 +24,13 @@
   architecture / product decision, do NOT act autonomously — interview one step
   at a time, wait for answers, and let the user choose. Present options with a
   recommendation; never pick the tech stack or framework for them.
+- **Declare your work in project memory.** Before starting any task, check lore for
+  other agents' `work/` pages and write your own; close it every time you stop. If
+  another agent's page overlaps yours, wait and keep checking on your own until it
+  is released, then proceed without asking the user. Follow
+  [`../workflows/project-memory.md`](../workflows/project-memory.md).
+- **`Done` follows the user's test.** Set `To test` when the work is complete; set
+  `Done` when the user says it is tested and done, never on your own checks alone.
 - **Measure before asserting.** Do not state a cause, a size, or an improvement you
   have not verified. When a measurement contradicts something you already told the
   user — including earlier in the same conversation — lead with the correction,
@@ -51,6 +58,7 @@
 - **Design system:** consult [`../docs/design-doc.md`](../docs/design-doc.md) and the authoritative Design Doc page
 - **Parallel execution:** see [`../workflows/parallel-agents.md`](../workflows/parallel-agents.md) — git worktree isolation, one branch per agent
 - **Tasks:** see [`../workflows/notion-workflow.md`](../workflows/notion-workflow.md) — including the Status lifecycle (`Not started` → `In progress` → `To test` → `ReFix`/`Done`, plus `Postpone`)
+- **Project memory:** lore, workspace `{{WORKSPACE}}`, project `{{PROJECT}}` — see [`../workflows/project-memory.md`](../workflows/project-memory.md) for recall, handoffs and the agent-work rule
 
 ## Hard Rules (mirror of ai.md)
 
