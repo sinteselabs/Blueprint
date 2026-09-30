@@ -95,6 +95,9 @@ work pages, not the inbox.
 5. Set the task to `To test` in the PM tool; `Done` stays the user's word. Close
    your `work/` page as `done`, with the commit, the deploy, and where the decisions
    are.
+6. Delete your worktree once its branch is merged and nothing more is planned
+   there (Hard Rule 12): `git worktree remove`, delete the branch, `git worktree
+   prune`. Check "merged" against the remote `{{MAIN_BRANCH}}`, not a stale local one.
 
 ## Decisions
 

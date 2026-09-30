@@ -113,8 +113,30 @@ git worktree list      # what still exists
 git worktree prune     # drop stale registrations
 ```
 
-**Leave no orphans.** Every worktree created for a task is removed when the task
-is integrated or abandoned.
+**Leave no orphans: delete the worktree when its work is finished.** The agent
+that owns a worktree removes it, in the same session, as soon as its branch is
+merged into `main` (or the work is abandoned) and nothing more is planned there.
+Worktrees are not free: each holds its own build output (for a Rust project,
+10–60 GB of `target/`), and on one project seventeen of them accumulated and
+filled the disk, which made test gates fail with "disk full".
+
+```bash
+git -C <worktree> status --porcelain                   # must print nothing
+git fetch origin
+git merge-base --is-ancestor <branch> origin/main && echo merged
+git worktree remove <worktree>
+git branch -d <branch>     # refused? the local main is stale; the check above
+                           # against origin/main is what counts, then use -D
+git worktree prune
+```
+
+- Check against `origin/main`, not the local `main`: the local one is often
+  days behind, so `git branch -d` refuses branches that are in fact merged.
+- Uncommitted changes or unmerged commits mean the work is **not** finished:
+  keep the worktree, or ask the user before discarding anything.
+- Never remove a worktree another agent is using (its work page in project
+  memory is `in-progress`, `paused` or `waiting-response`).
+- If you run *inside* the worktree, leave it before removing it.
 
 ---
 
@@ -165,4 +187,4 @@ demonstrably independent. In that case:
 - [ ] Untracked prerequisites (`.env`, deps) present in each worktree.
 - [ ] Shared resources (ports, DB, remote records) split or serialised.
 - [ ] Branches integrated one at a time by the orchestrator.
-- [ ] Worktrees removed and branches deleted after integration; `git worktree prune` run.
+- [ ] Each worktree deleted by its owner as soon as its branch is merged (checked against `origin/main`); branch deleted; `git worktree prune` run.
