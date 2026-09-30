@@ -37,29 +37,36 @@ not also written as a lore page; lore keeps the recall and the history around it
 1. **Account and key.** Sign up at `{{https://lore.lunico.dev/web/#/signup}}`, then
    create a key for this device on the account page. One key per device, so each
    can be revoked on its own.
-2. **Register the MCP server for your user, not in `.mcp.json`:**
+2. **Install the client and connect your agents.** On macOS or Linux:
 
    ```bash
-   claude mcp add --scope user --transport http lore {{https://lore.lunico.dev}}/mcp \
-     --header "Authorization: Bearer <your-key>"
+   curl -fsSL {{https://lore.lunico.dev}}/web/install.sh | sh
    ```
 
-   Other agents: `ai-memory install-mcp --client <codex|cursor|gemini-cli|opencode|vscode-copilot> --name lore --server-url {{https://lore.lunico.dev}} --auth-token <your-key> --apply`.
+   It asks for the key without echoing it and verifies it. For every agent it finds
+   (Claude Code, Codex, Cursor, Gemini CLI), it registers the MCP server for your
+   user and installs the capture hooks. Restart the agents afterwards.
+   - To connect only some agents: `... | sh -s -- --agent codex --agent cursor`.
+   - Later changes (a new key, a new agent): `lore setup [--agent <name>]`.
+3. **Other agents.** Keep the key in the environment
+   (`read -rs AI_MEMORY_AUTH_TOKEN && export AI_MEMORY_AUTH_TOKEN`), then run:
+
+   ```bash
+   ai-memory install-mcp   --client <client> --name lore --server-url {{https://lore.lunico.dev}} --apply
+   ai-memory install-hooks --agent  <agent>  --server-url {{https://lore.lunico.dev}} --apply
+   ```
+
+   The names include `open-code`, `opencode2`, `kiro-cli`, `kimi-code`, `grok`,
+   `devin` and `command-code`; see each command's `--help`. VS Code Copilot,
+   Claude Desktop and Zed get MCP only: they read memory but do not feed it.
+   On Windows there is no installer yet: add an HTTP MCP server at
+   `{{https://lore.lunico.dev}}/mcp` with an `Authorization: Bearer <key>` header.
 
    > **Never declare lore in `.mcp.json`.** That file is committed, so it could only
    > carry the key as `${VAR}`. Project config overrides the user-level
    > registration, and an app launched from the GUI does not load `.zshrc`. The
    > header then goes out as a bare `Bearer ` and lore answers 401, silently taking
    > the memory tools away from a machine where they worked.
-3. **Capture hooks.** Install the `ai-memory` client binary, then:
-
-   ```bash
-   ai-memory install-hooks --agent claude-code --server-url {{https://lore.lunico.dev}} \
-     --auth-token <your-key> --apply
-   ```
-
-   Use `--agent codex`, `cursor`, `gemini-cli`, `opencode`, … for other agents.
-   VS Code Copilot has no hooks: it can read memory but does not feed it.
 
 ### Once per repository
 
@@ -70,9 +77,11 @@ not also written as a lore page; lore keeps the recall and the history around it
    project   = "{{PROJECT}}"
    ```
 
-   Every clone that carries this file, on any machine, reads and writes the same
-   memory. Without it, captures go to a default workspace the server refuses, and
-   they are dropped silently. `workspace` must be one you belong to (your own is
+   Every clone that carries this file, on any machine and for every teammate, reads
+   and writes the same memory. Without it, memory goes to your personal workspace, in
+   a project named after the folder the agent starts in, which is fine for solo work
+   but is not shared. A marker naming a workspace you can't write to makes captures
+   drop silently. `workspace` must be one you belong to (your own is
    named after your username). The first write creates the project and makes you
    its admin.
 5. **Check it works.** Ask the agent to run `memory_status` for this workspace and
@@ -80,7 +89,8 @@ not also written as a lore page; lore keeps the recall and the history around it
    missing. A 403 means you have no access to that workspace or project.
 
 Teammates need access to the project (reader, writer or admin) before their agents
-can read or write its memory.
+can read or write its memory. Grant it from the project's Members tab in the web app,
+by username, by email or with an invite link.
 
 ## Using it
 
