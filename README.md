@@ -16,6 +16,7 @@ Without a convention, AI context ends up scattered across READMEs, stale comment
 - **Hard rules up front** — non-negotiable constraints are listed where they can't be missed.
 - **Tooling wired in** — `.mcp.json` declares the MCP servers (Notion, Firebase, etc.) the project uses.
 - **Project memory by default** — every project uses [lore](.ai/workflows/project-memory.md) as the agents' shared long-term memory: what happened, handoffs between agents, and who is working on what right now. It sits beside the PM tool and the repo docs; it doesn't replace them.
+- **Autonomous runs (optional)**: say "autonomous run" and the agents work through the pending tasks on their own, for example overnight. They coordinate through lore, take the recommended option where a decision would be yours, record it for review, and leave you a to-do list. Kickoff asks whether to enable it ([workflow](.ai/workflows/autonomous-run.md)).
 
 ---
 
@@ -63,7 +64,8 @@ Without a convention, AI context ends up scattered across READMEs, stale comment
     │   ├── notion-workflow.md   how to read/update tasks & docs in Notion (or your PM tool)
     │   ├── task-queue.md        sequential list of what to work on next
     │   ├── parallel-agents.md   git worktree isolation when several agents run at once
-    │   └── project-memory.md    lore: what it's for, setup, and the declare-your-work rule
+    │   ├── project-memory.md    lore: what it's for, setup, and the declare-your-work rule
+    │   └── autonomous-run.md    optional: agents working through tasks unattended, coordinated via lore
     ├── templates/               reusable snippets/boilerplate for the project (optional)
     └── tools/                   project-specific scripts/helpers for AI workflows (optional)
 ```
@@ -93,6 +95,7 @@ Without a convention, AI context ends up scattered across READMEs, stale comment
 | `.ai-memory.toml` | Names the repo's project memory in lore (`workspace`, `project`). Committed, so every clone shares one memory. | By the capture hooks and MCP clients, automatically. |
 | `.ai/workflows/project-memory.md` | lore as project memory: what goes there vs. the PM tool and the repo, per-machine setup, and the rule that every agent declares its work before starting and waits on overlaps. | Before starting any task. |
 | `.ai/workflows/parallel-agents.md` | How to isolate concurrent agents: one git worktree + one branch each, shared-state caveats, integration and cleanup. | Before spawning agents that work in parallel. |
+| `.ai/workflows/autonomous-run.md` | Optional, enabled at kickoff. How agents work through the pending tasks unattended: the three kickoff questions, the board and claims in lore, collision rules, recorded decisions, to-dos for the user, and end-of-run summaries. | When the user says "autonomous run". |
 | `.ai/templates/` | Reusable boilerplate (PR templates, code snippets, doc skeletons). | When generating repetitive artifacts. |
 | `.ai/tools/` | Project-specific helper scripts for AI workflows. | When a workflow needs them. |
 

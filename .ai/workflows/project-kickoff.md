@@ -166,9 +166,33 @@ their own workspace (named after their username) and the repository's name.
 4. Record the server, workspace and project in `.ai/ai.md` ("Project memory"), in
    `config/system.md` and in `project-memory.md` ("This project").
 
+### Autonomous runs (optional) — ask, then set up or remove
+
+**Ask the user** whether they want to enable autonomous runs. Before they answer,
+explain it in two or three sentences:
+
+> An autonomous run is when you tell the agents to work through the pending tasks
+> on their own — overnight, say — without stopping to ask you. They coordinate
+> through lore so each takes a different task. Whenever a decision would be yours,
+> they choose the recommended option and write it down for you to review, and they
+> leave you a to-do list for anything only you can do. You start one by saying
+> "autonomous run". The agent then asks once whether merging and deploying are
+> allowed, what the scope is, and when to stop.
+
+- **Yes:**
+  1. Keep [autonomous-run.md](autonomous-run.md) and fill its placeholders. Ask the
+     user for the main branch and the quality gates now. The migrations folder, the
+     shared files and the deploy procedure can wait until the architecture exists:
+     leave those placeholders, and add a note in `task-queue.md` to fill them after
+     Step 4.
+  2. Keep its row in `.ai/ai.md` and the "Autonomous runs" hard rule.
+- **No:** delete `autonomous-run.md`, its row in `.ai/ai.md` and the "Autonomous
+  runs" hard rule. The user can add it back later from the template.
+
 **Gate:** storage is chosen and reachable, and the two collections (Documents Hub
 + Task Tracker) exist — created if missing, reused if present, IDs/paths recorded.
-Project memory answers for the recorded workspace and project.
+Project memory answers for the recorded workspace and project. The user has said
+yes or no to autonomous runs, and the files match that answer.
 Only then proceed to Step 1.
 
 ---
