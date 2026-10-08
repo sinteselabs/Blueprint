@@ -8,6 +8,7 @@ and any tool that does the same job can replace it.
 | Tool | Job |
 |---|---|
 | [`claude-code/langfuse_hook.py`](claude-code/langfuse_hook.py) | Sends every Claude Code session to [Langfuse](https://langfuse.com): one trace per turn, with the model, token usage and each tool call |
+| [`checks/`](checks/) | Two checks for the Blueprint repository itself: internal links and the hook (see [below](#checks-for-this-repository)) |
 
 ---
 
@@ -107,3 +108,19 @@ project.
 
 State and logs live in `~/.claude/state/` (`langfuse_state.json` remembers how far
 each transcript was read, so a turn is never sent twice).
+
+---
+
+## Checks for this repository
+
+Two scripts that must pass before a change to Blueprint is integrated. They check
+Blueprint itself, not the projects made from it.
+
+| Check | What it guards | Run |
+|---|---|---|
+| [`checks/check_links.py`](checks/check_links.py) | No internal Markdown link points at a file that does not exist | `python tooling/checks/check_links.py` |
+| [`checks/test_langfuse_hook.py`](checks/test_langfuse_hook.py) | The hook sends a turn once, tagged, from a folder with an accent in its path; stays quiet when switched off; tells the person when switched on and broken | `python tooling/checks/test_langfuse_hook.py` |
+
+The hook test needs the Langfuse SDK and nothing else: it runs against an HTTP
+server it starts itself, with a throwaway home folder, so it needs no account and
+leaves your own state and log alone.
