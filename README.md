@@ -1,4 +1,6 @@
-# ai-template
+# Blueprint
+
+**Blueprint** was called `ai-template` until October 2026, and the GitHub repository still carries that name.
 
 A reusable **AI context scaffold** for new projects. Copy this structure into any repo so that every AI assistant (Claude Code, Codex, Cursor, etc.) has one consistent, discoverable place to learn how the project works, what the rules are, and where the source of truth lives.
 
