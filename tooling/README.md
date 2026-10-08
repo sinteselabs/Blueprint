@@ -33,7 +33,11 @@ including a secret pasted into the chat. Keep out of agent sessions whatever mus
 not reach your Langfuse project.
 
 It **fails open**: whatever goes wrong, it exits 0 and never blocks the session.
-The reason for every skipped run goes to `~/.claude/state/langfuse_hook.log`.
+It does not fail silently, though. When it is switched on and cannot record (SDK
+missing, keys missing, Langfuse refusing the data), it says so in the session, in
+one line, and writes the reason to `~/.claude/state/langfuse_hook.log`. When it is
+switched off (`TRACE_TO_LANGFUSE` is not `true`), it only logs. That is what lets
+you forget it: silence means it is recording.
 
 What it does not cover: sessions that run where the hook is not installed, such as
 cloud sessions. How much of a subagent's inner work reaches the trace has not been

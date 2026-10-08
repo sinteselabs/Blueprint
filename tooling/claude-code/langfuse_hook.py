@@ -79,6 +79,26 @@ def info(msg: str) -> None:
         except Exception:
             pass
 
+# Reasons this run could not record, shown to the person in the session at exit.
+# The hook never blocks, so without this a broken setup stays unnoticed in a log.
+_USER_WARNINGS: List[str] = []
+
+def warn_user(msg: str) -> None:
+    info(msg)
+    _USER_WARNINGS.append(msg)
+
+class _ExportErrors(logging.Handler):
+    """Collects what the SDK logs when Langfuse refuses the data or cannot be reached."""
+    def __init__(self) -> None:
+        super().__init__(level=logging.ERROR)
+        self.messages: List[str] = []
+
+    def emit(self, record: logging.LogRecord) -> None:
+        try:
+            self.messages.append(record.getMessage())
+        except Exception:
+            pass
+
 # ----------------- State locking (best-effort) -----------------
 class FileLock:
     def __init__(self, path: Path, timeout_s: float = 2.0):
@@ -780,8 +800,8 @@ def main() -> int:
         return 0
 
     if _IMPORT_ERROR is not None:
-        info(f"skipped: cannot import the Langfuse SDK ({_IMPORT_ERROR}); "
-             f'run: pip install "langfuse>=4,<5" in the Python that runs this hook')
+        warn_user(f"skipped: cannot import the Langfuse SDK ({_IMPORT_ERROR}); "
+                  f'run: pip install "langfuse>=4,<5" in the Python that runs this hook')
         return 0
 
     public_key = os.environ.get("CC_LANGFUSE_PUBLIC_KEY") or os.environ.get("LANGFUSE_PUBLIC_KEY")
@@ -790,7 +810,7 @@ def main() -> int:
             or os.environ.get("LANGFUSE_HOST") or "https://cloud.langfuse.com")
 
     if not public_key or not secret_key:
-        info("skipped: LANGFUSE_PUBLIC_KEY / LANGFUSE_SECRET_KEY (or CC_ versions) not set")
+        warn_user("skipped: LANGFUSE_PUBLIC_KEY / LANGFUSE_SECRET_KEY (or CC_ versions) not set")
         return 0
 
     payload = read_hook_payload()
@@ -803,7 +823,7 @@ def main() -> int:
     debug(f"event={event} mid_turn={mid_turn}")
 
     if not session_id or not transcript_path:
-        info("skipped: hook payload has no session_id or transcript_path")
+        warn_user("skipped: hook payload has no session_id or transcript_path")
         return 0
 
     ctx = find_project_context(payload.get("cwd") or os.getcwd())
@@ -813,14 +833,18 @@ def main() -> int:
         user_id = None
 
     if not transcript_path.exists():
-        debug(f"Transcript path does not exist: {transcript_path}")
+        warn_user(f"skipped: transcript not found: {transcript_path}")
         return 0
+
+    export_errors = _ExportErrors()
+    for name in ("langfuse", "opentelemetry"):
+        logging.getLogger(name).addHandler(export_errors)
 
     langfuse = None
     try:
         langfuse = Langfuse(public_key=public_key, secret_key=secret_key, host=host)
     except Exception as e:
-        info(f"skipped: could not create the Langfuse client: {type(e).__name__}: {e}")
+        warn_user(f"skipped: could not create the Langfuse client: {type(e).__name__}: {e}")
         return 0
 
     try:
@@ -848,7 +872,7 @@ def main() -> int:
                 try:
                     emit_turn(langfuse, session_id, turn_num, t, transcript_path, ctx, user_id)
                 except Exception as e:
-                    info(f"emit_turn failed: {type(e).__name__}: {e}")
+                    warn_user(f"emit_turn failed: {type(e).__name__}: {e}")
 
             ss.turn_count += emitted
             write_session_state(state, key, ss)
@@ -864,7 +888,7 @@ def main() -> int:
         return 0
 
     except Exception as e:
-        debug(f"Unexpected failure: {e}")
+        warn_user(f"unexpected failure: {type(e).__name__}: {e}")
         return 0
 
     finally:
@@ -881,6 +905,15 @@ def main() -> int:
                 t.join(5.0)
             except Exception:
                 pass
+            if export_errors.messages:
+                warn_user(f"Langfuse did not take the data: {export_errors.messages[0][:300]}")
 
 if __name__ == "__main__":
-    sys.exit(main())
+    exit_code = main()
+    if _USER_WARNINGS:
+        # Claude Code shows `systemMessage` from a hook's stdout to the person.
+        try:
+            print(json.dumps({"systemMessage": "Langfuse hook did not record this turn: " + "; ".join(_USER_WARNINGS)}))
+        except Exception:
+            pass
+    sys.exit(exit_code)
