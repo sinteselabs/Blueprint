@@ -25,7 +25,7 @@ Without a convention, AI context ends up scattered across READMEs, stale comment
 ## How to use this template
 
 1. **Copy** the contents of this repo into your new project, keeping the structure, with these exceptions:
-   - leave out this `README.md` and `.gitignore` (this repository's own ignore rules);
+   - leave out this `README.md`, `.gitignore` (this repository's own ignore rules) and `tooling/` (optional tooling installed once per machine, see [`tooling/README.md`](tooling/README.md));
    - rename `.ai-memory.toml.example` to `.ai-memory.toml` and `.gitignore.example` to `.gitignore`;
    - move `LICENSE` to `.ai/LICENSE`, so Blueprint's copyright notice stays with the copied files (see [License](#license)).
 2. **Find & replace** every `{{PLACEHOLDER}}` token and every `TODO:` / `<!-- ... -->` guidance comment with real project content.
@@ -51,6 +51,7 @@ Without a convention, AI context ends up scattered across READMEs, stale comment
 ├── .gitignore                   this repository's own ignore rules; not copied into projects
 ├── .gitignore.example           what projects start from: generic, replace with one for your stack
 ├── LICENSE                      MIT; travels with the copied files as .ai/LICENSE
+├── tooling/                     optional tooling installed per machine (a Langfuse hook for Claude Code); not copied into projects
 └── .ai/
     ├── ai.md                    THE ENTRY POINT — project at a glance + navigation map + hard rules
     ├── architecture.md          system architecture, structure, data model, hosting

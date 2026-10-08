@@ -1,0 +1,105 @@
+# tooling/
+
+Tooling that is **installed once per machine**, not copied into projects. When you
+create a project from Blueprint, leave this folder out (see the copy step in the
+root `README.md`). Everything here is optional: each tool is one way to do a job,
+and any tool that does the same job can replace it.
+
+| Tool | Job |
+|---|---|
+| [`claude-code/langfuse_hook.py`](claude-code/langfuse_hook.py) | Sends every Claude Code session to [Langfuse](https://langfuse.com): one trace per turn, with the model, token usage and each tool call |
+
+---
+
+## Langfuse hook for Claude Code
+
+Set it up once and forget it. From then on, every turn of every Claude Code session
+in a configured repository is recorded, and you open Langfuse only when you need to
+look something up.
+
+### What it sends
+
+For each turn of a Claude Code session: a trace named `Claude Code - Turn N`,
+carrying the Claude Code session id and the user (`CC_LANGFUSE_USER_ID`, or the OS
+user name). It is tagged `claude-code`, `lore:<workspace>/<project>` (read from the
+nearest `.ai-memory.toml` above the session's folder, when there is one) and
+`branch:<git branch>` (worktrees included); the same values go in the trace
+metadata. Under it, one generation per assistant message (model, input and output
+tokens, cache tokens) and one span per tool call with its input and output. Text is
+cut at 20,000 characters per field (`CC_LANGFUSE_MAX_CHARS`).
+
+It does **not** mask anything. Prompts, outputs and tool results go as they are,
+including a secret pasted into the chat. Keep out of agent sessions whatever must
+not reach your Langfuse project.
+
+It **fails open**: whatever goes wrong, it exits 0 and never blocks the session.
+The reason for every skipped run goes to `~/.claude/state/langfuse_hook.log`.
+
+What it does not cover: sessions that run where the hook is not installed, such as
+cloud sessions. How much of a subagent's inner work reaches the trace has not been
+measured.
+
+### How it joins with lore
+
+lore's capture hooks record the same Claude Code session id on each session page,
+and the `lore:` tag carries the same workspace and project that lore uses. So a
+trace can be found from a lore session page and the other way round, and Langfuse
+can be filtered by lore project even when several repositories share one Langfuse
+project.
+
+### Setup, once per machine
+
+1. **Install the SDK** in the Python that will run the hook: `pip install "langfuse>=4,<5"`.
+   The hook relies on internals of SDK 4.x and says so in its log if they change.
+2. **Copy the script** to `~/.claude/hooks/langfuse_hook.py`
+   (on Windows, `C:\Users\<you>\.claude\hooks\langfuse_hook.py`).
+3. **Register it** in the user-level `~/.claude/settings.json`:
+
+   ```json
+   {
+     "hooks": {
+       "Stop": [
+         { "hooks": [ { "type": "command", "command": "python3 ~/.claude/hooks/langfuse_hook.py" } ] }
+       ]
+     }
+   }
+   ```
+
+   On Windows, name the Python that has the SDK, for example
+   `py -3.13 C:/Users/<you>/.claude/hooks/langfuse_hook.py`. A second Python on the
+   machine without the SDK is the usual cause of "cannot import the Langfuse SDK".
+4. **Set the variables**, in the `env` block of a Claude Code settings file:
+   - one Langfuse project for everything on this machine: `~/.claude/settings.json`;
+   - one Langfuse project per repository: that repository's
+     `.claude/settings.local.json`, which must be git-ignored. Use the `CC_` names
+     there.
+
+   ```json
+   {
+     "env": {
+       "TRACE_TO_LANGFUSE": "true",
+       "CC_LANGFUSE_PUBLIC_KEY": "pk-lf-...",
+       "CC_LANGFUSE_SECRET_KEY": "sk-lf-...",
+       "CC_LANGFUSE_BASE_URL": "https://cloud.langfuse.com"
+     }
+   }
+   ```
+
+   | Variable | Needed | Meaning |
+   |---|---|---|
+   | `TRACE_TO_LANGFUSE` | **yes**, `true` | Without it the hook does nothing |
+   | `LANGFUSE_PUBLIC_KEY`, `LANGFUSE_SECRET_KEY` | **yes** | The Langfuse project's key pair. The `CC_LANGFUSE_*` versions take precedence, so Claude Code can be traced into a different project than an application's own keys |
+   | `LANGFUSE_BASE_URL` | **yes, unless EU cloud** | The host of your Langfuse project: `https://cloud.langfuse.com` (EU, the default), `https://us.cloud.langfuse.com` (US), or your own. `CC_LANGFUSE_BASE_URL` takes precedence; `LANGFUSE_HOST` is accepted as a fallback. A project lives on one host, so check which one yours is on |
+   | `CC_LANGFUSE_USER_ID` | no | Who the traces belong to. Default: the OS user name |
+   | `CC_LANGFUSE_DEBUG` | no | `true` writes detail to the log |
+   | `CC_LANGFUSE_MAX_CHARS` | no | Cut-off per text field, default 20000 |
+
+   Never commit keys.
+5. **Check it works.** Run a short session, then open the Langfuse project: a trace
+   `Claude Code - Turn 1` with tokens and cost must be there, **and it must carry the
+   `branch:` tag** (and the `lore:` tag, in a repository with `.ai-memory.toml`). A
+   trace that arrives without them means the hook could not read the session's
+   folder. If nothing arrives, read `~/.claude/state/langfuse_hook.log`.
+
+State and logs live in `~/.claude/state/` (`langfuse_state.json` remembers how far
+each transcript was read, so a turn is never sent twice).
