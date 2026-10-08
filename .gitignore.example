@@ -1,0 +1,33 @@
+# Starting point for a project created from Blueprint: rename this file to
+# .gitignore, then replace it with one for your actual stack.
+# https://github.com/github/gitignore has per-language templates.
+# Do NOT ignore .ai-memory.toml in a project: it is committed, so every clone
+# shares one memory (see .ai/workflows/project-memory.md).
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# Env & secrets — never commit
+.env
+.env.*
+!.env.example
+**/serviceAccountKey.json
+**/service-account*.json
+
+# Per-machine agent settings: API keys for local tooling go here, never in git
+.claude/settings.local.json
+
+# Git worktrees used to isolate parallel agents (see .ai/workflows/parallel-agents.md)
+.worktrees/
+
+# Dependencies & build output (examples)
+node_modules/
+dist/
+build/
+.dart_tool/
+__pycache__/
+*.log

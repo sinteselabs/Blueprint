@@ -1,27 +1,30 @@
-# Generic — replace with a .gitignore for your actual stack.
-# https://github.com/github/gitignore has per-language templates.
+# Ignore rules for the Blueprint repository itself. Projects do not copy this
+# file: they start from .gitignore.example (see README.md, "How to use this
+# template").
 
-# OS / editor
-.DS_Store
-Thumbs.db
-*.swp
-.idea/
-.vscode/
-
-# Env & secrets — never commit
+# Local bindings and secrets — never in this repository.
+# .ai-memory.toml binds a clone to one memory; only the .example is tracked here.
+.ai-memory.toml
 .env
 .env.*
 !.env.example
 **/serviceAccountKey.json
 **/service-account*.json
 
+# Per-machine agent and editor configuration (settings, keys, local MCP servers, skills)
+.claude/
+.idea/
+.vscode/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+
 # Git worktrees used to isolate parallel agents (see .ai/workflows/parallel-agents.md)
 .worktrees/
 
-# Dependencies & build output (examples)
-node_modules/
-dist/
-build/
-.dart_tool/
+# Python (tooling/)
 __pycache__/
+*.pyc
 *.log

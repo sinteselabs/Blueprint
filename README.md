@@ -25,14 +25,14 @@ Without a convention, AI context ends up scattered across READMEs, stale comment
 ## How to use this template
 
 1. **Copy** the contents of this repo into your new project, keeping the structure, with these exceptions:
-   - leave out this `README.md`;
-   - rename `.ai-memory.toml.example` to `.ai-memory.toml`.
+   - leave out this `README.md` and `.gitignore` (this repository's own ignore rules);
+   - rename `.ai-memory.toml.example` to `.ai-memory.toml` and `.gitignore.example` to `.gitignore`.
 2. **Find & replace** every `{{PLACEHOLDER}}` token and every `TODO:` / `<!-- ... -->` guidance comment with real project content.
 3. **Set the entry point** — fill in `.ai/ai.md`: project summary, tech stack, source-of-truth links, the navigation map, and hard rules.
 4. **Fill the topic files** — `architecture.md`, `coding_conventions.md`, `ui_guidelines.md`, and the `docs/` summaries. Delete sections that don't apply.
 5. **Wire tooling** — edit `.mcp.json` for the MCP servers you actually use; delete the rest.
 6. **Connect project memory** — fill `.ai-memory.toml` (made from `.ai-memory.toml.example` in step 1) with the lore workspace and project, commit it, and register lore once per machine (never in `.mcp.json`). Steps in [`.ai/workflows/project-memory.md`](.ai/workflows/project-memory.md).
-7. **Pick a `.gitignore`** appropriate to your stack (the included one is generic).
+7. **Pick a `.gitignore`** appropriate to your stack (the one made from `.gitignore.example` in step 1 is generic).
 8. **Keep it alive** — when a decision changes, update `architecture.md` / `docs/ARD.md`. These files are meant to be maintained, not written once.
 
 > Tip: for a brand-new project, point your AI assistant at [`.ai/workflows/project-kickoff.md`](.ai/workflows/project-kickoff.md). It runs a guided, step-by-step interview and produces the core Software Engineering documents in order — System Description → SRS → Use Cases → Data Model → Wireframes → Architecture → Design Doc — saving each to your chosen store (Notion by default). For an existing project, point it at `.ai/ai.md` and have it read your design docs, then write each file.
@@ -47,7 +47,8 @@ Without a convention, AI context ends up scattered across READMEs, stale comment
 ├── CLAUDE.md                    → points to .ai/ai.md (Claude Code reads this by default)
 ├── .mcp.json                    MCP servers the project uses (Notion, Firebase, …); lore is registered per machine instead
 ├── .ai-memory.toml.example      names a project's memory in lore, with placeholders; projects rename it to .ai-memory.toml
-├── .gitignore                   generic; replace with one for your stack
+├── .gitignore                   this repository's own ignore rules; not copied into projects
+├── .gitignore.example           what projects start from: generic, replace with one for your stack
 └── .ai/
     ├── ai.md                    THE ENTRY POINT — project at a glance + navigation map + hard rules
     ├── architecture.md          system architecture, structure, data model, hosting
