@@ -26,7 +26,8 @@ Without a convention, AI context ends up scattered across READMEs, stale comment
 
 1. **Copy** the contents of this repo into your new project, keeping the structure, with these exceptions:
    - leave out this `README.md` and `.gitignore` (this repository's own ignore rules);
-   - rename `.ai-memory.toml.example` to `.ai-memory.toml` and `.gitignore.example` to `.gitignore`.
+   - rename `.ai-memory.toml.example` to `.ai-memory.toml` and `.gitignore.example` to `.gitignore`;
+   - move `LICENSE` to `.ai/LICENSE`, so Blueprint's copyright notice stays with the copied files (see [License](#license)).
 2. **Find & replace** every `{{PLACEHOLDER}}` token and every `TODO:` / `<!-- ... -->` guidance comment with real project content.
 3. **Set the entry point** — fill in `.ai/ai.md`: project summary, tech stack, source-of-truth links, the navigation map, and hard rules.
 4. **Fill the topic files** — `architecture.md`, `coding_conventions.md`, `ui_guidelines.md`, and the `docs/` summaries. Delete sections that don't apply.
@@ -49,6 +50,7 @@ Without a convention, AI context ends up scattered across READMEs, stale comment
 ├── .ai-memory.toml.example      names a project's memory in lore, with placeholders; projects rename it to .ai-memory.toml
 ├── .gitignore                   this repository's own ignore rules; not copied into projects
 ├── .gitignore.example           what projects start from: generic, replace with one for your stack
+├── LICENSE                      MIT; travels with the copied files as .ai/LICENSE
 └── .ai/
     ├── ai.md                    THE ENTRY POINT — project at a glance + navigation map + hard rules
     ├── architecture.md          system architecture, structure, data model, hosting
@@ -120,4 +122,6 @@ Without a convention, AI context ends up scattered across READMEs, stale comment
 
 ## License
 
-Use freely as a starting point for your own projects.
+[MIT](LICENSE). Use it freely as a starting point for your own projects.
+
+The license asks one thing: copies of Blueprint's files keep its copyright and permission notice. When you copy the template into a project, take `LICENSE` along as `.ai/LICENSE`. Your project's own license is yours to choose.
