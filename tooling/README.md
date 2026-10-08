@@ -99,6 +99,13 @@ project.
    | `CC_LANGFUSE_DEBUG` | no | `true` writes detail to the log |
    | `CC_LANGFUSE_MAX_CHARS` | no | Cut-off per text field, default 20000 |
 
+   Claude Code reads `.claude/settings.local.json` only in the folder a session
+   starts in. A git worktree of the repository, or a subfolder, does not get it, so
+   the hook looks for that file itself (in the folder, up to the repository root,
+   and in the main checkout a worktree belongs to) whenever the environment says
+   nothing about `TRACE_TO_LANGFUSE`. To switch tracing off for one session, set
+   `TRACE_TO_LANGFUSE=false` in the environment.
+
    Never commit keys.
 5. **Check it works.** Run a short session, then open the Langfuse project: a trace
    `Claude Code - Turn 1` with tokens and cost must be there, **and it must carry the

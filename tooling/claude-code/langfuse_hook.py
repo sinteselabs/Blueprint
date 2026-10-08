@@ -279,6 +279,54 @@ def find_project_context(cwd: Optional[str]) -> Dict[str, str]:
             break
     return ctx
 
+def repo_settings_env(cwd: Optional[str]) -> Dict[str, str]:
+    """
+    Claude Code reads `.claude/settings.local.json` only in the folder a session
+    starts in, and a git worktree does not carry that ignored file. A session in a
+    worktree, or in a subfolder, would then run with tracing switched off and say
+    nothing. So when the environment has no TRACE_TO_LANGFUSE at all, look for the
+    file in the same repository: this folder, its parents up to the repository
+    root, and the main checkout a worktree belongs to.
+    """
+    if not cwd:
+        return {}
+    try:
+        here = Path(cwd).expanduser().resolve()
+    except Exception:
+        return {}
+    roots: List[Path] = []
+    in_repo = False
+    for d in [here, *here.parents]:
+        roots.append(d)
+        git = d / ".git"
+        if git.is_file():  # worktree: ".git" holds "gitdir: <main>/.git/worktrees/<name>"
+            in_repo = True
+            try:
+                gitdir = git.read_text(encoding="utf-8").strip().removeprefix("gitdir:").strip()
+                gitdir_path = Path(gitdir) if Path(gitdir).is_absolute() else d / gitdir
+                roots.append(gitdir_path.resolve().parents[2])
+            except Exception as e:
+                debug(f"could not resolve the main checkout from {git}: {e}")
+            break
+        if git.is_dir():
+            in_repo = True
+            break
+    if not in_repo:
+        roots = [here]
+    for root in roots:
+        settings = root / ".claude" / "settings.local.json"
+        if not settings.is_file():
+            continue
+        try:
+            env = json.loads(settings.read_text(encoding="utf-8")).get("env") or {}
+        except Exception as e:
+            debug(f"could not read {settings}: {e}")
+            continue
+        if isinstance(env, dict) and str(env.get("TRACE_TO_LANGFUSE", "")) == "true":
+            debug(f"using the Langfuse variables of {settings}")
+            return {k: str(v) for k, v in env.items() if "LANGFUSE" in k}
+    return {}
+
 def trace_tags(ctx: Dict[str, str]) -> List[str]:
     tags = ["claude-code"]
     if ctx.get("lore_workspace") and ctx.get("lore_project"):
@@ -793,9 +841,18 @@ def main() -> int:
     start = time.time()
     debug("Hook started")
 
+    payload = read_hook_payload()
+    cwd = payload.get("cwd") or os.getcwd()
+
+    # The environment decides. Only when it says nothing at all about tracing do
+    # the repository's own settings apply (worktrees and subfolders, see above).
+    env = dict(os.environ)
+    if "TRACE_TO_LANGFUSE" not in env:
+        env.update(repo_settings_env(cwd))
+
     # Fail open (exit 0, never block the session), but leave the reason in the
     # log: a machine that silently sends nothing is the failure that goes unseen.
-    if os.environ.get("TRACE_TO_LANGFUSE", "") != "true":
+    if env.get("TRACE_TO_LANGFUSE", "") != "true":
         info("skipped: TRACE_TO_LANGFUSE is not 'true'")
         return 0
 
@@ -804,16 +861,15 @@ def main() -> int:
                   f'run: pip install "langfuse>=4,<5" in the Python that runs this hook')
         return 0
 
-    public_key = os.environ.get("CC_LANGFUSE_PUBLIC_KEY") or os.environ.get("LANGFUSE_PUBLIC_KEY")
-    secret_key = os.environ.get("CC_LANGFUSE_SECRET_KEY") or os.environ.get("LANGFUSE_SECRET_KEY")
-    host = (os.environ.get("CC_LANGFUSE_BASE_URL") or os.environ.get("LANGFUSE_BASE_URL")
-            or os.environ.get("LANGFUSE_HOST") or "https://cloud.langfuse.com")
+    public_key = env.get("CC_LANGFUSE_PUBLIC_KEY") or env.get("LANGFUSE_PUBLIC_KEY")
+    secret_key = env.get("CC_LANGFUSE_SECRET_KEY") or env.get("LANGFUSE_SECRET_KEY")
+    host = (env.get("CC_LANGFUSE_BASE_URL") or env.get("LANGFUSE_BASE_URL")
+            or env.get("LANGFUSE_HOST") or "https://cloud.langfuse.com")
 
     if not public_key or not secret_key:
         warn_user("skipped: LANGFUSE_PUBLIC_KEY / LANGFUSE_SECRET_KEY (or CC_ versions) not set")
         return 0
 
-    payload = read_hook_payload()
     session_id, transcript_path = extract_session_and_transcript(payload)
 
     # Stop/SessionEnd land on a turn boundary, so everything read is complete.
@@ -826,9 +882,9 @@ def main() -> int:
         warn_user("skipped: hook payload has no session_id or transcript_path")
         return 0
 
-    ctx = find_project_context(payload.get("cwd") or os.getcwd())
+    ctx = find_project_context(cwd)
     try:
-        user_id = os.environ.get("CC_LANGFUSE_USER_ID") or getpass.getuser()
+        user_id = env.get("CC_LANGFUSE_USER_ID") or getpass.getuser()
     except Exception:
         user_id = None
 

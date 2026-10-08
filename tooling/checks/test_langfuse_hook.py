@@ -78,6 +78,21 @@ def make_project(root: Path) -> Path:
     return project
 
 
+def make_worktree(root: Path, endpoint_url: str) -> Path:
+    """A main checkout whose settings switch tracing on, and a git worktree of it."""
+    main = root / "main-checkout"
+    (main / ".git" / "worktrees" / "wt").mkdir(parents=True)
+    (main / ".git" / "worktrees" / "wt" / "HEAD").write_text("ref: refs/heads/feat/wt\n", encoding="utf-8")
+    (main / ".claude").mkdir()
+    (main / ".claude" / "settings.local.json").write_text(json.dumps({"env": {
+        "TRACE_TO_LANGFUSE": "true", "CC_LANGFUSE_PUBLIC_KEY": "pk-lf-test",
+        "CC_LANGFUSE_SECRET_KEY": "sk-lf-test", "CC_LANGFUSE_BASE_URL": endpoint_url}}), encoding="utf-8")
+    worktree = main / ".worktrees" / "wt"
+    worktree.mkdir(parents=True)
+    (worktree / ".git").write_text(f"gitdir: {main / '.git' / 'worktrees' / 'wt'}\n", encoding="utf-8")
+    return worktree
+
+
 def make_transcript(root: Path, session_id: str) -> Path:
     now = datetime.now(timezone.utc)
     stamp = lambda d: d.isoformat().replace("+00:00", "Z")
@@ -161,6 +176,21 @@ def main() -> int:
                                   TRACE_TO_LANGFUSE="true", LANGFUSE_BASE_URL=endpoint.url, **keys)
         check("refused by Langfuse: exits 0", code == 0, f"exit {code}")
         check("refused by Langfuse: tells the person", "systemMessage" in out, f"stdout: {out[:200]} | log: {log[-300:]}")
+        endpoint.close()
+
+        # 6. A session in a git worktree has no settings file of its own: the main checkout's apply.
+        home, endpoint = root / "home4", Endpoint()
+        worktree = make_worktree(root, endpoint.url)
+        code, out, log = run_hook(home, worktree, make_transcript(root, "session-5"), "session-5")
+        sent = b"".join(endpoint.traces())
+        check("in a worktree: sends the turn with the main checkout's settings", len(endpoint.traces()) >= 1, log[-300:])
+        check("in a worktree: tags the worktree's branch", b"branch:feat/wt" in sent)
+
+        # 7. The environment still decides: switched off there, the settings file does not switch it on.
+        before = len(endpoint.posts)
+        code, out, log = run_hook(home, worktree, make_transcript(root, "session-6"), "session-6",
+                                  TRACE_TO_LANGFUSE="false")
+        check("switched off in the environment: sends nothing", len(endpoint.posts) == before and out == "", out[:200])
         endpoint.close()
 
     print(f"\n{'OK' if not failures else 'FAILED'}: {len(failures)} failing check(s)")
