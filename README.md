@@ -24,12 +24,14 @@ Without a convention, AI context ends up scattered across READMEs, stale comment
 
 ## How to use this template
 
-1. **Copy** the contents of this repo into your new project (everything except this `README.md`'s template-specific notes — keep the structure).
+1. **Copy** the contents of this repo into your new project, keeping the structure, with these exceptions:
+   - leave out this `README.md`;
+   - rename `.ai-memory.toml.example` to `.ai-memory.toml`.
 2. **Find & replace** every `{{PLACEHOLDER}}` token and every `TODO:` / `<!-- ... -->` guidance comment with real project content.
 3. **Set the entry point** — fill in `.ai/ai.md`: project summary, tech stack, source-of-truth links, the navigation map, and hard rules.
 4. **Fill the topic files** — `architecture.md`, `coding_conventions.md`, `ui_guidelines.md`, and the `docs/` summaries. Delete sections that don't apply.
 5. **Wire tooling** — edit `.mcp.json` for the MCP servers you actually use; delete the rest.
-6. **Connect project memory** — fill `.ai-memory.toml` with the lore workspace and project, commit it, and register lore once per machine (never in `.mcp.json`). Steps in [`.ai/workflows/project-memory.md`](.ai/workflows/project-memory.md).
+6. **Connect project memory** — fill `.ai-memory.toml` (made from `.ai-memory.toml.example` in step 1) with the lore workspace and project, commit it, and register lore once per machine (never in `.mcp.json`). Steps in [`.ai/workflows/project-memory.md`](.ai/workflows/project-memory.md).
 7. **Pick a `.gitignore`** appropriate to your stack (the included one is generic).
 8. **Keep it alive** — when a decision changes, update `architecture.md` / `docs/ARD.md`. These files are meant to be maintained, not written once.
 
@@ -44,7 +46,7 @@ Without a convention, AI context ends up scattered across READMEs, stale comment
 ├── AGENTS.md                    → points to .ai/ai.md (entry point for any AI assistant)
 ├── CLAUDE.md                    → points to .ai/ai.md (Claude Code reads this by default)
 ├── .mcp.json                    MCP servers the project uses (Notion, Firebase, …); lore is registered per machine instead
-├── .ai-memory.toml              names this repo's project memory in lore (workspace + project); committed
+├── .ai-memory.toml.example      names a project's memory in lore, with placeholders; projects rename it to .ai-memory.toml
 ├── .gitignore                   generic; replace with one for your stack
 └── .ai/
     ├── ai.md                    THE ENTRY POINT — project at a glance + navigation map + hard rules
@@ -94,7 +96,7 @@ Without a convention, AI context ends up scattered across READMEs, stale comment
 | `.ai/workflows/project-kickoff.md` | Guided, step-by-step interview that generates all the docs above, in order, for a new project. | When starting a brand-new project. |
 | `.ai/workflows/notion-workflow.md` | How to fetch/update tasks and docs — Notion **or** local Markdown; Documents Hub / Task Tracker schemas + task naming/ordering. | When picking up or closing a task. |
 | `.ai/workflows/task-queue.md` | Ordered list of tasks to process top-to-bottom. | To decide what's next. |
-| `.ai-memory.toml` | Names the repo's project memory in lore (`workspace`, `project`). Committed, so every clone shares one memory. | By the capture hooks and MCP clients, automatically. |
+| `.ai-memory.toml` | Names the repo's project memory in lore (`workspace`, `project`). Committed in a project, so every clone shares one memory. Projects make theirs from `.ai-memory.toml.example`. The Blueprint repository tracks only the example: to use lore while working on Blueprint itself, make your own from it. | By the capture hooks and MCP clients, automatically. |
 | `.ai/workflows/project-memory.md` | lore as project memory: what goes there vs. the PM tool and the repo, per-machine setup, and the rule that every agent declares its work before starting and waits on overlaps. | Before starting any task. |
 | `.ai/workflows/parallel-agents.md` | How to isolate concurrent agents: one git worktree + one branch each, shared-state caveats, integration and cleanup. | Before spawning agents that work in parallel. |
 | `.ai/workflows/autonomous-run.md` | Optional, enabled at kickoff. How agents work through the pending tasks unattended: the three kickoff questions, the board and claims in lore, collision rules, recorded decisions, to-dos for the user, and end-of-run summaries. | When the user says "autonomous run". |
