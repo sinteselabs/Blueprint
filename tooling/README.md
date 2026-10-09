@@ -168,9 +168,22 @@ then check the files the sessions left.
 | Test | What it shows | Run |
 |---|---|---|
 | [`sessions/test_record_skill.py`](sessions/test_record_skill.py) | The record skill creates a state that passes `check_state.py`, updates it in a second session, records a decision and a session record each time, keeps a pasted key out of every file, and writes nothing outside the project | `python tooling/sessions/test_record_skill.py` |
+| [`sessions/test_entry_skill.py`](sessions/test_entry_skill.py) | The blueprint skill finds the starting point in five situations (an empty folder, a folder with a state, a folder with code, a similar project in the next folder, and no access to the folders around), says it is going to look before it looks outside the project, asks when it cannot look, and creates nothing before the person confirms | `python tooling/sessions/test_entry_skill.py` |
 
 They are not among the checks to run before every change: they need Claude Code
-on the PATH, take a few minutes and spend model usage. Run the one for a skill
-after changing that skill. The prompts each test sends are in a folder beside it,
-[`sessions/record/`](sessions/record/) for the record skill, written as the
-person conducting an interview in Portuguese would write them.
+on the PATH, take a few minutes and spend model usage, from the same account as
+your own sessions. Run the one for a skill after changing that skill. When the
+account's usage limit is reached, the entry test says it could not run and
+exits with 2, instead of reporting failures.
+
+What the person says in each test is written in Portuguese, as someone
+conducting an interview would write it: in [`sessions/record/`](sessions/record/)
+for the record skill, and inside the test itself for the entry skill.
+
+The entry test runs its sessions through [`sessions/harness.py`](sessions/harness.py),
+which fences each session into its project folder: reading outside it is refused
+unless the test grants a folder, which stands for the person giving access. It
+reads what the agent said and did, in order. The words of a reply are a rough
+check, so the test prints every reply in full for a person to read.
+`--save FILE` keeps a run, and `--replay FILE` judges a saved run again without
+spending a session, which is how to work on the checks themselves.
