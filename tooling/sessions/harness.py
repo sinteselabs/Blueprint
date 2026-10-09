@@ -27,21 +27,32 @@ class Session:
     code: int
     reply: str  # the agent's last message, which is what the person reads at the end
     steps: list[tuple[str, str]] = field(default_factory=list)  # ("text", what it said) or ("tool", name and input), in order
+    session_id: str = ""
 
 
 def find_claude() -> str | None:
     return shutil.which("claude")
 
 
-def run(claude: str, project: Path, prompt: str, allow_folders: tuple[Path, ...] = (), timeout: int = 900) -> Session:
-    """Runs one session in `project` with `prompt` and returns what the agent said and did, in order."""
+def run(claude: str, project: Path, prompt: str, allow_folders: tuple[Path, ...] = (), timeout: int = 900, resume: str = "", keep: bool = False, web: bool = True) -> Session:
+    """Runs one turn in `project` with `prompt` and returns what the agent said and did, in order.
+
+    With `keep`, Claude Code keeps the session, so a later call can pass its id in `resume` and go on from it.
+    With `web` off, the agent cannot search or fetch pages, which is cheaper and tests what it does then.
+    """
     command = [claude, "-p", "--plugin-dir", str(REPO), "--add-dir", str(REPO / "skills")]
+    if resume:
+        command += ["--resume", resume]
     for folder in allow_folders:
         command += ["--add-dir", str(folder)]
     command += [
         "--settings", FENCE, "--permission-mode", "acceptEdits", "--allowedTools", *TOOLS,
-        "--output-format", "stream-json", "--verbose", "--no-session-persistence",
+        "--output-format", "stream-json", "--verbose",
     ]
+    if not (keep or resume):
+        command.append("--no-session-persistence")
+    if not web:
+        command += ["--disallowedTools", "WebFetch", "WebSearch"]
     done = subprocess.run(command, cwd=project, input=prompt.encode("utf-8"), capture_output=True, timeout=timeout)
     out = done.stdout.decode("utf-8", errors="replace")
     session = Session(done.returncode, "")
@@ -52,6 +63,8 @@ def run(claude: str, project: Path, prompt: str, allow_folders: tuple[Path, ...]
             continue
         if not isinstance(event, dict):
             continue
+        if event.get("session_id"):
+            session.session_id = str(event["session_id"])
         if event.get("type") == "assistant":
             for block in (event.get("message") or {}).get("content") or []:
                 if block.get("type") == "text" and block.get("text", "").strip():
@@ -63,6 +76,17 @@ def run(claude: str, project: Path, prompt: str, allow_folders: tuple[Path, ...]
     if not session.reply:
         session.reply = out.strip() if not session.steps else next((s for kind, s in reversed(session.steps) if kind == "text"), "")
     return session
+
+
+def converse(claude: str, project: Path, turns: list[str], allow_folders: tuple[Path, ...] = (), timeout: int = 1200) -> list[Session]:
+    """Says each of `turns` in one continuing session; stops early when a turn does not run."""
+    done: list[Session] = []
+    for said in turns:
+        resume = done[-1].session_id if done else ""
+        done.append(run(claude, project, said, allow_folders, timeout=timeout, resume=resume, keep=True))
+        if done[-1].code != 0 or refused(done[-1]) or not done[-1].session_id:
+            break
+    return done
 
 
 def refused(session: Session) -> str | None:

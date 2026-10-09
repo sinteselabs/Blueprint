@@ -41,10 +41,10 @@ This file is the **single entry point** for any AI assistant working in this rep
 | Topic | Local file | Source link |
 |---|---|---|
 | **Start a new project** (guided doc generation) | [workflows/project-kickoff.md](workflows/project-kickoff.md) | — |
-| **System description** (wide-angle: what, who, why) | [docs/system-description.md](docs/system-description.md) | {{LINK}} |
-| **System architecture**, structure, data model, hosting | [architecture.md](architecture.md) | {{LINK}} |
-| **Architecture decisions** (ARDs, rationale) | [docs/ARD.md](docs/ARD.md) | {{LINK}} |
-| **Feature requirements**, user stories, NFRs, scope | [docs/SRS.md](docs/SRS.md) | {{LINK}} |
+| **System description** (wide-angle: what, who, why) | [docs/system-description.md](../skills/blueprint/assets/documents/system-description.md) | {{LINK}} |
+| **System architecture**, structure, data model, hosting | [architecture.md](../skills/blueprint/assets/documents/architecture.md) | {{LINK}} |
+| **Architecture decisions** (ARDs, rationale) | [docs/ARD.md](../skills/blueprint-record/assets/decisions.md) | {{LINK}} |
+| **Feature requirements**, user stories, NFRs, scope | [docs/SRS.md](../skills/blueprint/assets/documents/requirements.md) | {{LINK}} |
 | **Use cases & user flows** (actors, diagrams) | [docs/use-cases.md](docs/use-cases.md) | {{LINK}} |
 | **Data model** (entities, schema, ERD, classes) | [docs/data-model.md](docs/data-model.md) | {{LINK}} |
 | **Wireframes** (low-fi screens per device) | [docs/wireframes.md](docs/wireframes.md) | {{LINK}} |

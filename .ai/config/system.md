@@ -53,8 +53,8 @@
 
 - **Workspace:** {{LINK}}
 - **Entry point / navigation map:** [`../ai.md`](../ai.md) — start there for anything not covered here
-- **Architecture decisions:** consult [`../docs/ARD.md`](../docs/ARD.md) and the authoritative ARD page
-- **Requirements:** consult [`../docs/SRS.md`](../docs/SRS.md) and the authoritative SRS page
+- **Architecture decisions:** consult [`../docs/ARD.md`](../../skills/blueprint-record/assets/decisions.md) and the authoritative ARD page
+- **Requirements:** consult [`../docs/SRS.md`](../../skills/blueprint/assets/documents/requirements.md) and the authoritative SRS page
 - **Design system:** consult [`../docs/design-doc.md`](../docs/design-doc.md) and the authoritative Design Doc page
 - **Parallel execution:** see [`../workflows/parallel-agents.md`](../workflows/parallel-agents.md) — git worktree isolation, one branch per agent
 - **Tasks:** see [`../workflows/notion-workflow.md`](../workflows/notion-workflow.md) — including the Status lifecycle (`Not started` → `In progress` → `To test` → `ReFix`/`Done`, plus `Postpone`)

@@ -78,9 +78,14 @@ Read the format reference before writing a file for the first time in a session.
 7. **Say what you saved, in one line,** in the person's language. For example:
    "Saved the state: requirements, two of three main questions answered."
 
-Keys, headings and the values listed in the format stay in English, exactly as
-written there. What the person said and what you write about it are in the
-project's document language.
+In the state file, keys, headings and the values listed in the format stay in
+English, exactly as written there. What the person said and what you write
+about it are in the project's document language.
+
+The decisions record, the milestones and the session records are for people to
+read: write them in the document language, headings and labels included. Their
+templates are in English; translate them. Keep the shape that others rely on:
+a decision's heading is `## D-001 · Title`, and file names do not change.
 
 ## Recording a decision
 
