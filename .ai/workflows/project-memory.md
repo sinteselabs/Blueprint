@@ -70,7 +70,8 @@ not also written as a lore page; lore keeps the recall and the history around it
 
 ### Once per repository
 
-4. **Name the memory: `.ai-memory.toml` at the repo root, committed.**
+4. **Name the memory: `.ai-memory.toml` at the repo root, committed.** Make it from
+   `.ai-memory.toml.example`.
 
    ```toml
    workspace = "{{WORKSPACE}}"

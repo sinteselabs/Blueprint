@@ -160,8 +160,8 @@ their own workspace (named after their username) and the repository's name.
 1. Confirm lore's MCP tools are loaded (it is registered per machine, never in
    `.mcp.json`; setup is in [project-memory.md](project-memory.md) → "Once per
    machine"). If they are not, give the user the setup steps and wait.
-2. Fill `.ai-memory.toml` at the repo root with the workspace and project, and keep
-   it committed.
+2. Make `.ai-memory.toml` at the repo root from `.ai-memory.toml.example`, fill it
+   with the workspace and project, and keep it committed.
 3. Check the connection with `memory_status` for that workspace and project.
 4. Record the server, workspace and project in `.ai/ai.md` ("Project memory"), in
    `config/system.md` and in `project-memory.md` ("This project").

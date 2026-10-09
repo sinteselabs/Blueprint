@@ -1,4 +1,6 @@
-# ai-template
+# Blueprint
+
+**Blueprint** was called `ai-template` until October 2026.
 
 A reusable **AI context scaffold** for new projects. Copy this structure into any repo so that every AI assistant (Claude Code, Codex, Cursor, etc.) has one consistent, discoverable place to learn how the project works, what the rules are, and where the source of truth lives.
 
@@ -22,13 +24,16 @@ Without a convention, AI context ends up scattered across READMEs, stale comment
 
 ## How to use this template
 
-1. **Copy** the contents of this repo into your new project (everything except this `README.md`'s template-specific notes — keep the structure).
+1. **Copy** the contents of this repo into your new project, keeping the structure, with these exceptions:
+   - leave out this `README.md`, `.gitignore` (this repository's own ignore rules) and `tooling/` (optional tooling installed once per machine, see [`tooling/README.md`](tooling/README.md));
+   - rename `.ai-memory.toml.example` to `.ai-memory.toml` and `.gitignore.example` to `.gitignore`;
+   - move `LICENSE` to `.ai/LICENSE`, so Blueprint's copyright notice stays with the copied files (see [License](#license)).
 2. **Find & replace** every `{{PLACEHOLDER}}` token and every `TODO:` / `<!-- ... -->` guidance comment with real project content.
 3. **Set the entry point** — fill in `.ai/ai.md`: project summary, tech stack, source-of-truth links, the navigation map, and hard rules.
 4. **Fill the topic files** — `architecture.md`, `coding_conventions.md`, `ui_guidelines.md`, and the `docs/` summaries. Delete sections that don't apply.
 5. **Wire tooling** — edit `.mcp.json` for the MCP servers you actually use; delete the rest.
-6. **Connect project memory** — fill `.ai-memory.toml` with the lore workspace and project, commit it, and register lore once per machine (never in `.mcp.json`). Steps in [`.ai/workflows/project-memory.md`](.ai/workflows/project-memory.md).
-7. **Pick a `.gitignore`** appropriate to your stack (the included one is generic).
+6. **Connect project memory** — fill `.ai-memory.toml` (made from `.ai-memory.toml.example` in step 1) with the lore workspace and project, commit it, and register lore once per machine (never in `.mcp.json`). Steps in [`.ai/workflows/project-memory.md`](.ai/workflows/project-memory.md).
+7. **Pick a `.gitignore`** appropriate to your stack (the one made from `.gitignore.example` in step 1 is generic).
 8. **Keep it alive** — when a decision changes, update `architecture.md` / `docs/ARD.md`. These files are meant to be maintained, not written once.
 
 > Tip: for a brand-new project, point your AI assistant at [`.ai/workflows/project-kickoff.md`](.ai/workflows/project-kickoff.md). It runs a guided, step-by-step interview and produces the core Software Engineering documents in order — System Description → SRS → Use Cases → Data Model → Wireframes → Architecture → Design Doc — saving each to your chosen store (Notion by default). For an existing project, point it at `.ai/ai.md` and have it read your design docs, then write each file.
@@ -42,8 +47,11 @@ Without a convention, AI context ends up scattered across READMEs, stale comment
 ├── AGENTS.md                    → points to .ai/ai.md (entry point for any AI assistant)
 ├── CLAUDE.md                    → points to .ai/ai.md (Claude Code reads this by default)
 ├── .mcp.json                    MCP servers the project uses (Notion, Firebase, …); lore is registered per machine instead
-├── .ai-memory.toml              names this repo's project memory in lore (workspace + project); committed
-├── .gitignore                   generic; replace with one for your stack
+├── .ai-memory.toml.example      names a project's memory in lore, with placeholders; projects rename it to .ai-memory.toml
+├── .gitignore                   this repository's own ignore rules; not copied into projects
+├── .gitignore.example           what projects start from: generic, replace with one for your stack
+├── LICENSE                      MIT; travels with the copied files as .ai/LICENSE
+├── tooling/                     optional tooling installed per machine (a Langfuse hook for Claude Code); not copied into projects
 └── .ai/
     ├── ai.md                    THE ENTRY POINT — project at a glance + navigation map + hard rules
     ├── architecture.md          system architecture, structure, data model, hosting
@@ -92,7 +100,7 @@ Without a convention, AI context ends up scattered across READMEs, stale comment
 | `.ai/workflows/project-kickoff.md` | Guided, step-by-step interview that generates all the docs above, in order, for a new project. | When starting a brand-new project. |
 | `.ai/workflows/notion-workflow.md` | How to fetch/update tasks and docs — Notion **or** local Markdown; Documents Hub / Task Tracker schemas + task naming/ordering. | When picking up or closing a task. |
 | `.ai/workflows/task-queue.md` | Ordered list of tasks to process top-to-bottom. | To decide what's next. |
-| `.ai-memory.toml` | Names the repo's project memory in lore (`workspace`, `project`). Committed, so every clone shares one memory. | By the capture hooks and MCP clients, automatically. |
+| `.ai-memory.toml` | Names the repo's project memory in lore (`workspace`, `project`). Committed in a project, so every clone shares one memory. Projects make theirs from `.ai-memory.toml.example`. The Blueprint repository tracks only the example: to use lore while working on Blueprint itself, make your own from it. | By the capture hooks and MCP clients, automatically. |
 | `.ai/workflows/project-memory.md` | lore as project memory: what goes there vs. the PM tool and the repo, per-machine setup, and the rule that every agent declares its work before starting and waits on overlaps. | Before starting any task. |
 | `.ai/workflows/parallel-agents.md` | How to isolate concurrent agents: one git worktree + one branch each, shared-state caveats, integration and cleanup. | Before spawning agents that work in parallel. |
 | `.ai/workflows/autonomous-run.md` | Optional, enabled at kickoff. How agents work through the pending tasks unattended: the three kickoff questions, the board and claims in lore, collision rules, recorded decisions, to-dos for the user, and end-of-run summaries. | When the user says "autonomous run". |
@@ -115,4 +123,6 @@ Without a convention, AI context ends up scattered across READMEs, stale comment
 
 ## License
 
-Use freely as a starting point for your own projects.
+[MIT](LICENSE). Use it freely as a starting point for your own projects.
+
+The license asks one thing: copies of Blueprint's files keep its copyright and permission notice. When you copy the template into a project, take `LICENSE` along as `.ai/LICENSE`. Your project's own license is yours to choose.
