@@ -26,6 +26,17 @@ or refactoring. Work it out from the folder, then confirm it with them.
 
 A Blueprint project is marked by the file `.blueprint/state.md`.
 
+### First, say what you are going to do
+
+Before you use any tool, write one line to the person: what you are going to
+look at, and why. For example: "First I will look at this folder and, if I need
+to, at the folders above and beside it, only their names and whether they hold a
+Blueprint project, so I do not create again something that already exists."
+
+This line comes before everything else because looking above and beside leaves
+the project folder, and the coding agent may stop to ask the person for
+permission. They must already know why.
+
 ### Where to look, in this order
 
 1. **The folder you are in.** Does it have `.blueprint/state.md`? Does it have
@@ -34,18 +45,9 @@ A Blueprint project is marked by the file `.blueprint/state.md`.
    If the state file is here, stop looking: go to "What to conclude".
 2. **The folders inside it,** two levels down, for `.blueprint/state.md`. Skip
    dependency, build and hidden folders such as `node_modules`, `dist` and `.git`.
-3. **Tell the person you are about to look outside.** The next two steps leave
-   the project folder, and the coding agent may stop to ask the person for
-   permission. So write to the person first, in one line, what you are about to
-   look at and why. For example: "Before anything else I will look at the
-   folders above and beside this one, only their names and whether they hold a
-   Blueprint project, so I do not create again something that already exists."
-   Send that line before any tool or command that reads a folder above or
-   beside this one. Never put a look outside in the same command as a look
-   inside.
-4. **The folders above it,** for `.blueprint/state.md`: up to the root of the
+3. **The folders above it,** for `.blueprint/state.md`: up to the root of the
    repository, or, where there is no repository, the parent and the grandparent.
-5. **The folders beside it,** the ones with the same parent: their names, and
+4. **The folders beside it,** the ones with the same parent: their names, and
    whether each has `.blueprint/state.md`.
 
 Outside the project folder, read folder names and Blueprint state files only.
