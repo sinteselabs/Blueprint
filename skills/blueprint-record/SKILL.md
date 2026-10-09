@@ -45,7 +45,8 @@ Read the format reference before writing a file for the first time in a session.
    Never create a second state file inside a project that already has one.
 2. **If there is none,** create `.blueprint/state.md` from `assets/state.md`.
    Leave no `{{placeholder}}`: where something is not known yet, write `unknown`
-   and `-` in the facts table, and `None yet.` in an empty section. The main
+   and `-` in the facts table, and in an empty section one line saying there is
+   nothing yet, in the document language. The main
    questions of each step come from whoever is conducting the interview; if you
    were not given them, ask, do not invent them.
 3. **If there is one, read it first.** Start from what the file says, not from
@@ -55,7 +56,9 @@ Read the format reference before writing a file for the first time in a session.
      heading `### <step> · <block title>`;
    - under `## Main questions`, tick the questions that are now answered;
    - in `## Steps`, the count (`2 of 4`) and the situation of each step;
-   - in `## Documents`, the situation and the place of each document;
+   - in `## Documents`, the situation and the place of each document, and a
+     new row when a fact of the project kind brings a document (the table in the
+     format reference says which);
    - `## Criteria the person declared`, whenever they state a limit or a
      preference that will guide choices: budget, deadline, what they already use;
    - `## Decisions`, `## Open points` and `## Refinement questions left for later`;
@@ -105,7 +108,9 @@ When the session is ending:
 
 1. Create `.blueprint/journal/sessions/YYYY-MM-DD-HHMM-agent.md` from
    `assets/session.md`, with the time the session started, in UTC, and your name
-   in lowercase with hyphens: `claude-code`, `codex`, `antigravity-cli`.
+   in lowercase with hyphens: `claude-code`, `codex`, `antigravity-cli`. If you
+   did not note when the session started, use the earliest time you read from
+   the system and say so.
 2. Fill the four parts: what was asked, what was done, what was decided, and
    what was left open with the next step.
 3. Save the state file last, so `## Next question` says where the next session
