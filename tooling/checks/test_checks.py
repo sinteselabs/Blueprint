@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
-Test of the three structure checks: each one must pass on a sound tree and fail
-on a tree with one planted error.
+Test of the structure checks: each one must pass on a sound input and fail on an
+input with one planted error.
 
-Covers check_root_names.py, check_skills.py and check_shared_text.py. Every case
-builds a throwaway folder, so nothing in the repository is touched. Needs only
-Python:
+Covers check_root_names.py, check_skills.py, check_shared_text.py and
+check_state.py. Every case builds a throwaway folder, so nothing in the
+repository is touched. Needs only Python:
 
     python tooling/checks/test_checks.py
 
@@ -120,14 +120,57 @@ def main() -> int:
         1,
     )
 
-    # The repository itself
+    # The project state file
     repo = CHECKS.parents[1]
+    assets = repo / "skills" / "blueprint-record" / "assets"
+    example = (assets / "state.example.md").read_text(encoding="utf-8")
+    template = (assets / "state.md").read_text(encoding="utf-8")
+
+    def state(name: str, text: str, expected: int, as_template: bool = False) -> None:
+        with tempfile.TemporaryDirectory(prefix="blueprint checks é ") as folder:
+            path = Path(folder) / "state.md"
+            path.write_text(text, encoding="utf-8", newline="")
+            command = [sys.executable, str(CHECKS / "check_state.py")] + (["--template"] if as_template else []) + [str(path)]
+            got = subprocess.run(command, capture_output=True).returncode
+        ok = got == expected
+        if not ok:
+            failures.append(name)
+        print(("PASS  " if ok else "FAIL  ") + name + ("" if ok else f"  [exit {got}, expected {expected}]"))
+
+    def changed(old: str, new: str) -> str:
+        assert old in example, f"the example no longer has: {old}"
+        return example.replace(old, new, 1)
+
+    state("state: the shipped example passes", example, 0)
+    state("state: the example with CRLF line endings passes", example.replace("\n", "\r\n"), 0)
+    state("state: the shipped template passes as a template", template, 0, as_template=True)
+    state("state: the template fails as a real state", template, 1)
+    state("state: no header fails", example.split("---", 2)[2], 1)
+    state("state: a missing header field fails", changed("developers: 1\n", ""), 1)
+    state("state: an unknown format number fails", changed("blueprint_state: 1", "blueprint_state: 2"), 1)
+    state("state: 'continue' as a starting point fails", changed("starting_point: start", "starting_point: continue"), 1)
+    state("state: a date that is not UTC fails", changed("2026-10-09T15:30:00Z", "09/10/2026 15:30"), 1)
+    state("state: a missing section fails", changed("## Open points", "## Open questions"), 1)
+    state("state: a missing fact fails", changed("| calls-a-model | unknown | - |\n", ""), 1)
+    state("state: a fact value out of the list fails", changed("| has-screens | yes | said |", "| has-screens | maybe | said |"), 1)
+    state("state: a step situation out of the list fails", changed("| requirements | open | 2 of 3 |", "| requirements | done | 2 of 3 |"), 1)
+    state("state: counts that disagree with the checklist fail", changed("| requirements | open | 2 of 3 |", "| requirements | open | 1 of 3 |"), 1)
+    state("state: a step advanced with a question open fails", changed("| requirements | open | 2 of 3 |", "| requirements | advanced | 2 of 3 |"), 1)
+    state("state: a missing fixed document fails", changed("| research | in-progress | docs/research.md |\n", ""), 1)
+    state("state: a ready document with no place fails", changed("| system-description | ready | docs/system-description.md |", "| system-description | ready | - |"), 1)
+    state("state: a leftover placeholder fails", example + "\n{{SOMETHING}}\n", 1)
+
+    # The repository itself
     for check in ("check_root_names.py", "check_skills.py", "check_shared_text.py"):
         got = run(check, repo)
         ok = got == 0
         if not ok:
             failures.append(check)
         print(("PASS  " if ok else "FAIL  ") + f"this repository passes {check}" + ("" if ok else f"  [exit {got}]"))
+    got = subprocess.run([sys.executable, str(CHECKS / "check_state.py")], capture_output=True).returncode
+    if got:
+        failures.append("check_state.py")
+    print(("PASS  " if not got else "FAIL  ") + "this repository passes check_state.py" + ("" if not got else f"  [exit {got}]"))
 
     print(f"\n{'OK' if not failures else 'FAILED'}: {len(failures)} failing check(s)")
     return 1 if failures else 0
