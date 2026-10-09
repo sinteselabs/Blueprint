@@ -1,6 +1,6 @@
-# Ignore rules for the Blueprint repository itself. Projects do not copy this
-# file: they start from .gitignore.example (see README.md, "How to use this
-# template").
+# Ignore rules for the Blueprint repository itself. Projects do not get this
+# file: they start from
+# skills/blueprint-setup/assets/project-files/gitignore.example.
 
 # Local bindings and secrets — never in this repository.
 # .ai-memory.toml binds a clone to one memory; only the .example is tracked here.
