@@ -46,12 +46,12 @@ You produce **seven documents in a fixed order**, each building on the last:
 
 | # | Document | Local template | Produces |
 |---|---|---|---|
-| 1 | **System Description** | [docs/system-description.md](../docs/system-description.md) | The wide-angle picture: what, who, why |
-| 2 | **Software Requirements Specification (SRS)** | [docs/SRS.md](../docs/SRS.md) | What it must do + how it must behave |
+| 1 | **System Description** | [docs/system-description.md](../../skills/blueprint/assets/documents/system-description.md) | The wide-angle picture: what, who, why |
+| 2 | **Software Requirements Specification (SRS)** | [docs/SRS.md](../../skills/blueprint/assets/documents/requirements.md) | What it must do + how it must behave |
 | 3a | **Use Cases & User Flows** | [docs/use-cases.md](../docs/use-cases.md) | Actors, use cases, diagrams, workflows |
 | 3b | **Data Model** | [docs/data-model.md](../docs/data-model.md) | Entities, schema, types, classes, ERD |
 | 3c | **Wireframes** | [docs/wireframes.md](../docs/wireframes.md) | Low-fidelity screens per target device |
-| 4 | **Architecture** | [architecture.md](../architecture.md) + [docs/ARD.md](../docs/ARD.md) | Stack, services, data flow, infrastructure |
+| 4 | **Architecture** | [architecture.md](../../skills/blueprint/assets/documents/architecture.md) + [docs/ARD.md](../../skills/blueprint-record/assets/decisions.md) | Stack, services, data flow, infrastructure |
 | 5 | **Design Doc** | [docs/design-doc.md](../docs/design-doc.md) + [ui_guidelines.md](../ui_guidelines.md) | Visual system, components, design system |
 
 Documents 3a–3c are the **modeling phase** and are produced together, in that
@@ -212,7 +212,7 @@ shares the same mental model before requirements are pinned down.
 - Are there existing systems it must integrate with or replace?
 - What does success look like — how will you know it worked?
 
-**Produce:** fill [docs/system-description.md](../docs/system-description.md).
+**Produce:** fill [docs/system-description.md](../../skills/blueprint/assets/documents/system-description.md).
 Keep it readable by a non-engineer. Capture unknowns as Open Questions.
 
 **Save & register**, get approval, then continue.
@@ -244,7 +244,7 @@ app will *do* and how it must *behave*.
 Ask any additional question you need that isn't answered by the System
 Description. If an answer is ambiguous, drill down before writing it as a requirement.
 
-**Produce:** fill [docs/SRS.md](../docs/SRS.md) — numbered functional
+**Produce:** fill [docs/SRS.md](../../skills/blueprint/assets/documents/requirements.md) — numbered functional
 requirements (FR), non-functional requirements (NFR), constraints, out-of-scope.
 Every requirement must be specific enough to test.
 
@@ -337,10 +337,10 @@ Where the user is unsure, present 2–3 viable options with trade-offs and a
 recommendation. Record the *why* for each significant choice as an ARD entry.
 
 **Produce:**
-- Fill [architecture.md](../architecture.md), section by section: System Overview
+- Fill [architecture.md](../../skills/blueprint/assets/documents/architecture.md), section by section: System Overview
   (ASCII diagram — see ground rule 6), Services & Hosting, Code Structure,
   Data Model, Key Flows, Security, Open Architecture Questions.
-- Log each significant decision as an entry in [docs/ARD.md](../docs/ARD.md)
+- Log each significant decision as an entry in [docs/ARD.md](../../skills/blueprint-record/assets/decisions.md)
   (decision + rationale + consequences).
 
 **Save & register**, get approval, then continue.
