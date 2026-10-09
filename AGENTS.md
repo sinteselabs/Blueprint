@@ -53,6 +53,7 @@ python tooling/checks/check_links.py
 python tooling/checks/check_root_names.py
 python tooling/checks/check_skills.py
 python tooling/checks/check_shared_text.py
+python tooling/checks/check_state.py
 python tooling/checks/test_checks.py
 python tooling/checks/test_langfuse_hook.py
 claude plugin validate .
