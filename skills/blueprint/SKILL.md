@@ -9,9 +9,10 @@ Blueprint takes a software project from an idea in plain language to
 requirements and a repository ready for agentic development. This skill is the
 way in. There is only one, whatever the person wants to do.
 
-> **Under construction.** This skill finds the starting point and conducts the
-> interview of a new project, up to the plan. Continuing, improving and
-> refactoring are not built yet: see [The other starting points](#3-the-other-starting-points).
+> **Under construction.** This skill finds the starting point, conducts the
+> interview of a new project up to the plan, and continues a project that
+> stopped. Improving and refactoring are not built yet: see
+> [The other starting points](#4-the-other-starting-points).
 
 ## How to talk
 
@@ -75,7 +76,7 @@ that it is new.
 
 | What you found | Starting point | What you do |
 |---|---|---|
-| `.blueprint/state.md` in this folder | continue | Say where the project stopped, from the state file, and ask to confirm |
+| `.blueprint/state.md` in this folder | continue | Say where the project stopped, from the state file. If the person asked to continue, go on without asking again; otherwise ask to confirm |
 | `.blueprint/state.md` in a folder above | continue | The project is that one, and this folder is part of it. Use that state. Never create another |
 | `.blueprint/state.md` in one or more folders inside | to be asked | List the projects found, with their paths, and ask which one, or whether this is a new project |
 | An empty folder, and nothing like the project nearby | start | Say so and ask to confirm |
@@ -141,12 +142,24 @@ The state file and the journal are kept by the `blueprint-record` skill. If it
 is not available, tell the person, and keep the same information in
 `.blueprint/state.md` yourself.
 
-## 3. The other starting points
+## 3. Continuing a project
 
-Continuing a project, improving one and refactoring one are not built yet.
-When the confirmed starting point is one of them, tell the person plainly that
-Blueprint is still being built and does not conduct that path yet. Do not
-improvise it.
+When the starting point is to continue, read
+[references/continue.md](references/continue.md) and follow it. In short:
 
-When the starting point is to continue, you may read out the state file's
-`## Next question`, so the person sees where the project stands.
+1. **Read the state file whole,** and the newest session record. Never act as
+   if you remembered the conversation that produced them.
+2. **Open with one message:** where the project is, what you found in a few
+   lines, any problem the project check found, and the next question, taken
+   from the state. Do not wait for a "yes".
+3. **Go on by the same rules as a new project.** What the state has as answered
+   is not asked again.
+4. **When the state is behind** what the documents, the session records or the
+   repository show, say what is missing, rebuild it marked as rebuilt, and save
+   only after the person confirms.
+
+## 4. The other starting points
+
+Improving a project and refactoring one are not built yet. When the confirmed
+starting point is one of them, tell the person plainly that Blueprint is still
+being built and does not conduct that path yet. Do not improvise it.
