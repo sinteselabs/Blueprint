@@ -34,15 +34,19 @@ A Blueprint project is marked by the file `.blueprint/state.md`.
    If the state file is here, stop looking: go to "What to conclude".
 2. **The folders inside it,** two levels down, for `.blueprint/state.md`. Skip
    dependency, build and hidden folders such as `node_modules`, `dist` and `.git`.
-3. **The folders above it,** for `.blueprint/state.md`: up to the root of the
+3. **Tell the person you are about to look outside.** The next two steps leave
+   the project folder, and the coding agent may stop to ask the person for
+   permission. So write to the person first, in one line, what you are about to
+   look at and why. For example: "Before anything else I will look at the
+   folders above and beside this one, only their names and whether they hold a
+   Blueprint project, so I do not create again something that already exists."
+   Send that line before any tool or command that reads a folder above or
+   beside this one. Never put a look outside in the same command as a look
+   inside.
+4. **The folders above it,** for `.blueprint/state.md`: up to the root of the
    repository, or, where there is no repository, the parent and the grandparent.
-4. **The folders beside it,** the ones with the same parent: their names, and
+5. **The folders beside it,** the ones with the same parent: their names, and
    whether each has `.blueprint/state.md`.
-
-Steps 3 and 4 leave the project folder. Before them, tell the person in one line
-what you are about to look at and why, for example: "Before anything else I will
-look at the folders above and beside this one, only their names and whether they
-hold a Blueprint project, so I do not create again something that already exists."
 
 Outside the project folder, read folder names and Blueprint state files only.
 Open nothing else.
