@@ -1,0 +1,14 @@
+{
+  "name": "sinteselabs",
+  "owner": {
+    "name": "Síntese Labs"
+  },
+  "description": "Blueprint: a guided path from an idea to a repository ready for agentic development.",
+  "plugins": [
+    {
+      "name": "blueprint",
+      "source": "./",
+      "description": "From an idea to a repository ready for agentic development: a guided interview, the project documents and a prepared environment."
+    }
+  ]
+}
