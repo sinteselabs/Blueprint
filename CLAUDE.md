@@ -1,1 +1,1 @@
-See [.ai/ai.md](.ai/ai.md) for project context and instructions.
+See @AGENTS.md for how to work on this repository.
