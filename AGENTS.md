@@ -1,1 +1,65 @@
-See [.ai/ai.md](.ai/ai.md) for project context and instructions.
+# Working on Blueprint
+
+This file is for people and AI agents changing Blueprint itself. It is not what
+Blueprint installs in a project.
+
+## What this repository is
+
+Blueprint takes a software project from an idea in plain language to requirements
+and a repository ready for agentic development. It is delivered as agent skills
+(the product), a Claude Code plugin that carries them, and a CLI.
+
+It is under construction. The skills in `skills/` are placeholders, and the
+previous form of Blueprint, a template to copy into a project, still lives in
+`.ai/` until the skills absorb it.
+
+## Map
+
+| Path | What it is |
+|---|---|
+| `skills/` | The product: one folder per skill, in the open Agent Skills format |
+| `.claude-plugin/` | The plugin manifest and the marketplace file. The repository root is the plugin root |
+| `.ai/` | The previous template, being absorbed into the skills. Its files are written for a project that copies them: do not read them as instructions for this repository |
+| `tooling/` | This repository's own tooling (a Langfuse hook for Claude Code, the checks). Not shipped to anyone |
+
+## Rules
+
+1. **English.** Every file in this repository is written in English.
+2. **Nothing at the root that the plugin would load.** Because the root is the
+   plugin root, never add any of these there: `.mcp.json`, `hooks/`, `agents/`,
+   `commands/`, `bin/`, `settings.json`, `output-styles/`, `workflows/`,
+   `themes/`, `monitors/`.
+3. **Skills follow the format.** A skill is a folder under `skills/` with a
+   `SKILL.md`. The folder name equals the `name` in its frontmatter, and the
+   `description` says what the skill does and when to use it. `SKILL.md` stays
+   under 500 lines, with detail in `references/` and templates in `assets/`. A
+   skill points only at files inside its own folder.
+4. **No local configuration and no keys in git.** `.env`, `.ai-memory.toml`,
+   `.claude/` and anything that binds a clone to one person's tools stay out.
+   The files a project starts from live in
+   `skills/blueprint-setup/assets/project-files/`, with an `.example` suffix.
+5. **Blueprint is a general tool.** It carries no team's internal process and no
+   client-service documents.
+6. **Say when something does not work.** A skill, a script or a check that
+   cannot do its job says so. It never degrades silently.
+7. **Small commits, one concern each.**
+
+## Before integrating a change
+
+Run, from the repository root:
+
+```
+python tooling/checks/check_links.py
+python tooling/checks/test_langfuse_hook.py
+claude plugin validate .
+```
+
+`claude plugin validate` needs Claude Code. It reports one expected warning: a
+`CLAUDE.md` at the plugin root is not loaded as plugin context. What each check
+guards is in [tooling/README.md](tooling/README.md).
+
+## Project memory
+
+To use lore while working on Blueprint, make your own `.ai-memory.toml` at the
+root from `skills/blueprint-setup/assets/project-files/ai-memory.toml.example`.
+It is git-ignored here on purpose.

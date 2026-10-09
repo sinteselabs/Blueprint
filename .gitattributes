@@ -1,0 +1,4 @@
+# Line endings: LF in the repository and in every working copy, on every system.
+# Skills are copied into projects and compared by hash, so their bytes must not
+# depend on the machine that cloned the repository.
+* text=auto eol=lf

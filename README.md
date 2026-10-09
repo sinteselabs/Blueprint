@@ -2,6 +2,14 @@
 
 **Blueprint** was called `ai-template` until October 2026.
 
+> **Under construction.** Blueprint is being rebuilt as a set of agent skills
+> (`skills/`), a Claude Code plugin and a CLI. Everything below describes the
+> previous form, a template to copy into a project, which still lives in `.ai/`.
+> The steps under "How to use this template" no longer match this repository's
+> root: `AGENTS.md` and `CLAUDE.md` are now this repository's own instructions,
+> and the files a project starts from (`.mcp.json`, `.ai-memory.toml`,
+> `.gitignore`) moved to `skills/blueprint-setup/assets/project-files/`.
+
 A reusable **AI context scaffold** for new projects. Copy this structure into any repo so that every AI assistant (Claude Code, Codex, Cursor, etc.) has one consistent, discoverable place to learn how the project works, what the rules are, and where the source of truth lives.
 
 The core idea: **a single entry point.** `AGENTS.md` and `CLAUDE.md` at the repo root do nothing but point to [`.ai/ai.md`](.ai/ai.md). From there, a navigation map sends the assistant to the right file for the topic at hand — architecture, conventions, design, requirements, decisions, or workflow.
