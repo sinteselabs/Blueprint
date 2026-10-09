@@ -8,7 +8,7 @@ and any tool that does the same job can replace it.
 | Tool | Job |
 |---|---|
 | [`claude-code/langfuse_hook.py`](claude-code/langfuse_hook.py) | Sends every Claude Code session to [Langfuse](https://langfuse.com): one trace per turn, with the model, token usage and each tool call |
-| [`checks/`](checks/) | Two checks for the Blueprint repository itself: internal links and the hook (see [below](#checks-for-this-repository)) |
+| [`checks/`](checks/) | Checks for the Blueprint repository itself: internal links, the hook, the root, the skills and shared text (see [below](#checks-for-this-repository)) |
 
 ---
 
@@ -120,13 +120,30 @@ each transcript was read, so a turn is never sent twice).
 
 ## Checks for this repository
 
-Two scripts that must pass before a change to Blueprint is integrated. They check
+Scripts that must pass before a change to Blueprint is integrated. They check
 Blueprint itself, not the projects made from it.
 
 | Check | What it guards | Run |
 |---|---|---|
 | [`checks/check_links.py`](checks/check_links.py) | No internal Markdown link points at a file that does not exist | `python tooling/checks/check_links.py` |
 | [`checks/test_langfuse_hook.py`](checks/test_langfuse_hook.py) | The hook sends a turn once, tagged, from a folder with an accent in its path; stays quiet when switched off; tells the person when switched on and broken | `python tooling/checks/test_langfuse_hook.py` |
+| [`checks/check_root_names.py`](checks/check_root_names.py) | Nothing at the root has a name the plugin loads on its own (`.mcp.json`, `hooks/`, `bin/` and the like). The root is the plugin root | `python tooling/checks/check_root_names.py` |
+| [`checks/check_skills.py`](checks/check_skills.py) | Every skill follows the format: a name equal to its folder, a description within the limit, `SKILL.md` within 500 lines, no link out of its own folder | `python tooling/checks/check_skills.py` |
+| [`checks/check_shared_text.py`](checks/check_shared_text.py) | Copies of a text shared between skills are identical | `python tooling/checks/check_shared_text.py` |
+| [`checks/test_checks.py`](checks/test_checks.py) | The three checks above pass on a sound tree and fail on a planted error | `python tooling/checks/test_checks.py` |
+
+A skill can only point at files inside its own folder, so a text that several
+skills need is copied into each of them. Mark each copy, and
+`check_shared_text.py` keeps them identical:
+
+```
+<!-- shared: NAME -->
+the text
+<!-- /shared: NAME -->
+```
+
+The three structure checks need only Python and take an optional folder to
+check instead of this repository, which is how `test_checks.py` plants its errors.
 
 The hook test needs the Langfuse SDK and nothing else: it runs against an HTTP
 server it starts itself, with a throwaway home folder, so it needs no account and
