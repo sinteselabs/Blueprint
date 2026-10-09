@@ -4,11 +4,12 @@ Runs a whole interview of a new project with the blueprint skill, in one real
 Claude Code session of several turns, and checks what it left on disk.
 
 The person is scripted: a bakery owner who wants a site to take orders, writes
-in Portuguese, has no budget, and never approves a document. Each of her turns
-answers a block and ends by telling the agent to decide small things itself.
-When her script ends and the plan is not closed yet, she says "go on with what
-you recommend" until it is, up to a limit of turns. Her last turn asks where
-things are.
+in Portuguese, has no budget, and never approves a document. She answers by the
+step the agent says the conversation is in, which is the first line of each of
+its messages: the system description, the requirements, the modeling, the plan.
+To a decision that is costly to undo she answers that she accepts the
+recommendation. When she has nothing left to say she tells the agent to go on,
+and when the plan is closed she asks where things are.
 
 What is checked afterwards:
 
@@ -21,14 +22,18 @@ What is checked afterwards:
 - the agent used the blueprint-record skill, wrote nothing outside the project
   and changed nothing in this repository.
 
-Every reply is printed, because a person reading the conversation is the real
-check. It needs Claude Code on the PATH, takes about twenty minutes and spends
-model usage, so it is not one of the checks to run before every change:
+The session has no web tools, so it costs less and shows what the agent does
+when it cannot research. Every reply is printed, because a person reading the
+conversation is the real check. It needs Claude Code on the PATH, takes about
+twenty minutes and spends a good share of the account's usage limit, so it is
+not one of the checks to run before every change:
 
-    python tooling/sessions/test_start_interview.py [--save FILE]
+    python tooling/sessions/test_start_interview.py [--folder DIR]
 
-`--save` keeps what the agent said and did in every turn. Exit code 0 when
-every check passes, 1 otherwise, 2 when the session could not run at all.
+With `--folder`, the project and the run are kept in DIR: the documents can be
+read afterwards, and when the usage limit stops the run, the same command picks
+it up where it stopped instead of starting again. Exit code 0 when every check
+passes, 1 otherwise, 2 when the session could not finish.
 """
 
 import json
@@ -38,34 +43,36 @@ import sys
 import tempfile
 from pathlib import Path
 
-from harness import REPO, find_claude, refused, run, skills_changes
+from harness import REPO, Session, find_claude, refused, run, skills_changes
 
 sys.path.insert(0, str(REPO / "tooling" / "checks"))
 import check_state  # noqa: E402  (the same reader the gate uses)
 
 DECIDE = " Se faltar algum detalhe, decida você e me avise."
-SCRIPT = [
+OPENING = [
     "Quero começar um projeto novo: um site para a padaria receber encomendas.",
     "Isso, é um projeto novo. Pode começar aqui nesta pasta.",
-    "Os documentos em português, e só eu desenvolvo. Sobre o sistema: a padaria recebe encomendas pelo WhatsApp e perde "
-    "pedidos. Quero que o cliente faça a encomenda num site e a padaria veja a lista do dia. Quem usa é o cliente e a "
-    "atendente da padaria. Fora da primeira versão fica o pagamento online: o cliente paga na retirada. Não tenho verba "
-    "para serviço pago." + DECIDE,
-    "O cliente escolhe os produtos, a data de retirada e deixa nome e telefone. A atendente vê a lista de encomendas do "
-    "dia e marca cada uma como pronta ou retirada. Os limites: não tenho verba, precisa funcionar bem no celular do "
-    "cliente, e quero no ar em um mês. Vou saber que deu certo se em um mês nenhuma encomenda se perder." + DECIDE,
-    "O que não pode dar errado: o cliente conseguir fazer a encomenda, e a atendente ver a lista do dia. O sistema guarda "
-    "os produtos, as encomendas e o nome e o telefone do cliente. As telas principais são o catálogo, a tela de fazer a "
-    "encomenda e a lista do dia." + DECIDE,
-    "Não entendo de tecnologia. Aceito as suas recomendações em todas as decisões de arquitetura, desde que seja tudo gratuito.",
-    "Primeiro a encomenda pelo cliente, depois a lista da atendente. Sou só eu que faço tudo. Pode fechar o plano.",
 ]
+BY_STEP = {
+    1: "Os documentos em português, e só eu desenvolvo. Sobre o sistema: a padaria recebe encomendas pelo WhatsApp e perde "
+       "pedidos. Quero que o cliente faça a encomenda num site e a padaria veja a lista do dia. Quem usa é o cliente e a "
+       "atendente da padaria. Fora da primeira versão fica o pagamento online: o cliente paga na retirada. Não tenho verba "
+       "para serviço pago." + DECIDE,
+    2: "O cliente escolhe os produtos, a data de retirada e deixa nome e telefone. A atendente vê a lista de encomendas do "
+       "dia e marca cada uma como pronta ou retirada. Os limites: não tenho verba, precisa funcionar bem no celular do "
+       "cliente, e quero no ar em um mês. Vou saber que deu certo se em um mês nenhuma encomenda se perder." + DECIDE,
+    3: "O que não pode dar errado: o cliente conseguir fazer a encomenda, e a atendente ver a lista do dia. O sistema guarda "
+       "os produtos, as encomendas e o nome e o telefone do cliente. As telas principais são o catálogo, a tela de fazer a "
+       "encomenda e a lista do dia." + DECIDE,
+    4: "Não entendo de tecnologia. Aceito a sua recomendação nesta e nas outras decisões de arquitetura, desde que seja tudo gratuito.",
+    5: "Primeiro a encomenda pelo cliente, depois a lista da atendente. Sou só eu que faço tudo. Pode fechar o plano.",
+}
 GO_ON = "Pode seguir com o que você recomendar." + DECIDE
 WHERE = "Onde estamos?"
-MAX_TURNS = 11
+MAX_TURNS = 12
 CLOSED = ["system-description", "requirements", "architecture", "plan"]
 ENGLISH_TITLES = {"system description", "requirements", "research", "architecture", "plan", "decisions"}
-POSITION = re.compile(r"^[\W_]*etapa\s+\d\s+de\s+5", re.IGNORECASE)
+POSITION = re.compile(r"^[\W_]*etapa\s+(\d)\s+de\s+5", re.IGNORECASE)
 
 
 def read_state(project: Path) -> tuple[dict[str, str], dict[str, tuple[str, str]]]:
@@ -86,10 +93,19 @@ def first_line(reply: str) -> str:
     return next((line.strip() for line in reply.splitlines() if line.strip()), "")
 
 
+def next_words(reply: str, said: list[str]) -> str:
+    """What the person says next: her answer for the step the agent named, once; otherwise, to go on."""
+    match = POSITION.match(first_line(reply))
+    answer = BY_STEP.get(int(match.group(1))) if match else None
+    if answer and (answer not in said or int(match.group(1)) == 4):
+        return answer
+    return GO_ON
+
+
 def main() -> int:
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     arguments = sys.argv[1:]
-    save = Path(arguments[1]) if arguments[:1] == ["--save"] and len(arguments) > 1 else None
+    kept_folder = Path(arguments[1]).resolve() if arguments[:1] == ["--folder"] and len(arguments) > 1 else None
     claude = find_claude()
     if not claude:
         print("cannot find Claude Code on the PATH; this test runs a real session with it")
@@ -102,48 +118,59 @@ def main() -> int:
         print(("PASS  " if ok else "FAIL  ") + name + (f"  [{detail}]" if detail and not ok else ""), flush=True)
 
     before = skills_changes()
-    with tempfile.TemporaryDirectory(prefix="blueprint interview é ") as folder:
-        around = Path(folder) / "caso"
+    temporary = None if kept_folder else tempfile.TemporaryDirectory(prefix="blueprint interview é ")
+    folder = kept_folder or Path(temporary.name)
+    try:
+        around = folder / "caso"
         project = around / "projetos" / "padaria-pedidos"
-        project.mkdir(parents=True)
-        turns: list[tuple[str, object]] = []
+        project.mkdir(parents=True, exist_ok=True)
+        record = folder / "run.json"
+        turns: list[tuple[str, Session]] = []
+        if record.is_file():
+            for old in json.loads(record.read_text(encoding="utf-8")):
+                session = Session(old["code"], old["reply"], [tuple(step) for step in old["steps"]], old["session_id"])
+                if session.code == 0 and not refused(session):
+                    turns.append((old["said"], session))
+            print(f"picking up a kept run at turn {len(turns) + 1}", flush=True)
 
         def say(text: str) -> bool:
             """One turn of the person. False when the session could not go on."""
             resume = turns[-1][1].session_id if turns else ""
-            session = run(claude, project, text, (around,), timeout=1500, resume=resume, keep=True)
-            turns.append((text, session))
-            number = len(turns)
-            print(f"\n=== turn {number}\n    the person: {text}\n    the agent:", flush=True)
+            session = run(claude, project, text, (around,), timeout=1500, resume=resume, keep=True, web=False)
+            print(f"\n=== turn {len(turns) + 1}\n    the person: {text}\n    the agent:", flush=True)
             for line in session.reply.splitlines():
                 print("      " + line)
-            if save:
-                kept = [{"said": said, "code": s.code, "reply": s.reply, "steps": s.steps} for said, s in turns]
-                save.write_text(json.dumps(kept, ensure_ascii=False, indent=1), encoding="utf-8")
-            return session.code == 0 and not refused(session) and bool(session.session_id)
+            ok = session.code == 0 and not refused(session) and bool(session.session_id)
+            if ok:
+                turns.append((text, session))
+                kept = [{"said": said, "code": s.code, "reply": s.reply, "steps": s.steps, "session_id": s.session_id} for said, s in turns]
+                record.write_text(json.dumps(kept, ensure_ascii=False, indent=1), encoding="utf-8")
+            else:
+                say.stopped = refused(session) or f"exit {session.code}"
+            return ok
 
+        say.stopped = ""
         alive = True
-        for text in SCRIPT:
-            alive = say(text)
-            if not alive:
-                break
-        while alive and len(turns) < MAX_TURNS - 1 and read_state(project)[0].get("plan") != "closed":
-            alive = say(GO_ON)
-        interview_turns = len(turns)
-        if alive:
+        for text in OPENING[len(turns):]:
+            alive = alive and say(text)
+        while alive and len(turns) < MAX_TURNS - 1 and turns[-1][0] != WHERE and read_state(project)[0].get("plan") != "closed":
+            alive = say(next_words(turns[-1][1].reply, [said for said, _ in turns]))
+        if alive and turns[-1][0] != WHERE:
             alive = say(WHERE)
 
-        stopped = next((refused(s) for _, s in turns if refused(s)), None)
-        if stopped:
-            print(f"\ncould not run: Claude Code refused a turn: {stopped}")
-            print("the interview was not completed; run this again when the limit resets")
+        if not alive:
+            print(f"\ncould not finish: the session stopped at turn {len(turns) + 1}: {say.stopped}")
+            if kept_folder:
+                print("the run is kept; the same command picks it up when the limit resets")
+            else:
+                print("nothing was kept; run it with --folder to be able to pick a stopped run up")
             return 2
 
+        interview = [s.reply for said, s in turns[2:] if said != WHERE]
         print("\n=== what the interview left", flush=True)
-        check("every turn ran", alive, f"stopped at turn {len(turns)}")
         state = project / ".blueprint" / "state.md"
-        passes = state.is_file() and subprocess.run([sys.executable, str(REPO / "tooling" / "checks" / "check_state.py"), str(state)], capture_output=True, text=True, encoding="utf-8")
-        check("the state passes check_state.py", bool(passes) and passes.returncode == 0, (passes.stdout.strip().splitlines() or ["no state file"])[0] if passes else "no state file")
+        passes = subprocess.run([sys.executable, str(REPO / "tooling" / "checks" / "check_state.py"), str(state)], capture_output=True, text=True, encoding="utf-8")
+        check("the state passes check_state.py", state.is_file() and passes.returncode == 0, (passes.stdout.strip().splitlines() or ["no output"])[0])
         steps, documents = read_state(project)
         for step in CLOSED:
             check(f"the step {step} is closed", steps.get(step) == "closed", steps.get(step, "missing"))
@@ -171,15 +198,22 @@ def main() -> int:
         without = [p.name for p in specs if "como testar" not in p.read_text(encoding="utf-8").lower()]
         check("every spec says how to test the task", bool(specs) and not without, ", ".join(without))
 
-        interview = [s.reply for _, s in turns[2:interview_turns]]
         opened = [reply for reply in interview if POSITION.match(first_line(reply))]
         check("every message of the interview opened with where the conversation was", bool(interview) and len(opened) == len(interview), f"{len(opened)} of {len(interview)}")
         used = sum(1 for _, s in turns for kind, what in s.steps if kind == "tool" and what.startswith("Skill") and "blueprint-record" in what)
         check("the agent used the blueprint-record skill", used > 0, "it never called it")
+        placeholders = sum(1 for _, s in turns for kind, what in s.steps if kind == "tool" and what.startswith("Skill") and ("blueprint-research" in what or "blueprint-decide" in what))
+        check("the agent did not call the skills that are not built yet", placeholders == 0, f"{placeholders} calls")
         check("the answer to 'where are we?' names the plan", "plano" in turns[-1][1].reply.lower())
         outside = sorted(p.name for p in around.rglob("*") if project not in p.parents and p != project and p != around / "projetos")
         check("nothing was written beside the project folder", not outside, ", ".join(outside))
-        print(f"\n{len(turns)} turns; blueprint-record called {used} times; steps: {steps}")
+        calls = sum(1 for _, s in turns for kind, _ in s.steps if kind == "tool")
+        print(f"\n{len(turns)} turns, {calls} tool calls; blueprint-record called {used} times; steps: {steps}")
+        if kept_folder:
+            print(f"the project is kept in {project}")
+    finally:
+        if temporary:
+            temporary.cleanup()
     check("nothing under skills/ changed in this repository", skills_changes() == before)
 
     print(f"\n{'OK' if not failures else 'FAILED'}: {len(failures)} failing check(s)")

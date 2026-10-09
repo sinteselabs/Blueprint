@@ -34,10 +34,11 @@ def find_claude() -> str | None:
     return shutil.which("claude")
 
 
-def run(claude: str, project: Path, prompt: str, allow_folders: tuple[Path, ...] = (), timeout: int = 900, resume: str = "", keep: bool = False) -> Session:
+def run(claude: str, project: Path, prompt: str, allow_folders: tuple[Path, ...] = (), timeout: int = 900, resume: str = "", keep: bool = False, web: bool = True) -> Session:
     """Runs one turn in `project` with `prompt` and returns what the agent said and did, in order.
 
     With `keep`, Claude Code keeps the session, so a later call can pass its id in `resume` and go on from it.
+    With `web` off, the agent cannot search or fetch pages, which is cheaper and tests what it does then.
     """
     command = [claude, "-p", "--plugin-dir", str(REPO), "--add-dir", str(REPO / "skills")]
     if resume:
@@ -50,6 +51,8 @@ def run(claude: str, project: Path, prompt: str, allow_folders: tuple[Path, ...]
     ]
     if not (keep or resume):
         command.append("--no-session-persistence")
+    if not web:
+        command += ["--disallowedTools", "WebFetch", "WebSearch"]
     done = subprocess.run(command, cwd=project, input=prompt.encode("utf-8"), capture_output=True, timeout=timeout)
     out = done.stdout.decode("utf-8", errors="replace")
     session = Session(done.returncode, "")

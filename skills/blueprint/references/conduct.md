@@ -24,6 +24,9 @@ No long explanation, and no document pasted into the conversation.
 - Ask only what you do not know yet. What the person said in any earlier
   message counts as answered, starting with their very first sentence.
 - When an answer covers a question you had not asked yet, take it as answered.
+- A main question is answered by the person. You may take it as answered from
+  what they already said, and then you say what you took as the answer, so they
+  can correct it. Do not answer a main question from your own judgment alone.
 - When the person tells you to decide, decide the small things, say each in one
   line, and go on.
 
@@ -78,6 +81,11 @@ depends on it, and go on with the rest.
    had researched.
 
 The person sees only the recommendation and its reason. The rest is in the document.
+
+Do the research yourself, by these rules. The skills that will standardise
+research and costly decisions, `blueprint-research` and `blueprint-decide`, are
+not built yet in this version: do not call them, and do not mention them to the
+person.
 
 ## Refinement questions
 
