@@ -8,7 +8,8 @@ and any tool that does the same job can replace it.
 | Tool | Job |
 |---|---|
 | [`claude-code/langfuse_hook.py`](claude-code/langfuse_hook.py) | Sends every Claude Code session to [Langfuse](https://langfuse.com): one trace per turn, with the model, token usage and each tool call |
-| [`checks/`](checks/) | Checks for the Blueprint repository itself: internal links, the hook, the root, the skills and shared text (see [below](#checks-for-this-repository)) |
+| [`checks/`](checks/) | Checks for the Blueprint repository itself: internal links, the hook, the root, the skills, shared text and the state format (see [below](#checks-for-this-repository)) |
+| [`sessions/`](sessions/) | Tests that run a skill in real Claude Code sessions and check what was left on disk (see [below](#session-tests)) |
 
 ---
 
@@ -155,3 +156,21 @@ is a separate script, shipped with the skills.
 The hook test needs the Langfuse SDK and nothing else: it runs against an HTTP
 server it starts itself, with a throwaway home folder, so it needs no account and
 leaves your own state and log alone.
+
+---
+
+## Session tests
+
+A skill is text that an agent follows, so the only real test of it is a session.
+These tests run a skill in real Claude Code sessions, in a throwaway folder, and
+then check the files the sessions left.
+
+| Test | What it shows | Run |
+|---|---|---|
+| [`sessions/test_record_skill.py`](sessions/test_record_skill.py) | The record skill creates a state that passes `check_state.py`, updates it in a second session, records a decision and a session record each time, keeps a pasted key out of every file, and writes nothing outside the project | `python tooling/sessions/test_record_skill.py` |
+
+They are not among the checks to run before every change: they need Claude Code
+on the PATH, take a few minutes and spend model usage. Run the one for a skill
+after changing that skill. The prompts each test sends are in a folder beside it,
+[`sessions/record/`](sessions/record/) for the record skill, written as the
+person conducting an interview in Portuguese would write them.

@@ -55,7 +55,8 @@ of project this is.
 
 A list of what the person said limits or guides the choices: budget, deadline,
 what they already use, what they refuse. A recommendation is made by these
-criteria when the research does not single out one option. `None yet.` while empty.
+criteria when the research does not single out one option. While it is empty,
+one line says there is nothing yet.
 
 ### `## Steps`
 
@@ -82,6 +83,25 @@ appear when the project kind asks for them: `use-cases`, `data-model`,
 `data-classification`, `wireframes`, `design`, `interface-contract`,
 `ai-features`, `test-plan`, `playbooks`.
 
+Which of the others a project gets follows from its kind:
+
+<!-- shared: documents-by-kind -->
+| Document | In the project when |
+|---|---|
+| `use-cases` | People use the product through journeys, step by step |
+| `data-model` | `stores-data` is `yes` |
+| `data-classification` | `holds-personal-data` is `yes` |
+| `wireframes` | `has-screens` is `yes` |
+| `design` | `has-screens` is `yes` and the visual identity is still to be decided |
+| `interface-contract` | `used-by-command-or-code` is `yes` |
+| `ai-features` | `calls-a-model` is `yes` |
+| `test-plan` | Something must be validated beyond acceptance, the project is a refactor, or a decision left something to test |
+| `playbooks` | `developers` is more than 1 |
+<!-- /shared: documents-by-kind -->
+
+A document whose fact is still `unknown` is not listed yet. It is added when the
+fact becomes `yes`.
+
 `Situation` is `not-started`, `in-progress` or `ready`. There is no "approved":
 the person reads a document only if they want to. `Where` is the path or link of
 the document, or `-` while there is none.
@@ -96,7 +116,8 @@ agree with the `Steps` table.
 
 A checklist of questions that were not needed to move on. Each says which step it
 belongs to and what it will be needed for. They are asked one at a time, only
-when the agent cannot go on without the answer. `None yet.` while empty.
+when the agent cannot go on without the answer. While it is empty, one line says
+there is nothing yet.
 
 ### `## Answers`
 
@@ -108,11 +129,12 @@ keeps the agent from asking twice.
 
 A list with one line per decision: its number in the decisions record, its
 title, and `decided` or `open`. The reasons live in the decisions record, not
-here. `None yet.` while empty.
+here. While it is empty, one line says there is nothing yet.
 
 ### `## Open points`
 
-A list of what is unresolved and who it depends on. `None yet.` while empty.
+A list of what is unresolved and who it depends on. While it is empty, one line
+says there is nothing yet.
 
 ### `## Next question`
 

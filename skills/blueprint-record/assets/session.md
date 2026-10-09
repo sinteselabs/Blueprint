@@ -14,7 +14,7 @@
 
 ## Decided
 
-{{The decisions of this session, each with its number in the decisions record. "Nothing." when there was none.}}
+{{The decisions of this session, each with its number in the decisions record. Say so when there was none.}}
 
 ## Left open
 

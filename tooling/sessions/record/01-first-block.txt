@@ -1,0 +1,16 @@
+Use a skill blueprint-record do plugin blueprint.
+
+Contexto: estou conduzindo a entrevista de um projeto novo chamado padaria-pedidos, nesta pasta, que está vazia. O ponto de partida é iniciar. Idioma dos documentos: pt-BR. Uma pessoa desenvolve. Os documentos ficam em docs/ e as tarefas em docs/plan.md. Memória e observabilidade pelo diário do projeto.
+
+As perguntas principais de cada etapa são:
+- system-description: (1) Que problema o sistema resolve, e para quem; (2) O que a pessoa quer conseguir com ele; (3) Como ele chega a quem usa; (4) O que fica fora da primeira versão.
+- requirements: (1) O que cada tipo de usuário precisa conseguir fazer; (2) O que limita o projeto; (3) Como saber que deu certo.
+- modeling: (1) As jornadas que não podem dar errado; (2) O que o sistema guarda, e se há dado pessoal; (3) Quais são as telas principais.
+- architecture: (1) Stack; (2) Hospedagem.
+- plan: (1) O que vem primeiro; (2) Quem faz o quê.
+
+A pessoa acabou de responder o primeiro bloco da descrição do sistema, com estas palavras: "A padaria recebe encomendas pelo WhatsApp e perde pedidos. Quero um site onde o cliente faz a encomenda e a padaria vê a lista do dia. Não tenho verba para serviço pago."
+
+Isso responde as perguntas 1, 2 e 3 da descrição do sistema. A pergunta 4 ainda não foi feita e é a próxima. Fatos do projeto: tem telas (ela disse "site"); guarda dados e tem dado pessoal (deduzido: nome e telefone do cliente); não é usado por comando; não se sabe se chama um modelo.
+
+Grave o estado agora. Depois, como a sessão está terminando, grave também o registro da sessão.
