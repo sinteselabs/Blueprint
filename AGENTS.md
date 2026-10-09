@@ -26,9 +26,9 @@ previous form of Blueprint, a template to copy into a project, still lives in
 
 1. **English.** Every file in this repository is written in English.
 2. **Nothing at the root that the plugin would load.** Because the root is the
-   plugin root, never add any of these there: `.mcp.json`, `hooks/`, `agents/`,
-   `commands/`, `bin/`, `settings.json`, `output-styles/`, `workflows/`,
-   `themes/`, `monitors/`.
+   plugin root, never add any of these there: `.mcp.json`, `.lsp.json`,
+   `settings.json`, `hooks/`, `agents/`, `commands/`, `bin/`, `output-styles/`,
+   `workflows/`, `themes/`, `monitors/`. `check_root_names.py` guards this.
 3. **Skills follow the format.** A skill is a folder under `skills/` with a
    `SKILL.md`. The folder name equals the `name` in its frontmatter, and the
    `description` says what the skill does and when to use it. `SKILL.md` stays
