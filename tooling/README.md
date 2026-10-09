@@ -130,7 +130,8 @@ Blueprint itself, not the projects made from it.
 | [`checks/check_root_names.py`](checks/check_root_names.py) | Nothing at the root has a name the plugin loads on its own (`.mcp.json`, `hooks/`, `bin/` and the like). The root is the plugin root | `python tooling/checks/check_root_names.py` |
 | [`checks/check_skills.py`](checks/check_skills.py) | Every skill follows the format: a name equal to its folder, a description within the limit, `SKILL.md` within 500 lines, no link out of its own folder | `python tooling/checks/check_skills.py` |
 | [`checks/check_shared_text.py`](checks/check_shared_text.py) | Copies of a text shared between skills are identical | `python tooling/checks/check_shared_text.py` |
-| [`checks/test_checks.py`](checks/test_checks.py) | The three checks above pass on a sound tree and fail on a planted error | `python tooling/checks/test_checks.py` |
+| [`checks/check_state.py`](checks/check_state.py) | The project state example and template that the record skill ships follow the state format. Given a file, it checks that file instead | `python tooling/checks/check_state.py` |
+| [`checks/test_checks.py`](checks/test_checks.py) | The four checks above pass on a sound input and fail on a planted error | `python tooling/checks/test_checks.py` |
 
 A skill can only point at files inside its own folder, so a text that several
 skills need is copied into each of them. Mark each copy, and
@@ -142,8 +143,14 @@ the text
 <!-- /shared: NAME -->
 ```
 
-The three structure checks need only Python and take an optional folder to
-check instead of this repository, which is how `test_checks.py` plants its errors.
+The structure checks need only Python. The first three take an optional folder
+to check instead of this repository, and `check_state.py` takes state files,
+which is how `test_checks.py` plants its errors.
+
+`check_state.py` reads the format described in
+[`skills/blueprint-record/references/state-format.md`](../skills/blueprint-record/references/state-format.md).
+It is this repository's own tooling: the check that Blueprint runs in a project
+is a separate script, shipped with the skills.
 
 The hook test needs the Langfuse SDK and nothing else: it runs against an HTTP
 server it starts itself, with a throwaway home folder, so it needs no account and
