@@ -47,6 +47,8 @@ that one.
    state, and identifiers such as `FR-01` and `D-001` stay as they are.
 2. **Start from the template.** Replace every `{{placeholder}}`, remove the
    template's comments, and drop a section that does not apply to this project.
+   When the project already has the document, add to it in its own shape: do
+   not rewrite it to fit the template.
 3. **Open with the summary.** The "In short" block has five lines at most, so
    whoever opens the document knows what it says without reading the rest.
 4. **Write only what is known.** What the person said, and what was decided and

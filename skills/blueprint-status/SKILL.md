@@ -44,7 +44,8 @@ everything is fine.
    is. For example, in Portuguese: "Etapa 2 de 5 · Requisitos, com duas das três
    perguntas principais respondidas."
 2. **The steps,** one line: which are closed, which are advanced, which are
-   open, which have not started.
+   open, which have not started. A step with `0 of 0` main questions belongs
+   to a change that does not touch it: say that, and do not count it as left.
 3. **What is decided:** the decisions in the state, by number and title, in one
    or two lines. When there are many, the last three and how many there are.
 4. **What is open:** the open points, the decisions left open, and the

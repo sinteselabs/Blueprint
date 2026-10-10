@@ -43,10 +43,7 @@ import sys
 import tempfile
 from pathlib import Path
 
-from harness import REPO, Session, find_claude, refused, run, skills_changes, spent, verdict
-
-sys.path.insert(0, str(REPO / "tooling" / "checks"))
-import check_state  # noqa: E402  (the same reader the gate uses)
+from harness import REPO, Session, find_claude, read_state, refused, run, skills_changes, spent, verdict
 
 DECIDE = " Se faltar algum detalhe, decida você e me avise."
 OPENING = "Quero começar um projeto novo: um site para a padaria receber encomendas."
@@ -71,20 +68,6 @@ MAX_TURNS = 12
 CLOSED = ["system-description", "requirements", "architecture", "plan"]
 ENGLISH_TITLES = {"system description", "requirements", "research", "architecture", "plan", "decisions"}
 POSITION = re.compile(r"^[\W_]*etapa\s+(\d)\s+de\s+5", re.IGNORECASE)
-
-
-def read_state(project: Path) -> tuple[dict[str, str], dict[str, tuple[str, str]]]:
-    """The situation of each step, and the situation and place of each document, from the state file."""
-    path = project / ".blueprint" / "state.md"
-    if not path.is_file():
-        return {}, {}
-    lines = path.read_text(encoding="utf-8").splitlines()
-    problems: list[str] = []
-    _, start = check_state.header(lines, problems)
-    found = check_state.sections(lines, start, problems)
-    steps = {row[0]: row[1] for row in check_state.table(found.get("Steps", []), ["Step", "Situation", "Main questions"], "Steps", problems)}
-    documents = {row[0]: (row[1], row[2]) for row in check_state.table(found.get("Documents", []), ["Document", "Situation", "Where"], "Documents", problems)}
-    return steps, documents
 
 
 def first_line(reply: str) -> str:
@@ -170,7 +153,7 @@ def main() -> int:
         state = project / ".blueprint" / "state.md"
         passes = subprocess.run([sys.executable, str(REPO / "tooling" / "checks" / "check_state.py"), str(state)], capture_output=True, text=True, encoding="utf-8")
         check("the state passes check_state.py", state.is_file() and passes.returncode == 0, (passes.stdout.strip().splitlines() or ["no output"])[0])
-        steps, documents = read_state(project)
+        steps, documents, _ = read_state(project)
         for step in CLOSED:
             check(f"the step {step} is closed", steps.get(step) == "closed", steps.get(step, "missing"))
         check("the modeling step is advanced, its documents not being written yet", steps.get("modeling") in ("advanced", "closed"), steps.get("modeling", "missing"))

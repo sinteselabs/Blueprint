@@ -174,6 +174,7 @@ then check the files the sessions left.
 | [`sessions/test_research_skill.py`](sessions/test_research_skill.py) | The research skill in three situations: alone with the web open, it reads pages in the session, recommends one option by the criterion the person gave, names its sources with the date and creates no file; in a project with the web closed, it says it could not read the pages, recommends all the same by the criterion in the state and writes the research document with what is left to verify; with no criterion declared, it says which criteria it used. It never calls its own recommendation weak | `python tooling/sessions/test_research_skill.py` |
 | [`sessions/test_decide_skill.py`](sessions/test_decide_skill.py) | The decide skill on one decision that is costly to undo, answered in three ways. It presents the recommendation before the other options, four at most, in a short message, and records nothing before the answer. Taking the recommendation records the decision with its reason, who decided, the date and the sources, and what was left to verify becomes an item of the test plan; deciding later records it as open and goes on; choosing against the recommendation records the person's choice, and the agent does not insist | `python tooling/sessions/test_decide_skill.py` |
 | [`sessions/test_continue.py`](sessions/test_continue.py) | Continuing a project in a new session: stopped mid-step, the agent asks the question the state has as next and none that is answered, then closes the step, writes its document and moves on; with a state that is behind the files, it says so, shows what it rebuilt, asks to confirm and does not touch the state before that | `python tooling/sessions/test_continue.py` |
+| [`sessions/test_change_path.py`](sessions/test_change_path.py) | A change to a project that already exists, in three cases: a small change becomes one spec and nothing else; an improvement gets a plan with what enters, what changes and what leaves, with the document that matches the code left alone and the outdated part the change does not touch reported and not corrected; a reorganisation leaves the requirements untouched and writes what must keep working, the affected part as it is and as it will be, and the decision. In all three the agent reads the code first, writes nothing before the person answers, and changes no code | `python tooling/sessions/test_change_path.py` |
 
 They are not among the checks to run before every change: they need Claude Code
 on the PATH, take a few minutes (the interview about twenty) and spend model
@@ -195,7 +196,11 @@ report a failure.
 
 What the person says in each test is written in Portuguese, as someone
 conducting an interview would write it: in [`sessions/record/`](sessions/record/)
-for the record skill, and inside the test itself for the others.
+for the record skill, and inside the test itself for the others. The projects a
+test starts from are in Portuguese too, as that person's project would be: the
+states in [`sessions/entry/`](sessions/entry/) and
+[`sessions/decide/`](sessions/decide/), and two small projects with code that
+runs in [`sessions/change/`](sessions/change/).
 
 Every test but the record skill's, which still calls Claude Code on its own,
 runs its sessions through [`sessions/harness.py`](sessions/harness.py), which

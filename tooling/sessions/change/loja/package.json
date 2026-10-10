@@ -1,0 +1,9 @@
+{
+  "name": "loja",
+  "version": "1.2.0",
+  "private": true,
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node --test"
+  }
+}

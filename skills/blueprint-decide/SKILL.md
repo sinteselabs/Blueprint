@@ -20,6 +20,10 @@ rely on.
 A small thing that is cheap to change later is not for this skill. Decide it,
 say it in one line, and go on.
 
+"Decide for me", said before a costly decision was shown, covers the small
+things only. The costly one is still shown, once, with the recommendation
+first: taking it costs the person three words.
+
 ## Before you present
 
 1. **The options come from research.** If the project's research document has
