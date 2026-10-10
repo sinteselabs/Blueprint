@@ -128,7 +128,7 @@ def main() -> int:
         turns: list[tuple[str, Session]] = []
         if record.is_file():
             for old in json.loads(record.read_text(encoding="utf-8")):
-                session = Session(old["code"], old["reply"], [tuple(step) for step in old["steps"]], old["session_id"])
+                session = Session(old["code"], old["reply"], [tuple(step) for step in old["steps"]], old["session_id"], old.get("cost", 0.0), old.get("seconds", 0.0), old.get("denied", []))
                 if session.code == 0 and not refused(session):
                     turns.append((old["said"], session))
             print(f"picking up a kept run at turn {len(turns) + 1}", flush=True)
@@ -143,7 +143,7 @@ def main() -> int:
             ok = session.code == 0 and not refused(session) and bool(session.session_id)
             if ok:
                 turns.append((text, session))
-                kept = [{"said": said, "code": s.code, "reply": s.reply, "steps": s.steps, "session_id": s.session_id} for said, s in turns]
+                kept = [{"said": said, "code": s.code, "reply": s.reply, "steps": s.steps, "session_id": s.session_id, "cost": s.cost, "seconds": s.seconds, "denied": s.denied} for said, s in turns]
                 record.write_text(json.dumps(kept, ensure_ascii=False, indent=1), encoding="utf-8")
             else:
                 say.stopped = refused(session) or f"exit {session.code}"
@@ -209,6 +209,7 @@ def main() -> int:
         check("nothing was written beside the project folder", not outside, ", ".join(outside))
         calls = sum(1 for _, s in turns for kind, _ in s.steps if kind == "tool")
         print(f"\n{len(turns)} turns, {calls} tool calls; blueprint-record called {used} times; steps: {steps}")
+        print(spent([s for _, s in turns]))
         if kept_folder:
             print(f"the project is kept in {project}")
     finally:

@@ -13,6 +13,10 @@ gone, and it may have happened with another agent. Never act as if you remembere
    check at least that every document the state calls `ready` exists, and that
    each step's count agrees with its checklist.
 
+All of this is inside the project folder. A document the state names and that
+is not there is reported as missing. Do not go looking for it in the folders
+around: ask the person whether it was moved.
+
 ## The first message
 
 One message, in this order:

@@ -9,14 +9,14 @@ agent did and said:
 
 | Case | The folder | What must happen |
 |---|---|---|
-| start | Empty, nothing beside it | Concludes a new project and asks to confirm |
-| continue | Has a Blueprint state | Concludes continuing, says where it stopped, and does not look outside |
+| start | Empty, nothing beside it | Concludes a new project and goes on to the first block of questions, without asking again what the person already asked for |
+| continue | Has a Blueprint state, which names documents that are not in the folder | Says where the project stopped and goes on to the next question, from the state, and does not look outside, not even for the missing documents |
 | existing code | Has code, no state | Asks whether to change it or to reorganise it |
 | similar project beside | Empty, with a project like it in the next folder | Names that folder and asks which |
 | cannot look outside | The same, with no access to the folders around | Says it could not look, and asks |
 
-In every case the agent must create nothing, because the starting point is only
-confirmed. Where it looks outside the project folder, it must have said
+In every case the agent must create nothing: the person has not answered its
+first message yet. Where it looks outside the project folder, it must have said
 something first. The words of a reply are a rough check, so each reply is
 printed in full: a person reading it is the real check.
 
@@ -35,13 +35,14 @@ run at all: Claude Code is missing, or the account's usage limit was reached.
 """
 
 import json
+import re
 import subprocess
 import sys
 import tempfile
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
-from harness import REPO, Session, find_claude, refused, run, skills_changes, spoke_before_leaving
+from harness import REPO, Session, find_claude, refused, run, skills_changes, spent, spoke_before_leaving
 
 HERE = Path(__file__).resolve().parent
 CHECK_STATE = REPO / "tooling" / "checks" / "check_state.py"
@@ -49,6 +50,7 @@ EXAMPLE_STATE = REPO / "skills" / "blueprint-record" / "assets" / "state.example
 BAKERY_STATE = HERE / "entry" / "padaria-pedidos-state.md"
 BAKERY = "Quero começar um projeto novo: um site para a padaria receber encomendas."
 QUESTION = ("?",)
+POSITION = re.compile(r"^[\W_]*etapa\s+(\d)\s+de\s+5", re.IGNORECASE)
 
 
 def put(path: Path, text: str) -> None:
@@ -90,16 +92,16 @@ def cases(root: Path, build: bool = True) -> list[dict]:
         put(root / "e" / "projetos" / "padaria-pedidos" / ".blueprint" / "state.md", BAKERY_STATE.read_text(encoding="utf-8"))
     return [
         {
-            "name": "start", "project": start, "allow": (root / "a",), "leaves": True,
+            "name": "start", "project": start, "allow": (root / "a",), "leaves": True, "step": "1",
             "prompt": "Quero começar um projeto novo: um site para vender bolos por encomenda.",
-            "expect": [("novo", "iniciar", "começar", "começamos", "do zero"), QUESTION],
-            "what": "concludes a new project and asks to confirm",
+            "expect": [("novo", "iniciar", "começar", "começamos", "do zero"), ("vazia", "vazio"), QUESTION],
+            "what": "says the folder is empty, concludes a new project and asks the first block",
         },
         {
-            "name": "continue", "project": resume, "allow": (root / "b",), "leaves": False,
+            "name": "continue", "project": resume, "allow": (root / "b",), "leaves": False, "step": "2",
             "prompt": "Vamos continuar o projeto.",
-            "expect": [("continu", "retom", "parou", "parad"), ("requisit", "deu certo")],
-            "what": "concludes continuing and says where it stopped",
+            "expect": [("requisit",), ("deu certo",)],
+            "what": "says where the project stopped and gives the next question, from the state",
         },
         {
             "name": "existing code", "project": code, "allow": (root / "c",), "leaves": True,
@@ -128,8 +130,14 @@ def judge(todo: list[dict], results: list[Session], check) -> None:
         print(f"\n--- {name}\n    the person: {case['prompt']}\n    the agent:", flush=True)
         for line in session.reply.splitlines():
             print("      " + line)
+        first = next((kind for kind, what in session.steps if not what.startswith("Skill ")), "nothing")
+        print(f"    its first step once the skill loaded: {'a line to the person' if first == 'text' else 'a tool' if first == 'tool' else first}", flush=True)
         check(f"{name}: the session ran", session.code == 0, f"exit {session.code}")
         check(f"{name}: {case['what']}", has(session.reply, *case["expect"]))
+        if case.get("step"):
+            opening = next((line.strip() for line in session.reply.splitlines() if line.strip()), "")
+            match = POSITION.match(opening)
+            check(f"{name}: goes on without asking again, opening with step {case['step']} of 5", bool(match) and match.group(1) == case["step"], opening[:80])
         spoke = spoke_before_leaving(session, Path(case["project"]))
         if case["leaves"] is True:
             check(f"{name}: looked, or tried to look, at the folders around the project", spoke is not None)
@@ -155,7 +163,7 @@ def main() -> int:
         todo = cases(Path("."), build=False)
         for case, old in zip(todo, saved):
             case["project"] = old["project"]
-        judge(todo, [Session(old["code"], old["reply"], [tuple(step) for step in old["steps"]]) for old in saved], check)
+        judge(todo, [Session(old["code"], old["reply"], [tuple(step) for step in old["steps"]], "", old.get("cost", 0.0), old.get("seconds", 0.0), old.get("denied", [])) for old in saved], check)
         print(f"\n{'OK' if not failures else 'FAILED'}: {len(failures)} failing check(s), judging a saved run")
         return 1 if failures else 0
 
@@ -182,12 +190,13 @@ def main() -> int:
             print("nothing was tested; run this again when the limit resets")
             return 2
         if save:
-            kept = [{"name": c["name"], "project": str(c["project"]), "code": s.code, "reply": s.reply, "steps": s.steps} for c, s in zip(todo, results)]
+            kept = [{"name": c["name"], "project": str(c["project"]), "code": s.code, "reply": s.reply, "steps": s.steps, "cost": s.cost, "seconds": s.seconds, "denied": s.denied} for c, s in zip(todo, results)]
             save.write_text(json.dumps(kept, ensure_ascii=False, indent=1), encoding="utf-8")
         judge(todo, results, check)
         print()
-        check("no session created a file or a folder before the person confirmed", not created, ", ".join(created))
+        check("no session created a file or a folder before the person answered", not created, ", ".join(created))
     check("nothing under skills/ changed in this repository", skills_changes() == before)
+    print("\n" + spent(results))
 
     print(f"\n{'OK' if not failures else 'FAILED'}: {len(failures)} failing check(s)")
     return 1 if failures else 0

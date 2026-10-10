@@ -31,7 +31,7 @@ These hold from the first message to the last.
 ## 1. Find the starting point
 
 The person does not have to say whether they are starting, continuing, improving
-or refactoring. Work it out from the folder, then confirm it with them.
+or refactoring. Work it out from the folder, and tell them what you concluded.
 
 A Blueprint project is marked by the file `.blueprint/state.md`.
 
@@ -56,6 +56,9 @@ permission. They must already know why.
    dependency, build and hidden folders such as `node_modules`, `dist` and `.git`.
 3. **The folders above it,** for `.blueprint/state.md`: up to the root of the
    repository, or, where there is no repository, the parent and the grandparent.
+   This step and the next leave the project folder. If you have not yet told
+   the person that you are going to look there, and why, tell them now, before
+   you look.
 4. **The folders beside it,** the ones with the same parent: their names, and
    whether each has `.blueprint/state.md`.
 
@@ -79,7 +82,7 @@ that it is new.
 | `.blueprint/state.md` in this folder | continue | Say where the project stopped, from the state file. If the person asked to continue, go on without asking again; otherwise ask to confirm |
 | `.blueprint/state.md` in a folder above | continue | The project is that one, and this folder is part of it. Use that state. Never create another |
 | `.blueprint/state.md` in one or more folders inside | to be asked | List the projects found, with their paths, and ask which one, or whether this is a new project |
-| An empty folder, and nothing like the project nearby | start | Say so and ask to confirm |
+| An empty folder, and nothing like the project nearby | start | Say so. If the person asked to start a new project, go on to the first block of questions in the same message, without asking again; otherwise ask to confirm |
 | An empty folder, and a project like the one described in a folder beside | to be asked | Name that folder and ask whether it is that project or a new one |
 | Code or documents, and no state file anywhere | improve or refactor | Ask which: to change or add something, or to reorganise it inside, which includes documenting what exists |
 
@@ -91,26 +94,34 @@ When what the person asked for does not match what you found, say both and ask:
   there is a project here and where it stopped, and ask whether they mean to
   continue it or whether the new project should live in another folder.
 
-### Say it and confirm
+### Say it, and ask only when there is something to choose
 
-In one or two lines: what you found, what you conclude, and a question. For example:
+In one or two lines: what you looked at, what you found and what you conclude.
 
-- "This folder is empty and I found no project like it in the folders around.
-  We start a new project here. Is that right?"
+**When what the person asked for is what you found,** do not hold the
+conversation for a "yes". They asked to start and the folder is empty with
+nothing like the project around it, or they asked to continue and the state file
+is here: say what you found, and go on in the same message. For example: "This
+folder is empty and I found no project like it in the folders around, so we
+start a new project here. Tell me if that is not it." The person corrects you
+if it is wrong.
+
+**When there is something to choose, ask, and wait for the answer.** For example:
+
 - "There is a Blueprint project here, stopped at the requirements. Shall we
-  continue from there?"
+  continue from there?" (they did not say what they wanted)
 - "This folder is empty, but there is a project like this one in
   `../bakery-orders`. Is it that one, or a new project?"
 - "This folder has code and has not been through Blueprint yet. Do you want to
   change or add something, or to reorganise it inside?"
 
-**Create nothing before the person confirms:** no folder, no file. Until then
-you have only read.
+**Create nothing before the person answers that first message:** no folder, no
+file. Their answer is the confirmation. Until then you have only read.
 
 ## 2. Starting a new project
 
-Once the person confirms that this is a new project, conduct the interview.
-Read these three references before the first question, and follow them:
+When the starting point is a new project, conduct the interview. Read these
+three references before the first question, and follow them:
 
 - [references/steps.md](references/steps.md): the five steps, the main
   questions of each, and when a step moves on;
@@ -123,7 +134,10 @@ The interview in short:
 
 1. **The first message** asks the language of the documents, whether more than
    one person will develop, and the first block of the system description. Ask
-   only what the person's first sentence did not already answer.
+   only what the person's first sentence did not already answer. When the
+   person asked to start, this is the same message that says what you found in
+   the folder, and nothing is created yet: the state file is written with
+   their first answer.
 2. **After each answer:** save the state with the `blueprint-record` skill,
    write the document of any step whose last main question was answered, and
    send the next message. That message opens with where the conversation is,

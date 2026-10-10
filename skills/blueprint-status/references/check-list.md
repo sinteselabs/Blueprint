@@ -25,7 +25,8 @@ reliably and is not part of this version.
 
 5. **Every document marked `ready` exists** at the place the state gives in
    `Where`. A ready document that is missing is a problem: either it was never
-   written, or it was moved.
+   written, or it was moved. Do not look for it outside the project folder: the
+   person says where it went.
 6. **No ready document carries a leftover of its template:** no `{{...}}` and
    no template comment.
 7. **Links between documents lead somewhere.** A relative link in a document
