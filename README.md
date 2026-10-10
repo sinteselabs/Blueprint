@@ -8,10 +8,10 @@ project documents and prepares the environment.
 It was called `ai-template` until October 2026.
 
 > **Status: under construction.** Starting a new project and continuing one work
-> today, with the project's state, the answer to "where are we?" and the research
-> standard. Improving and refactoring an existing project, the decision skill and
-> preparing the repository are not built yet: each of those skills says so when it
-> is called. The CLI does not exist yet. The previous form of Blueprint, a template
+> today, with the project's state, the answer to "where are we?", the research
+> standard and the decisions that are costly to undo. Improving and refactoring
+> an existing project and preparing the repository are not built yet: each of
+> those skills says so when it is called. The CLI does not exist yet. The previous form of Blueprint, a template
 > to copy into a project, is still in [`.ai/`](#the-previous-template) while the
 > skills absorb it.
 
