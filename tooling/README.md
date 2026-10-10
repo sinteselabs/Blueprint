@@ -168,25 +168,35 @@ then check the files the sessions left.
 | Test | What it shows | Run |
 |---|---|---|
 | [`sessions/test_record_skill.py`](sessions/test_record_skill.py) | The record skill creates a state that passes `check_state.py`, updates it in a second session, records a decision and a session record each time, keeps a pasted key out of every file, and writes nothing outside the project | `python tooling/sessions/test_record_skill.py` |
-| [`sessions/test_entry_skill.py`](sessions/test_entry_skill.py) | The blueprint skill finds the starting point in five situations (an empty folder, a folder with a state, a folder with code, a similar project in the next folder, and no access to the folders around), says it is going to look before it looks outside the project, asks when it cannot look, and creates nothing before the person confirms | `python tooling/sessions/test_entry_skill.py` |
+| [`sessions/test_entry_skill.py`](sessions/test_entry_skill.py) | The blueprint skill finds the starting point in five situations (an empty folder, a folder with a state, a folder with code, a similar project in the next folder, and no access to the folders around), says it is going to look before it looks outside the project, goes on without asking again when the person asked for what the folder shows, asks when there is something to choose or when it cannot look, and creates nothing before the person answers | `python tooling/sessions/test_entry_skill.py` |
 | [`sessions/test_start_interview.py`](sessions/test_start_interview.py) | A whole interview of a new project, in one session of several turns with a scripted person who never approves a document: the state passes `check_state.py` with the steps closed, the six fixed documents are ready, in the person's language and free of template leftovers, the plan has a spec per task that says how to test it, and every message opened with where the conversation was | `python tooling/sessions/test_start_interview.py` |
 | [`sessions/test_status_skill.py`](sessions/test_status_skill.py) | The status skill answers "where are we?" from the state file in a new session (the step, the decision taken, the next question), reports a planted problem (a document the state calls ready that does not exist), says there is no project in an empty folder, and changes no file | `python tooling/sessions/test_status_skill.py` |
 | [`sessions/test_continue.py`](sessions/test_continue.py) | Continuing a project in a new session: stopped mid-step, the agent asks the question the state has as next and none that is answered, then closes the step, writes its document and moves on; with a state that is behind the files, it says so, shows what it rebuilt, asks to confirm and does not touch the state before that | `python tooling/sessions/test_continue.py` |
 
 They are not among the checks to run before every change: they need Claude Code
 on the PATH, take a few minutes (the interview about twenty) and spend model
-usage, from the same account as your own sessions. Run the one for a skill after changing that skill. When the
-account's usage limit is reached, the entry test says it could not run and
-exits with 2, instead of reporting failures.
+usage, from the same account as your own sessions. Run the one for a skill after
+changing that skill. When the account's usage limit is reached, a test says it
+could not run and exits with 2, instead of reporting failures; the record skill's
+test does not tell the two apart yet.
+
+Every test but the record skill's ends with one line of what it took: the
+turns, the minutes of agent time, the cost Claude Code reports at API prices
+(on a subscription that is a measure of usage, not a charge), and the tool
+calls that were refused. One run of the entry test is five sessions, about four
+minutes of agent time and under two dollars at API prices.
 
 What the person says in each test is written in Portuguese, as someone
 conducting an interview would write it: in [`sessions/record/`](sessions/record/)
 for the record skill, and inside the test itself for the entry skill.
 
-The entry test runs its sessions through [`sessions/harness.py`](sessions/harness.py),
-which fences each session into its project folder: reading outside it is refused
-unless the test grants a folder, which stands for the person giving access. It
-reads what the agent said and did, in order. The words of a reply are a rough
+Every test but the record skill's, which still calls Claude Code on its own,
+runs its sessions through [`sessions/harness.py`](sessions/harness.py), which
+fences each session into its project folder: reading outside it is refused
+unless the test grants a folder, which stands for the person giving access. A
+session does not see the connectors (MCP servers) of the account that runs the
+test: they have no part in what is tested, and their list alone costs tokens at
+every session start. The harness reads what the agent said and did, in order. The words of a reply are a rough
 check, so the test prints every reply in full for a person to read.
 `--save FILE` keeps a run, and `--replay FILE` judges a saved run again without
 spending a session, which is how to work on the checks themselves.
