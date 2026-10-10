@@ -29,7 +29,7 @@ import tempfile
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
-from harness import REPO, Session, find_claude, refused, run, skills_changes
+from harness import REPO, Session, find_claude, refused, run, skills_changes, spent
 
 sys.path.insert(0, str(REPO / "tooling" / "checks"))
 import check_state  # noqa: E402  (the same reader the gate uses)
@@ -209,6 +209,7 @@ def main() -> int:
         check("the state is behind: it asks the person to confirm", "?" in stale.reply)
         check("the state is behind: the state file was not touched before the person confirmed", digest(behind / ".blueprint" / "state.md") == behind_state)
     check("nothing under skills/ changed in this repository", skills_changes() == before)
+    print("\n" + spent(turns + [stale]))
 
     print(f"\n{'OK' if not failures else 'FAILED'}: {len(failures)} failing check(s)")
     return 1 if failures else 0
