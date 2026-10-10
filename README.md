@@ -7,10 +7,13 @@ project documents and prepares the environment.
 
 It was called `ai-template` until October 2026.
 
-> **Status: under construction.** The seven skills are placeholders: installed
-> today, each one only says that Blueprint is still being built. The CLI does not
-> exist yet. The previous form of Blueprint, a template to copy into a project,
-> is still in [`.ai/`](#the-previous-template) while the skills absorb it.
+> **Status: under construction.** Starting a new project and continuing one work
+> today, with the project's state, the answer to "where are we?" and the research
+> standard. Improving and refactoring an existing project, the decision skill and
+> preparing the repository are not built yet: each of those skills says so when it
+> is called. The CLI does not exist yet. The previous form of Blueprint, a template
+> to copy into a project, is still in [`.ai/`](#the-previous-template) while the
+> skills absorb it.
 
 ---
 
@@ -57,9 +60,10 @@ you wrote.
 
 You say what you want, in your own words: "I want to start a new project", "let's
 continue", "where are we?". There is one way in. The agent works out the starting
-point from the state of the folder and confirms it with you.
+point from the state of the folder and tells you what it concluded.
 
-This describes how Blueprint will work. Today the skills are placeholders.
+Starting and continuing a project work this way today. The rest is still being
+built.
 
 ---
 
