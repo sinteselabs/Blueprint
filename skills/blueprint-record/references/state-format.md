@@ -102,9 +102,23 @@ Which of the others a project gets follows from its kind:
 A document whose fact is still `unknown` is not listed yet. It is added when the
 fact becomes `yes`.
 
-`Situation` is `not-started`, `in-progress` or `ready`. There is no "approved":
-the person reads a document only if they want to. `Where` is the path or link of
-the document, or `-` while there is none.
+`Situation` is one of three:
+
+| Situation | Meaning |
+|---|---|
+| `not-started` | The document does not exist yet |
+| `in-progress` | It exists, and part of what it has to say is missing: a main question of its step has no answer yet, or something answered or decided is not written in it |
+| `ready` | Nothing that is known is missing from it |
+
+There is no "approved": the person reads a document only if they want to.
+
+The research document, the decisions record and the test plan grow with the
+project and have no last entry. Each is `ready` when everything researched,
+decided, left open or left to verify so far is in it, and it stays `ready` as
+entries are added. A decision left open or an item not verified yet does not
+make its document `in-progress`: the entry itself says so.
+
+`Where` is the path or link of the document, or `-` while there is none.
 
 ### `## Main questions`
 

@@ -48,7 +48,7 @@ Deduced: site com telas, que guarda os produtos, as encomendas e o nome e o tele
 |---|---|---|
 | system-description | ready | docs/system-description.md |
 | requirements | ready | docs/requirements.md |
-| research | in-progress | docs/research.md |
+| research | ready | docs/research.md |
 | architecture | not-started | - |
 | decisions | not-started | - |
 | plan | not-started | - |

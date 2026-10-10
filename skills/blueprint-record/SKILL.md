@@ -101,7 +101,9 @@ a decision's heading is `## D-001 · Title`, and file names do not change.
    old one's situation to `replaced by D-NNN`.
 5. If the decision left something to verify, write it in `To test`. It is not
    tested before deciding: it goes into the test plan, as the next section says.
-6. Add the decision to `## Decisions` in the state file and save the state.
+6. Add the decision to `## Decisions` in the state file, set the document
+   `decisions` to `ready` with its place, and save the state. The record is
+   `ready` whenever every decision so far is in it, the open ones included.
 
 ## Recording what is left to test
 
@@ -112,7 +114,9 @@ it is not lost and nobody has to test it before deciding.
    from `assets/test-plan.md`, in the document language.
 2. Add one row per thing to verify, numbered after the last one: `T-001`,
    `T-002`. `Comes from` names the decision, such as `D-001`.
-3. In the state file, the document `test-plan` is `in-progress`, with its place.
+3. In the state file, set the document `test-plan` to `ready`, with its place.
+   It is `ready` whenever every item so far is in it: the row says whether the
+   item was verified.
 4. When an item is verified, write the result in its row. If the result shows
    that a decision does not hold, say so to the person: it comes back to them
    as a new decision.

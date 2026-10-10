@@ -36,7 +36,7 @@ import tempfile
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
-from harness import REPO, Session, find_claude, refused, run, skills_changes, spent
+from harness import REPO, Session, find_claude, refused, run, skills_changes, spent, verdict
 
 HERE = Path(__file__).resolve().parent
 STATE = (HERE / "decide" / "padaria-architecture-state.md").read_text(encoding="utf-8")
@@ -50,6 +50,7 @@ GRADES_ITSELF = (
 )
 INSISTS = ("tem certeza", "reconsider", "ainda recomendo", "mesmo assim recomendo", "insisto", "sugiro repensar", "recomendo repensar")
 DECISION = re.compile(r"^- D-001 · .* · (\S+)\s*$", re.MULTILINE)
+DOCUMENT = re.compile(r"^\| ([a-z-]+) \| (not-started|in-progress|ready) \|", re.MULTILINE)  # a row of the state's Documents table
 RESEARCH = """# Pesquisa
 
 **Projeto:** padaria-pedidos · **Versão:** 0.1 · **Data:** 2026-10-09
@@ -174,6 +175,8 @@ def main() -> int:
             check(f"{name}: the state passes check_state.py", passes.returncode == 0, (passes.stdout.strip().splitlines() or ["no output"])[0])
             case["record"] = read(project / "docs" / "decisions.md")
             case["situation"] = (DECISION.findall(read(state)) or ["missing"])[-1]
+            case["documents"] = dict(DOCUMENT.findall(read(state)))
+            check(f"{name}: the state has the decisions record as ready, an open decision included", case["documents"].get("decisions") == "ready", case["documents"].get("decisions", "missing"))
             check(f"{name}: the decision is in the decisions record, as D-001", "D-001" in case["record"])
             check(
                 f"{name}: the entry has the reason, the alternatives, who decided, the date and the sources",
@@ -186,6 +189,7 @@ def main() -> int:
         plan = read(taken["path"] / "docs" / "test-plan.md")
         check("takes the recommendation: what was left to verify is an item of the test plan", "T-001" in plan and "D-001" in plan, "no docs/test-plan.md" if not plan else "no T-001 from D-001")
         check("takes the recommendation: the test plan carries no leftover of its template", bool(plan) and "{{" not in plan and "<!--" not in plan)
+        check("takes the recommendation: the state has the test plan as ready", taken.get("documents", {}).get("test-plan") == "ready", taken.get("documents", {}).get("test-plan", "missing"))
 
         check("decides later: the state has the decision as open", later.get("situation") == "open", str(later.get("situation")))
         check("decides later: the reply says what depends on the decision", len(results[1]) > 1 and has(results[1][1].reply, ("depend", "espera", "aguarda")))
@@ -198,8 +202,7 @@ def main() -> int:
     check("nothing under skills/ changed in this repository", skills_changes() == before)
     print("\n" + spent(every))
 
-    print(f"\n{'OK' if not failures else 'FAILED'}: {len(failures)} failing check(s)")
-    return 1 if failures else 0
+    return verdict(failures)
 
 
 if __name__ == "__main__":
