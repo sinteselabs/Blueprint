@@ -1,0 +1,6 @@
+[
+  { "nome": "Pão francês", "precoCentavos": 90, "categoria": "pães", "aVenda": true },
+  { "nome": "Bolo de cenoura", "precoCentavos": 3200, "categoria": "bolos", "aVenda": true },
+  { "nome": "Sonho", "precoCentavos": 650, "categoria": "doces", "aVenda": true },
+  { "nome": "Panetone", "precoCentavos": 4500, "categoria": "bolos", "aVenda": false }
+]

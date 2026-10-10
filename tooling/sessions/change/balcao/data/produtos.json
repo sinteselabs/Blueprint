@@ -1,0 +1,5 @@
+[
+  { "nome": "Pão francês", "precoCentavos": 90, "aVenda": true },
+  { "nome": "Bolo de cenoura", "precoCentavos": 3200, "aVenda": true },
+  { "nome": "Panetone", "precoCentavos": 4500, "aVenda": false }
+]

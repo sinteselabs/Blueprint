@@ -17,6 +17,7 @@ import json
 import re
 import shutil
 import subprocess
+import sys
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -165,6 +166,28 @@ def spoke_before_leaving(session: Session, project: Path) -> bool | None:
         if CLIMBS.search(low) or around_text in elsewhere:
             return spoke
     return None
+
+
+def read_state(project: Path) -> tuple[dict[str, str], dict[str, tuple[str, str]], dict[str, str]]:
+    """What a project's state file says: the situation of each step, the situation and place of each document, and the header.
+
+    Three empty dictionaries when the project has no state file. It reads with the gate's own reader, `check_state.py`.
+    """
+    path = Path(project) / ".blueprint" / "state.md"
+    if not path.is_file():
+        return {}, {}, {}
+    checks = str(REPO / "tooling" / "checks")
+    if checks not in sys.path:
+        sys.path.insert(0, checks)
+    import check_state
+
+    lines = path.read_text(encoding="utf-8").splitlines()
+    problems: list[str] = []
+    fields, start = check_state.header(lines, problems)
+    found = check_state.sections(lines, start, problems)
+    steps = {row[0]: row[1] for row in check_state.table(found.get("Steps", []), ["Step", "Situation", "Main questions"], "Steps", problems)}
+    documents = {row[0]: (row[1], row[2]) for row in check_state.table(found.get("Documents", []), ["Document", "Situation", "Where"], "Documents", problems)}
+    return steps, documents, fields
 
 
 def skills_changes() -> str:
