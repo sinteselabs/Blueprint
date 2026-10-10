@@ -185,8 +185,13 @@ test does not tell the two apart yet.
 Every test but the record skill's ends with one line of what it took: the
 turns, the minutes of agent time, the cost Claude Code reports at API prices
 (on a subscription that is a measure of usage, not a charge), and the tool
-calls that were refused. One run of the entry test is five sessions, about four
-minutes of agent time and under two dollars at API prices.
+calls that were refused. A turn that resumes a session reports the cost of the
+whole session so far, so the turns of one session are counted once. One run of
+the entry test is five sessions, about four minutes of agent time and under two
+dollars at API prices; the whole interview is one session of seven or eight
+turns, about fourteen minutes and three and a half dollars. Every test ends by
+naming the checks that failed, so the last lines of its output are enough to
+report a failure.
 
 What the person says in each test is written in Portuguese, as someone
 conducting an interview would write it: in [`sessions/record/`](sessions/record/)
@@ -200,5 +205,8 @@ session does not see the connectors (MCP servers) of the account that runs the
 test: they have no part in what is tested, and their list alone costs tokens at
 every session start. The harness reads what the agent said and did, in order. The words of a reply are a rough
 check, so the test prints every reply in full for a person to read.
-`--save FILE` keeps a run, and `--replay FILE` judges a saved run again without
-spending a session, which is how to work on the checks themselves.
+The entry test keeps what every session said and did, in the system's temporary
+folder or where `--save FILE` says, and `--replay FILE` judges a kept run again
+without spending a session: that is how to read a run that failed, and how to
+work on the checks themselves. The interview test does the same with
+`--folder DIR`: the same command on a finished run only judges it again.

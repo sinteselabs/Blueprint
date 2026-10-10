@@ -28,7 +28,7 @@ import tempfile
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
-from harness import REPO, find_claude, refused, run, skills_changes, spent
+from harness import REPO, find_claude, refused, run, skills_changes, spent, verdict
 
 EXAMPLE_STATE = REPO / "skills" / "blueprint-record" / "assets" / "state.example.md"
 ASKS = "Onde estamos?"
@@ -108,8 +108,7 @@ def main() -> int:
     check("nothing under skills/ changed in this repository", skills_changes() == before)
     print("\n" + spent([under_way, none]))
 
-    print(f"\n{'OK' if not failures else 'FAILED'}: {len(failures)} failing check(s)")
-    return 1 if failures else 0
+    return verdict(failures)
 
 
 if __name__ == "__main__":

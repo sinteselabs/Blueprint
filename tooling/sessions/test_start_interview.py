@@ -7,7 +7,7 @@ The person is scripted: a bakery owner who wants a site to take orders, writes
 in Portuguese, has no budget, and never approves a document. She answers by the
 step the agent says the conversation is in, which is the first line of each of
 its messages: the system description, the requirements, the modeling, the plan.
-To a decision that is costly to undo she answers that she accepts the
+If the agent first asks whether the project is new, she says it is. To a decision that is costly to undo she answers that she accepts the
 recommendation. When she has nothing left to say she tells the agent to go on,
 and when the plan is closed she asks where things are.
 
@@ -43,16 +43,14 @@ import sys
 import tempfile
 from pathlib import Path
 
-from harness import REPO, Session, find_claude, refused, run, skills_changes
+from harness import REPO, Session, find_claude, refused, run, skills_changes, spent, verdict
 
 sys.path.insert(0, str(REPO / "tooling" / "checks"))
 import check_state  # noqa: E402  (the same reader the gate uses)
 
 DECIDE = " Se faltar algum detalhe, decida você e me avise."
-OPENING = [
-    "Quero começar um projeto novo: um site para a padaria receber encomendas.",
-    "Isso, é um projeto novo. Pode começar aqui nesta pasta.",
-]
+OPENING = "Quero começar um projeto novo: um site para a padaria receber encomendas."
+CONFIRM = "Isso, é um projeto novo. Pode começar aqui nesta pasta."
 BY_STEP = {
     1: "Os documentos em português, e só eu desenvolvo. Sobre o sistema: a padaria recebe encomendas pelo WhatsApp e perde "
        "pedidos. Quero que o cliente faça a encomenda num site e a padaria veja a lista do dia. Quem usa é o cliente e a "
@@ -96,6 +94,8 @@ def first_line(reply: str) -> str:
 def next_words(reply: str, said: list[str]) -> str:
     """What the person says next: her answer for the step the agent named, once; otherwise, to go on."""
     match = POSITION.match(first_line(reply))
+    if not match and len(said) == 1:
+        return CONFIRM  # the agent asked whether the project is new before its first block
     answer = BY_STEP.get(int(match.group(1))) if match else None
     if answer and (answer not in said or int(match.group(1)) == 4):
         return answer
@@ -150,9 +150,7 @@ def main() -> int:
             return ok
 
         say.stopped = ""
-        alive = True
-        for text in OPENING[len(turns):]:
-            alive = alive and say(text)
+        alive = bool(turns) or say(OPENING)
         while alive and len(turns) < MAX_TURNS - 1 and turns[-1][0] != WHERE and read_state(project)[0].get("plan") != "closed":
             alive = say(next_words(turns[-1][1].reply, [said for said, _ in turns]))
         if alive and turns[-1][0] != WHERE:
@@ -166,7 +164,8 @@ def main() -> int:
                 print("nothing was kept; run it with --folder to be able to pick a stopped run up")
             return 2
 
-        interview = [s.reply for said, s in turns[2:] if said != WHERE]
+        asked_first = any(said == CONFIRM for said, _ in turns)  # then the first reply was the question, not the interview
+        interview = [s.reply for said, s in turns[1 if asked_first else 0:] if said != WHERE]
         print("\n=== what the interview left", flush=True)
         state = project / ".blueprint" / "state.md"
         passes = subprocess.run([sys.executable, str(REPO / "tooling" / "checks" / "check_state.py"), str(state)], capture_output=True, text=True, encoding="utf-8")
@@ -219,8 +218,7 @@ def main() -> int:
             temporary.cleanup()
     check("nothing under skills/ changed in this repository", skills_changes() == before)
 
-    print(f"\n{'OK' if not failures else 'FAILED'}: {len(failures)} failing check(s)")
-    return 1 if failures else 0
+    return verdict(failures)
 
 
 if __name__ == "__main__":

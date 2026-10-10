@@ -49,7 +49,7 @@ Deduced: aplicativo web com telas, que guarda dados de pacientes.
 | requirements | in-progress | docs/requirements.md |
 | research | in-progress | docs/research.md |
 | architecture | not-started | - |
-| decisions | in-progress | docs/decisions.md |
+| decisions | ready | docs/decisions.md |
 | plan | not-started | - |
 | use-cases | not-started | - |
 | data-model | not-started | - |

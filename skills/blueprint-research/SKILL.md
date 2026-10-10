@@ -106,7 +106,9 @@ when the state does not say.
    `Decision`, `Reason`, `Alternatives` and `Sources`. While the person has not
    chosen, `Decision` says what you recommend and that the choice is open.
 3. Update the summary at the top and the `Not verified` section.
-4. Tell the state that the document exists, with the `blueprint-record` skill.
+4. Set the document `research` to `ready` in the state, with its place, through
+   the `blueprint-record` skill. It is `ready` whenever every question
+   researched so far is in it.
 
 **Outside a Blueprint project,** create no file. Give the result in the
 conversation: the recommendation and its reason first, then the alternatives in
