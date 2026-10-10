@@ -103,6 +103,8 @@ def main() -> int:
     check("nothing under skills/ changed in this repository", skills_changes() == before)
 
     print(f"\n{'OK' if not failures else 'FAILED'}: {len(failures)} failing check(s)")
+    for name in failures:
+        print("  failed: " + name)
     return 1 if failures else 0
 
 

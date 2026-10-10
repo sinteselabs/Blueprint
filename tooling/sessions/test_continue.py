@@ -29,7 +29,7 @@ import tempfile
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
-from harness import REPO, Session, find_claude, refused, run, skills_changes, spent
+from harness import REPO, Session, find_claude, refused, run, skills_changes, spent, verdict
 
 sys.path.insert(0, str(REPO / "tooling" / "checks"))
 import check_state  # noqa: E402  (the same reader the gate uses)
@@ -211,8 +211,7 @@ def main() -> int:
     check("nothing under skills/ changed in this repository", skills_changes() == before)
     print("\n" + spent(turns + [stale]))
 
-    print(f"\n{'OK' if not failures else 'FAILED'}: {len(failures)} failing check(s)")
-    return 1 if failures else 0
+    return verdict(failures)
 
 
 if __name__ == "__main__":

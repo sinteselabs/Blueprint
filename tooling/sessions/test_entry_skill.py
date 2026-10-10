@@ -26,9 +26,10 @@ changing the blueprint skill:
 
     python tooling/sessions/test_entry_skill.py [--save FILE | --replay FILE]
 
-`--save` keeps what every session said and did in a file, and `--replay` judges
-a saved run again without spending a session, which is how to work on the
-checks themselves.
+What every session said and did is kept in a file, so a run that failed can be
+read afterwards: in the system's temporary folder, or where `--save` says.
+`--replay` judges a kept run again without spending a session, which is also
+how to work on the checks themselves.
 
 Exit code 0 when every case passes, 1 otherwise, 2 when the sessions could not
 run at all: Claude Code is missing, or the account's usage limit was reached.
@@ -42,12 +43,13 @@ import tempfile
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
-from harness import REPO, Session, find_claude, refused, run, skills_changes, spent, spoke_before_leaving
+from harness import REPO, Session, find_claude, refused, run, skills_changes, spent, spoke_before_leaving, verdict
 
 HERE = Path(__file__).resolve().parent
 CHECK_STATE = REPO / "tooling" / "checks" / "check_state.py"
 EXAMPLE_STATE = REPO / "skills" / "blueprint-record" / "assets" / "state.example.md"
 BAKERY_STATE = HERE / "entry" / "padaria-pedidos-state.md"
+LAST_RUN = Path(tempfile.gettempdir()) / "blueprint-entry-last-run.json"
 BAKERY = "Quero começar um projeto novo: um site para a padaria receber encomendas."
 QUESTION = ("?",)
 POSITION = re.compile(r"^[\W_]*etapa\s+(\d)\s+de\s+5", re.IGNORECASE)
@@ -149,7 +151,7 @@ def judge(todo: list[dict], results: list[Session], check) -> None:
 def main() -> int:
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     arguments = sys.argv[1:]
-    save = Path(arguments[1]) if arguments[:1] == ["--save"] and len(arguments) > 1 else None
+    save = Path(arguments[1]) if arguments[:1] == ["--save"] and len(arguments) > 1 else LAST_RUN
     replay = Path(arguments[1]) if arguments[:1] == ["--replay"] and len(arguments) > 1 else None
     failures = []
 
@@ -164,8 +166,7 @@ def main() -> int:
         for case, old in zip(todo, saved):
             case["project"] = old["project"]
         judge(todo, [Session(old["code"], old["reply"], [tuple(step) for step in old["steps"]], "", old.get("cost", 0.0), old.get("seconds", 0.0), old.get("denied", [])) for old in saved], check)
-        print(f"\n{'OK' if not failures else 'FAILED'}: {len(failures)} failing check(s), judging a saved run")
-        return 1 if failures else 0
+        return verdict(failures, ", judging a saved run")
 
     claude = find_claude()
     if not claude:
@@ -189,17 +190,15 @@ def main() -> int:
             print(f"could not run: Claude Code refused {len(stopped)} of {len(todo)} sessions: {stopped[0]}")
             print("nothing was tested; run this again when the limit resets")
             return 2
-        if save:
-            kept = [{"name": c["name"], "project": str(c["project"]), "code": s.code, "reply": s.reply, "steps": s.steps, "cost": s.cost, "seconds": s.seconds, "denied": s.denied} for c, s in zip(todo, results)]
-            save.write_text(json.dumps(kept, ensure_ascii=False, indent=1), encoding="utf-8")
+        kept = [{"name": c["name"], "project": str(c["project"]), "code": s.code, "reply": s.reply, "steps": s.steps, "cost": s.cost, "seconds": s.seconds, "denied": s.denied} for c, s in zip(todo, results)]
+        save.write_text(json.dumps(kept, ensure_ascii=False, indent=1), encoding="utf-8")
         judge(todo, results, check)
         print()
         check("no session created a file or a folder before the person answered", not created, ", ".join(created))
     check("nothing under skills/ changed in this repository", skills_changes() == before)
     print("\n" + spent(results))
-
-    print(f"\n{'OK' if not failures else 'FAILED'}: {len(failures)} failing check(s)")
-    return 1 if failures else 0
+    print(f"the run is kept in {save}; --replay judges it again without spending a session")
+    return verdict(failures)
 
 
 if __name__ == "__main__":

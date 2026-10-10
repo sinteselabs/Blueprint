@@ -33,7 +33,7 @@ class Session:
     reply: str  # the agent's last message, which is what the person reads at the end
     steps: list[tuple[str, str]] = field(default_factory=list)  # ("text", what it said) or ("tool", name and input), in order
     session_id: str = ""
-    cost: float = 0.0  # what Claude Code reports for the turn, in dollars at API prices
+    cost: float = 0.0  # what Claude Code reports, in dollars at API prices: for a resumed session, the whole session so far
     seconds: float = 0.0
     denied: list[str] = field(default_factory=list)  # the tools the agent called and was refused, in order
 
@@ -106,13 +106,39 @@ def refused(session: Session) -> str | None:
     return first if "session limit" in first.lower() or "usage limit" in first.lower() else None
 
 
+def cost_of(sessions: list[Session]) -> float:
+    """What the turns cost together, in dollars at API prices.
+
+    A turn that resumes a session reports the cost of the whole session so far,
+    not its own: in a run of seven turns, the last one took 22 seconds and
+    reported $3.47. So the turns of one session count once, by how much each
+    added. A turn that reports less than the one before it is counted whole.
+    """
+    total = 0.0
+    so_far: dict[str, float] = {}
+    for session in sessions:
+        before = so_far.get(session.session_id, 0.0) if session.session_id else 0.0
+        total += session.cost - before if session.cost >= before else session.cost
+        if session.session_id:
+            so_far[session.session_id] = session.cost
+    return total
+
+
 def spent(sessions: list[Session]) -> str:
     """One line with what the turns took, to print at the end of a test: the time, the cost, and what was refused."""
-    line = f"{len(sessions)} session turn(s), {sum(s.seconds for s in sessions) / 60:.1f} min of agent time, about ${sum(s.cost for s in sessions):.2f} at API prices"
+    line = f"{len(sessions)} session turn(s), {sum(s.seconds for s in sessions) / 60:.1f} min of agent time, about ${cost_of(sessions):.2f} at API prices"
     denied = [name for s in sessions for name in s.denied]
     if denied:
         line += f"; {len(denied)} tool call(s) refused: " + ", ".join(f"{name} x{denied.count(name)}" for name in sorted(set(denied)))
     return line
+
+
+def verdict(failures: list[str], note: str = "") -> int:
+    """Prints the last lines of a test and returns its exit code: how many checks failed, and which, so the end of the output is enough."""
+    print(f"\n{'OK' if not failures else 'FAILED'}: {len(failures)} failing check(s){note}")
+    for name in failures:
+        print("  failed: " + name)
+    return 1 if failures else 0
 
 
 def spoke_before_leaving(session: Session, project: Path) -> bool | None:
