@@ -9,8 +9,8 @@ Blueprint takes a software project from an idea in plain language to requirement
 and a repository ready for agentic development. It is delivered as agent skills
 (the product), a Claude Code plugin that carries them, and a CLI.
 
-It is under construction. The seven skills in `skills/` are written; what is
-missing from the product is the CLI. The previous form of Blueprint, a template
+It is under construction. The seven skills in `skills/` are written, and of the
+CLI, `init` works: `check` and `update` are not built yet. The previous form of Blueprint, a template
 to copy into a project, was absorbed by the skills and deleted in October 2026;
 it is in the history, and in the repository it came from.
 
@@ -20,6 +20,7 @@ it is in the history, and in the repository it came from.
 |---|---|
 | `skills/` | The product: one folder per skill, in the open Agent Skills format |
 | `.claude-plugin/` | The plugin manifest and the marketplace file. The repository root is the plugin root |
+| `cli/` | The CLI: `init` today, `check` and `update` to come. Node, no dependencies. Shipped to people, together with `skills/` |
 | `tooling/` | This repository's own tooling (a Langfuse hook for Claude Code, the checks). Not shipped to anyone |
 
 ## Rules
@@ -56,10 +57,13 @@ python tooling/checks/check_shared_text.py
 python tooling/checks/check_state.py
 python tooling/checks/test_checks.py
 python tooling/checks/test_langfuse_hook.py
+npm test
 claude plugin validate .
 ```
 
-`claude plugin validate` needs Claude Code. It reports one expected warning: a
+`npm test` runs the CLI's own tests with Node's test runner, and needs Node 22
+or newer; there are no dependencies to install. `claude plugin validate` needs
+Claude Code. It reports one expected warning: a
 `CLAUDE.md` at the plugin root is not loaded as plugin context. What each check
 guards is in [tooling/README.md](tooling/README.md).
 

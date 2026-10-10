@@ -11,8 +11,8 @@ It was called `ai-template` until October 2026.
 > a new project, continuing one, and improving or refactoring a project that
 > already exists, with the project's state, the answer to "where are we?", the
 > research standard, the decisions that are costly to undo, the documents the
-> kind of project asks for and the prepared repository.
-> The CLI does not exist yet. The previous form of Blueprint, a template
+> kind of project asks for and the prepared repository. Of the CLI, `init`
+> works; `check` and `update` are not built yet. The previous form of Blueprint, a template
 > to copy into a project, was absorbed by the skills and left the repository
 > ([what it was](#before-the-skills)).
 
@@ -51,9 +51,18 @@ can use it. Ask your agent to install the skills from this repository, or copy
 the folders to where your agent looks: `.claude/skills/` for Claude Code,
 `.agents/skills/` for Codex and Antigravity.
 
-**3. The CLI.** Not built yet. It will install Blueprint in a project folder,
-check that everything is in place, and update Blueprint without touching what
-you wrote.
+**3. The CLI.** In a project folder, with Node 22 or newer:
+
+```
+npx blueprintx init
+```
+
+It copies the skills where each agent reads them, writes the Blueprint block of
+`AGENTS.md`, and records what it installed and in which version. It never
+overwrites a file that is already there, and `--dry-run` shows what it would do
+without writing. `blueprint check` and `blueprint update` are not built yet, and
+say so when called. While the package is not published, run it from a clone:
+`node cli/blueprint.js init`.
 
 ---
 
@@ -63,8 +72,8 @@ You say what you want, in your own words: "I want to start a new project", "let'
 continue", "where are we?". There is one way in. The agent works out the starting
 point from the state of the folder and tells you what it concluded.
 
-Starting and continuing a project work this way today. The rest is still being
-built.
+The four starting points work this way today: starting, continuing, improving
+and refactoring.
 
 ---
 
@@ -73,6 +82,7 @@ built.
 ```
 .
 ├── .claude-plugin/          the plugin manifest and the marketplace file: the repository root is the plugin
+├── cli/                     the CLI: one command per thing that needs no model
 ├── skills/                  THE PRODUCT: seven skills in the open Agent Skills format
 │   ├── blueprint/           the way in: finds the starting point and conducts the steps
 │   ├── blueprint-research/  the standard research process
