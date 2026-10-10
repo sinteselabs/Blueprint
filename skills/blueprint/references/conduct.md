@@ -49,13 +49,22 @@ and do not collect such things in a list for the person to review.
 ## Decisions that are costly to undo
 
 The stack, the architecture, hosting, the handling of personal data, anything
-that generates cost. For each one:
+that generates cost. Bring each one to the person with the `blueprint-decide`
+skill. It says how to present several at once, what to do with each kind of
+answer, and how the choice is recorded.
 
-1. Say the question in plain words, and why it is costly to undo.
-2. Show two to four options, each with what it gives and what it costs.
-3. Recommend one, with the reason in one line and the source.
-4. Wait for the person's choice. This is the one place where you wait.
-5. Record the decision with the `blueprint-record` skill.
+If that skill is not available, say so, and present each decision in this shape:
+
+<!-- shared: decision-shape -->
+1. **The question in plain words,** with why it is costly to undo, in one line.
+2. **The recommendation first,** with the reason in one line: the criterion
+   that decided it.
+3. **The other options, one line each:** what it gives and what it costs. Two
+   to four options in all, the recommended one included.
+4. **Wait for the person's choice.** This is the one place where you wait.
+5. **Record the decision** with the `blueprint-record` skill, whatever the
+   choice, including "later".
+<!-- /shared: decision-shape -->
 
 The recommendation is always made. It follows the criteria the person declared:
 with no budget, for example, the main criterion is a free plan. Where they
@@ -92,11 +101,6 @@ If that skill is not available, say so, and research by the same standard:
 6. **If you cannot search the web, say so.** Do not answer from memory as if
    you had researched.
 <!-- /shared: research-standard -->
-
-The skill that will standardise costly decisions, `blueprint-decide`, is not
-built yet in this version: do not call it, and do not mention it to the person.
-Present those decisions yourself, by the rules above.
-
 ## Refinement questions
 
 Ask one only when you cannot go on without the answer, alone, with the reason:
