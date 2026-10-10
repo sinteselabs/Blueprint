@@ -164,9 +164,10 @@ The five steps are the same. Each one asks only about the change:
 
 When the change brings a new fact, such as the first personal data or the
 first screen, the document that fact brings enters the project: list it in the
-state ([documents.md](documents.md) has the table). The modeling documents are
-not written yet in this version of Blueprint ([steps.md](steps.md)): keep the
-answers in the state, and do not propose to write them.
+state ([documents.md](documents.md) has the table), and write it from what the
+change brought, not as a picture of the whole project: the first personal data
+brings the data classification of what the change stores, not of everything
+the project has.
 
 The file an agent reads first (`AGENTS.md`) is prepared by the
 `blueprint-setup` skill, which is not built yet in this version of Blueprint.

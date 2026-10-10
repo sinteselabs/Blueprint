@@ -10,12 +10,11 @@ It was called `ai-template` until October 2026.
 > **Status: under construction.** The four starting points work today: starting
 > a new project, continuing one, and improving or refactoring a project that
 > already exists, with the project's state, the answer to "where are we?", the
-> research standard, the decisions that are costly to undo and the prepared
-> repository. What is not written yet are the modeling documents, such as the
-> use cases and the data model: their answers are kept in the project's state.
+> research standard, the decisions that are costly to undo, the documents the
+> kind of project asks for and the prepared repository.
 > The CLI does not exist yet. The previous form of Blueprint, a template
-> to copy into a project, is still in [`.ai/`](#the-previous-template) while the
-> skills absorb it.
+> to copy into a project, was absorbed by the skills and left the repository
+> ([what it was](#before-the-skills)).
 
 ---
 
@@ -82,7 +81,6 @@ built.
 │   ├── blueprint-record/    the project's state and journal
 │   ├── blueprint-status/    "where are we?"
 │   └── blueprint-setup/     prepares the repository; carries the files a project starts from
-├── .ai/                     the previous template, being absorbed into the skills
 ├── tooling/                 this repository's own tooling: a Langfuse hook for Claude Code and the checks
 ├── AGENTS.md, CLAUDE.md     instructions for working on Blueprint itself
 └── LICENSE                  MIT
@@ -90,17 +88,13 @@ built.
 
 ---
 
-## The previous template
+## Before the skills
 
 Until October 2026 Blueprint was a set of Markdown files that a project copied:
-a single entry point for AI assistants, [`.ai/ai.md`](.ai/ai.md), and a guided
-kickoff, [`.ai/workflows/project-kickoff.md`](.ai/workflows/project-kickoff.md),
-that interviews you and writes the project's documents one at a time.
-
-Those files are still in `.ai/`, written for a project that copies them. They
-are the source material for the skills and leave the repository as the skills
-absorb them. Copying this repository into a project is no longer the way to use
-Blueprint.
+an entry point for AI assistants and a guided kickoff that interviewed you and
+wrote the project's documents one at a time. The skills absorbed them, and
+those files left the repository in October 2026. Copying this repository into a
+project is no longer the way to use Blueprint; the three ways above are.
 
 ---
 

@@ -10,9 +10,9 @@ and a repository ready for agentic development. It is delivered as agent skills
 (the product), a Claude Code plugin that carries them, and a CLI.
 
 It is under construction. The seven skills in `skills/` are written; what is
-missing from the product is the CLI and the modeling documents. The previous
-form of Blueprint, a template to copy into a project, still lives in `.ai/`
-until the skills absorb it.
+missing from the product is the CLI. The previous form of Blueprint, a template
+to copy into a project, was absorbed by the skills and deleted in October 2026;
+it is in the history, and in the repository it came from.
 
 ## Map
 
@@ -20,7 +20,6 @@ until the skills absorb it.
 |---|---|
 | `skills/` | The product: one folder per skill, in the open Agent Skills format |
 | `.claude-plugin/` | The plugin manifest and the marketplace file. The repository root is the plugin root |
-| `.ai/` | The previous template, being absorbed into the skills. Its files are written for a project that copies them: do not read them as instructions for this repository |
 | `tooling/` | This repository's own tooling (a Langfuse hook for Claude Code, the checks). Not shipped to anyone |
 
 ## Rules

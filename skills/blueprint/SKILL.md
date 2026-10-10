@@ -12,8 +12,7 @@ way in. There is only one, whatever the person wants to do.
 > **Under construction.** This skill finds the starting point, conducts the
 > interview of a new project from the idea to a prepared repository, continues a
 > project that stopped, and conducts a change to a project that already exists.
-> The modeling documents (use cases, data model, wireframes and the others) are
-> not written yet: their answers are kept in the state.
+> What is missing from Blueprint is the CLI.
 
 ## How to talk
 
@@ -62,9 +61,14 @@ permission. They must already know why.
    you look.
 4. **The folders beside it,** the ones with the same parent: their names, and
    whether each has `.blueprint/state.md`.
+5. **The person's project list,** `~/.blueprint/projects.md`, only when it is
+   there: it names every project that went through Blueprint, with its path.
+   It is what finds a project that lives in another corner of the machine. If
+   it is not there, or you cannot read it, go on without it and say nothing
+   about it.
 
-Outside the project folder, read folder names and Blueprint state files only.
-Open nothing else.
+Outside the project folder, read folder names, Blueprint state files and that
+list only. Open nothing else.
 
 If the folder you are in is a home folder or the root of a drive, do not look
 around and do not start a project there. Ask where the project should live.
@@ -135,7 +139,9 @@ The interview in short:
 
 1. **The first message** asks the language of the documents, whether more than
    one person will develop, and the first block of the system description. Ask
-   only what the person's first sentence did not already answer. When the
+   only what the person's first sentence did not already answer. If the person's
+   folder `~/.blueprint/` is there, what it says about them is used from here on,
+   and the message says in one line what you are using from it. When the
    person asked to start, this is the same message that says what you found in
    the folder, and nothing is created yet: the state file is written with
    their first answer.

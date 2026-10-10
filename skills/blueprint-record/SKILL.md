@@ -9,7 +9,9 @@ A project's memory lives in files, not in the conversation. A conversation has a
 limit and ends. What is written here is what the next session, another agent or
 another person resumes from.
 
-This skill writes inside the project folder only.
+This skill writes inside the project folder. The one exception is the person's
+own folder, outside every project, and only with their permission: see
+[The personal memory](#the-personal-memory).
 
 ## When to record
 
@@ -20,6 +22,7 @@ This skill writes inside the project folder only.
 | A step closed, a document became ready, or a phase of the plan was delivered | The milestones file, then the state file |
 | The session is ending, or the person says they are stopping | The session record, then the state file |
 | The conversation is getting long | The state file, before anything is lost |
+| You learned something about the person that is true in any project | The personal memory, with their permission |
 
 Do not wait for the end of the session to save the state. Save at the end of
 every block.
@@ -33,6 +36,7 @@ every block.
 | Milestones | `.blueprint/journal/milestones.md` | [references/journal.md](references/journal.md) |
 | Decisions record | `decisions.md` in the documents folder (the state's `documents_at`) | [references/journal.md](references/journal.md) |
 | Test plan | `test-plan.md` in the documents folder | The template, [assets/test-plan.md](assets/test-plan.md) |
+| The personal memory | `~/.blueprint/`, outside every project | [references/personal-memory.md](references/personal-memory.md) |
 
 Templates are in `assets/`: `state.md`, `session.md`, `milestones.md`,
 `decisions.md` and `test-plan.md`. `assets/state.example.md` is a filled state
@@ -141,6 +145,26 @@ When the session is ending:
 3. Save the state file last, so `## Next question` says where the next session
    starts.
 
+## The personal memory
+
+What is true of the person in any project goes to a folder of theirs, outside
+every project, so a new project does not start from zero. What is true of one
+project never leaves that project.
+
+Read [references/personal-memory.md](references/personal-memory.md) before you
+write there for the first time. In short:
+
+1. **Ask once,** the first time there is something worth saving, saying what you
+   learned and where it would go. No answer means no.
+2. **Without permission, write nothing outside the project.** Keep the learning
+   in the project journal. Everything works; it only does not carry over.
+3. **Only what is true of the person:** how they like to work, what they
+   already use, a lesson. Never a project's content, never a person's data,
+   never a key.
+4. **Say in one line what you saved and where,** as you save it.
+5. **At the start of a project,** when the folder is there, read it and say in
+   one line what you are using from it.
+
 ## When a tool keeps the memory
 
 The state's `memory` and `observability` fields say `journal` or name a tool.
@@ -152,7 +176,9 @@ it is back.
 ## Never
 
 - Never write a key, a token or a password in any of these files.
-- Never write outside the project folder.
+- Never write outside the project folder, except the person's own folder, with
+  their permission, and only what is true of them in any project.
+- Never carry what belongs to one project into another.
 - Never drop what was already answered. Correct an answer in place and keep the rest.
 - Never mark a step `advanced` or `closed` with a main question unanswered.
 - Never say something was saved when it was not. If a file cannot be written,
