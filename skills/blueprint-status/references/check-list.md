@@ -48,6 +48,20 @@ reliably and is not part of this version.
     see that it answers. If you have no way to check it, say that it was not
     checked. Do not report it as working.
 
+## The prepared repository
+
+Only when the plan is closed. Before that, none of this is missing: it is not
+written yet.
+
+14. **The entry file has the Blueprint block.** `AGENTS.md` at the project root,
+    with `<!-- blueprint:start -->` and `<!-- blueprint:end -->`. Without it, an
+    agent that opens the project does not know its rules: the fix is the
+    `blueprint-setup` skill.
+15. **What the block names exists:** the documents folder, the plan, the state
+    file and the journal, at the paths the block gives.
+16. **`CLAUDE.md` names `AGENTS.md`,** so Claude Code reads the same rules.
+17. **A playbook per role,** only when the state's `developers` is more than 1.
+
 ## Nothing twice
 
 12. **One state file.** No second `.blueprint/state.md` in a folder inside the

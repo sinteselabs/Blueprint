@@ -50,8 +50,18 @@ only about the change, and [change.md](change.md) says what each one asks and
 writes. A step with `0 of 0` main questions is one the change does not touch:
 it is not left to do.
 
-When every step is closed, the interview is over. Say so, and that the next
-thing is the first task of the plan that is not done.
+When every step is closed, the interview is over. What comes next depends on
+one thing: whether the repository was prepared, which is told by the block
+between `<!-- blueprint:start -->` and `<!-- blueprint:end -->` in the entry
+file, `AGENTS.md` at the project root.
+
+- **The block is not there:** preparing the repository is what comes first, with
+  the `blueprint-setup` skill, even when the person asked to go on with the
+  work. Say why in one line: without it, an agent that opens this project does
+  not know its rules, its plan or where to record. Then prepare it, and say
+  which task is first.
+- **The block is there:** the next thing is the first task of the plan that is
+  not done. Name it, with its spec.
 
 ## When the state is behind
 

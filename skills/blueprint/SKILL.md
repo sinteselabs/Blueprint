@@ -10,9 +10,10 @@ requirements and a repository ready for agentic development. This skill is the
 way in. There is only one, whatever the person wants to do.
 
 > **Under construction.** This skill finds the starting point, conducts the
-> interview of a new project up to the plan, continues a project that stopped,
-> and conducts a change to a project that already exists. Preparing the
-> repository for development is not built yet.
+> interview of a new project from the idea to a prepared repository, continues a
+> project that stopped, and conducts a change to a project that already exists.
+> The modeling documents (use cases, data model, wireframes and the others) are
+> not written yet: their answers are kept in the state.
 
 ## How to talk
 
@@ -149,8 +150,8 @@ The interview in short:
    personal data, anything that generates cost) is the one place where you wait:
    show the options, recommend one by the criteria the person declared, and let
    them choose.
-5. **After the plan,** say what the person has, and that preparing the
-   repository for development is not built yet in this version of Blueprint.
+5. **After the plan,** prepare the repository with the `blueprint-setup` skill,
+   then say what the person has and which task is first.
 
 The state file and the journal are kept by the `blueprint-record` skill. If it
 is not available, tell the person, and keep the same information in
