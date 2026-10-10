@@ -29,11 +29,23 @@ an answer the person just gave or a decision just taken, the file is behind.
 Say so in one line, and say that it must be saved. Do not report it as if it
 were saved.
 
-## 3. Go through the project check
+## 3. Run the project check
 
-Go through the list in [references/check-list.md](references/check-list.md).
-You do it by reading: the script that will do this is not part of this version
-of Blueprint. Fix nothing. A problem is reported with how to fix it.
+This skill carries the check as a script, so it always gives the same answer:
+
+```
+node <this skill's folder>/check.js [project folder] [--json]
+```
+
+It only reads. It exits 0 when nothing is wrong, 1 when something is, 2 when it
+could not run, and `--json` gives the same result for you to read. Say in one
+line what it found, and fix nothing on your own: a problem is reported with how
+to fix it.
+
+If there is no Node on the machine, or the script cannot run, say so, and go
+through the list in [references/check-list.md](references/check-list.md) by
+reading. Say that you checked without the script, because by reading you may
+miss something.
 
 ## 4. Answer
 

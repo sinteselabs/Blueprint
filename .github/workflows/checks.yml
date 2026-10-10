@@ -1,0 +1,64 @@
+# Every gate this repository has, on every change, and the CLI on the three
+# systems it has to work on (NFR-08). `claude plugin validate .` is not here:
+# it needs Claude Code, so it stays a local gate, named in AGENTS.md.
+name: checks
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  cli:
+    name: cli on ${{ matrix.os }}, node ${{ matrix.node }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        node: ["22", "24"]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: ${{ matrix.node }}
+      - run: npm test
+
+  repository:
+    name: the repository's own checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - run: pip install "langfuse>=4,<5"
+      - run: python tooling/checks/check_links.py
+      - run: python tooling/checks/check_root_names.py
+      - run: python tooling/checks/check_skills.py
+      - run: python tooling/checks/check_shared_text.py
+      - run: python tooling/checks/check_state.py
+      - run: python tooling/checks/test_checks.py
+      - run: python tooling/checks/test_langfuse_hook.py
+
+  package:
+    name: what the package would ship
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+      # The package carries the skills, so a file missing from `files` would
+      # ship a Blueprint that cannot conduct anything.
+      - run: npm pack --dry-run
+      - name: the skills are in the package
+        run: |
+          npm pack --dry-run --json > packed.json
+          node -e '
+            const files = JSON.parse(require("fs").readFileSync("packed.json", "utf8"))[0].files.map((f) => f.path);
+            const missing = ["cli/blueprint.js", "skills/blueprint/SKILL.md", "skills/blueprint-status/check.js", "LICENSE"].filter((p) => !files.includes(p));
+            if (missing.length) { console.error("the package would not carry: " + missing.join(", ")); process.exit(1); }
+            console.log(files.length + " files, with the seven skills and the CLI");
+          '

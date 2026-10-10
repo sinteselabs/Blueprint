@@ -1,0 +1,32 @@
+{
+  "name": "blueprintx",
+  "version": "0.1.0",
+  "description": "Takes a software project from an idea in plain language to requirements and a repository ready for agentic development.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "blueprint": "cli/blueprint.js"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "files": [
+    "cli/",
+    "skills/",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "node --test \"cli/**/*.test.js\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sinteselabs/Blueprint.git"
+  },
+  "keywords": [
+    "agent-skills",
+    "requirements",
+    "specification",
+    "claude-code"
+  ]
+}
