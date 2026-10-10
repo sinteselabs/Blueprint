@@ -5,7 +5,10 @@ real Claude Code sessions: one small change, one improvement and one
 reorganisation.
 
 Each case opens in a copy of a small project kept in `change/`, whose code
-runs, and receives what the person would say, without naming a skill.
+runs, and receives what the person would say, without naming a skill. The
+person asks to plan the change, or to reorganise the project: asked plainly for
+a change to the code, a coding agent makes it and Blueprint is never called,
+which is what a plain request should get.
 
 | Case | The project | What must happen |
 |---|---|---|
@@ -51,12 +54,12 @@ ROW = re.compile(r"^\|\s*T-\d+\s*\|", re.MULTILINE)
 CASES = [
     {
         "name": "small change", "folder": "a", "project": "loja", "extra": {}, "turns": 2,
-        "asks": "Quero que a lista de produtos venha em ordem alfabética pelo nome.",
+        "asks": "Quero planejar uma mudança neste projeto antes de mexer no código: a lista de produtos deve vir em ordem alfabética pelo nome.",
         "then": "Pode gravar a spec. Ainda não comece a tarefa.",
     },
     {
         "name": "improvement", "folder": "b", "project": "loja", "extra": {"docs/arquitetura.md": "loja-arquitetura.md"}, "turns": MAX_TURNS,
-        "asks": "Quero acrescentar uma página no navegador com a lista de produtos, para o cliente ver nome, preço e categoria. Hoje só existe a rota que devolve JSON.",
+        "asks": "Quero melhorar este projeto, e planejar antes de mexer no código: acrescentar uma página no navegador com a lista de produtos, para o cliente ver nome, preço e categoria. Hoje só existe a rota que devolve JSON.",
         "then": "Pode escrever. A página é uma só: a lista de produtos, com nome, preço e categoria. Se faltar algum detalhe, decida você e me avise.",
     },
     {

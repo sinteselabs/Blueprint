@@ -39,7 +39,9 @@ same, and ask that in the message below.
 
 ## 2. The first message
 
-One message, in this order. Nothing is written before the person answers it.
+One message, in this order, about fifteen lines in all: one line for each
+thing is enough, and the detail is in the files. Nothing is written before the
+person answers it.
 
 1. **What you read and what you concluded,** in one line: improving or
    refactoring, and whether the change is small.
@@ -166,7 +168,9 @@ Never start a second plan.
   document, under a heading with the name of the reorganisation. Only that
   part: the rest of the architecture is not written.
 - **How it will be is a decision that is costly to undo.** Bring it with the
-  `blueprint-decide` skill, with the recommendation first.
+  `blueprint-decide` skill, with the recommendation first, even when the
+  person named the parts or told you to decide the details. Write the test
+  plan while you wait: it does not depend on the answer.
 - **Each task leaves the project working.** Its spec says which rows of the
   test plan must pass.
 

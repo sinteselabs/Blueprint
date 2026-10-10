@@ -28,7 +28,8 @@ No long explanation, and no document pasted into the conversation.
   what they already said, and then you say what you took as the answer, so they
   can correct it. Do not answer a main question from your own judgment alone.
 - When the person tells you to decide, decide the small things, say each in one
-  line, and go on.
+  line, and go on. A decision that is costly to undo is never one of them:
+  bring it to the person all the same, with your recommendation.
 
 ## After each answer, in this order
 
