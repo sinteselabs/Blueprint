@@ -26,7 +26,8 @@ function project(name) {
 }
 
 before(() => {
-  root = mkdtempSync(join(tmpdir(), "blueprint-cli-"));
+  // a path with an accent and a space, which is where this repository itself lives (NFR-08)
+  root = mkdtempSync(join(tmpdir(), "blueprint é cli "));
 });
 
 after(() => {

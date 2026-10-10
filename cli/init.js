@@ -2,7 +2,7 @@
 // It never overwrites what is already there (FR-39), and it creates no document:
 // those are written by the interview.
 
-import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
 import { join, relative, sep } from "node:path";
 
 import { MARKS, copySkills, installationAbove, isFile, readPackageFile, writeNew, writeRecord } from "./files.js";
@@ -105,8 +105,4 @@ export function init(argv, folder, write) {
   if (pretend) write("\nNothing was written. Run it without --dry-run to install.");
   else write("\nNext: open your coding agent in this folder and say what you want to do.");
   return 0;
-}
-
-export function installedHere(folder) {
-  return existsSync(join(folder, ".blueprint", "installed.json"));
 }

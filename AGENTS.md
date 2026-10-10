@@ -63,8 +63,10 @@ claude plugin validate .
 ```
 
 `npm test` runs the CLI's own tests with Node's test runner, and needs Node 22
-or newer; there are no dependencies to install. `claude plugin validate` needs
-Claude Code. It reports one expected warning: a
+or newer; there are no dependencies to install. Every one of these also runs on
+GitHub, on every push, and the CLI's tests run there on Windows, macOS and
+Linux with Node 22 and 24 (`.github/workflows/checks.yml`). `claude plugin
+validate` is the one gate that stays local: it needs Claude Code. It reports one expected warning: a
 `CLAUDE.md` at the plugin root is not loaded as plugin context. What each check
 guards is in [tooling/README.md](tooling/README.md).
 

@@ -75,18 +75,6 @@ export function installationAbove(folder) {
   }
 }
 
-/** True when the folder has nothing but version control, agent configuration, a licence or an empty readme. */
-export function looksEmpty(folder) {
-  const ignore = new Set([".git", ".gitignore", ".gitattributes", ".claude", ".agents", ".vscode", ".idea", "license", "license.md", "readme.md"]);
-  for (const entry of readdirSync(folder, { withFileTypes: true })) {
-    const name = entry.name.toLowerCase();
-    if (ignore.has(name)) continue;
-    if (name === "readme.md" || name === "readme") continue;
-    return false;
-  }
-  return true;
-}
-
 /** The record of what was installed: the version, when, and every file with its hash. */
 export function writeRecord(folder, files, { pretend = false } = {}) {
   const { version } = JSON.parse(readFileSync(join(PACKAGE, "package.json"), "utf8"));

@@ -42,7 +42,8 @@ function project(name, change = (text) => text) {
 }
 
 before(() => {
-  root = mkdtempSync(join(tmpdir(), "blueprint-check-"));
+  // a path with an accent and a space, which is where this repository itself lives (NFR-08)
+  root = mkdtempSync(join(tmpdir(), "blueprint é check "));
 });
 
 after(() => {
