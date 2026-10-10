@@ -9,8 +9,9 @@ Blueprint takes a software project from an idea in plain language to requirement
 and a repository ready for agentic development. It is delivered as agent skills
 (the product), a Claude Code plugin that carries them, and a CLI.
 
-It is under construction. The seven skills in `skills/` are written, and of the
-CLI, `init` and `check` work: `update` is not built yet. The previous form of Blueprint, a template
+It is under construction. The seven skills in `skills/` are written and the CLI
+has its three commands. What is left is the testing in the other agents and the
+publication. The previous form of Blueprint, a template
 to copy into a project, was absorbed by the skills and deleted in October 2026;
 it is in the history, and in the repository it came from.
 
@@ -20,7 +21,7 @@ it is in the history, and in the repository it came from.
 |---|---|
 | `skills/` | The product: one folder per skill, in the open Agent Skills format |
 | `.claude-plugin/` | The plugin manifest and the marketplace file. The repository root is the plugin root |
-| `cli/` | The CLI: `init` and `check` today, `update` to come. Node, no dependencies. Shipped to people, together with `skills/`. The check itself lives in `skills/blueprint-status/check.js`, so the CLI and an agent run the same file |
+| `cli/` | The CLI: `init`, `check` and `update`. Node, no dependencies. Shipped to people, together with `skills/`. The check itself lives in `skills/blueprint-status/check.js`, so the CLI and an agent run the same file |
 | `tooling/` | This repository's own tooling (a Langfuse hook for Claude Code, the checks). Not shipped to anyone |
 
 ## Rules

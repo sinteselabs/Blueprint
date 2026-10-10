@@ -157,9 +157,8 @@ describe("blueprint", () => {
     assert.match(out, /blueprint check \[folder\]/, "the usage names every command that works");
   });
 
-  it("says plainly that update is not built yet", async () => {
-    const { code, out } = await cli(root, "update");
-    assert.equal(code, 2);
-    assert.match(out, /not built yet/);
+  it("names its three commands in the usage", async () => {
+    const { out } = await cli(root, "--help");
+    for (const command of ["init", "check", "update"]) assert.match(out, new RegExp(`^  ${command}\\s`, "m"), `the usage names ${command}`);
   });
 });

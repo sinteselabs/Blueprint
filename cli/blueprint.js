@@ -8,6 +8,7 @@ import { fileURLToPath } from "node:url";
 import { check, usage as checkUsage } from "./check.js";
 import { init, usage as initUsage } from "./init.js";
 import { readPackageFile } from "./files.js";
+import { run as updateRun, usage as updateUsage } from "./update.js";
 
 const { version } = JSON.parse(readPackageFile("package.json"));
 
@@ -24,13 +25,11 @@ Usage: blueprint <command> [options]
 
 ${initUsage}
 
-${checkUsage}`;
+${checkUsage}
 
-const NOT_BUILT = {
-  update: "`blueprint update` is not built yet. Until it is, install the new version in a copy of the folder and compare, or ask your coding agent to.",
-};
+${updateUsage}`;
 
-export async function run(argv, folder, write) {
+export async function run(argv, folder, write, options = {}) {
   const [command, ...rest] = argv;
   if (!command || command === "--help" || command === "-h" || command === "help") {
     write(usage);
@@ -42,10 +41,7 @@ export async function run(argv, folder, write) {
   }
   if (command === "init") return init(rest, folder, write);
   if (command === "check") return check(rest, folder, write);
-  if (command in NOT_BUILT) {
-    write(NOT_BUILT[command]);
-    return 2;
-  }
+  if (command === "update") return updateRun(rest, folder, write, options);
   write(`I do not know the command ${command}.\n\n${usage}`);
   return 2;
 }
