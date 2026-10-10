@@ -53,17 +53,17 @@ DECIDED = re.compile(r"^- D-\d+ · .* · decided\s*$", re.MULTILINE)
 ROW = re.compile(r"^\|\s*T-\d+\s*\|", re.MULTILINE)
 CASES = [
     {
-        "name": "small change", "folder": "a", "project": "loja", "extra": {}, "turns": 2,
+        "name": "small change", "folder": "a", "project": "loja", "extra": {}, "turns": 2, "lines": 12,
         "asks": "Quero planejar uma mudança neste projeto antes de mexer no código: a lista de produtos deve vir em ordem alfabética pelo nome.",
         "then": "Pode gravar a spec. Ainda não comece a tarefa.",
     },
     {
-        "name": "improvement", "folder": "b", "project": "loja", "extra": {"docs/arquitetura.md": "loja-arquitetura.md"}, "turns": MAX_TURNS,
+        "name": "improvement", "folder": "b", "project": "loja", "extra": {"docs/arquitetura.md": "loja-arquitetura.md"}, "turns": MAX_TURNS, "lines": 20,
         "asks": "Quero melhorar este projeto, e planejar antes de mexer no código: acrescentar uma página no navegador com a lista de produtos, para o cliente ver nome, preço e categoria. Hoje só existe a rota que devolve JSON.",
         "then": "Pode escrever. A página é uma só: a lista de produtos, com nome, preço e categoria. Se faltar algum detalhe, decida você e me avise.",
     },
     {
-        "name": "reorganisation", "folder": "c", "project": "balcao", "extra": {}, "turns": MAX_TURNS,
+        "name": "reorganisation", "folder": "c", "project": "balcao", "extra": {}, "turns": MAX_TURNS, "lines": 20,
         "asks": "Quero reorganizar este projeto por dentro, sem mudar o que ele faz. Hoje está tudo no src/server.js: as rotas, as regras e a leitura dos arquivos de produtos, clientes e pedidos. Quero separar isso em partes.",
         "then": "Pode escrever. Se faltar algum detalhe, decida você e me avise.",
     },
@@ -160,6 +160,9 @@ def main() -> int:
             check(f"{name}: it read the code before its first message", bool(read_first))
             check(f"{name}: nothing was written before the person answered", case["after_first"] == before, ", ".join(sorted(set(case["after_first"]) ^ set(before))))
             check(f"{name}: the first message ends in a question", "?" in first.reply)
+            lines = [line for line in first.reply.splitlines() if line.strip()]
+            print(f"    the first message: {len(lines)} lines, {len(first.reply.split())} words", flush=True)
+            check(f"{name}: the first message is short, at most {case['lines']} lines", len(lines) <= case["lines"], f"{len(lines)} lines")
             code = [path for path in sorted(set(before) | set(after)) if path.startswith(CODE) and after.get(path) != before.get(path)]
             check(f"{name}: no file of code was created or changed", not code, ", ".join(code))
             unnamed = [path for path in changed if Path(path).name.lower() not in replies.lower()]

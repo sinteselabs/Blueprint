@@ -39,24 +39,54 @@ same, and ask that in the message below.
 
 ## 2. The first message
 
-One message, in this order, about fifteen lines in all: one line for each
-thing is enough, and the detail is in the files. Nothing is written before the
-person answers it.
+One message. Nothing is written before the person answers it. The person
+knows their project: say only what shows that you read it and what they must
+decide, one line for each thing. The detail is in the files.
 
-1. **What you read and what you concluded,** in one line: improving or
-   refactoring, and whether the change is small.
-2. **What the project is,** in one or two lines, said as read from the code.
-3. **For a small change, the task:** what it does, what it does not, when it
-   is done. Three or four lines.
-4. **For any other change, the documents and the proposal:**
-   - one line for each document that exists: it matches the code, or it is
-     outdated and in what;
-   - one line naming the ones that do not exist;
-   - what you propose to write, one line each: the files you will create, and
-     the existing files you will change, with the part.
-5. **What you did not read,** in one line.
+**For a small change, under ten lines:**
+
+1. **What you concluded,** in one line: that the change is small, and why.
+2. **The task:** what it does, what it does not, when it is done. One line each.
+3. **Where the spec will be written,** in one line.
+4. **What the files do not answer,** two questions at most, and then the one
+   that lets you write: "May I write the spec?"
+
+**For any other change, about fifteen lines:**
+
+1. **What you concluded,** in one line: improving or refactoring, and why the
+   change is not small.
+2. **What the project is,** in one line, said as read from the code.
+3. **The documents:** one line for each that exists, saying that it matches
+   the code, or that it is outdated and in what; then one line naming the ones
+   that do not exist.
+4. **What you propose to write,** one line each: the files you will create, and
+   the existing files you will change, with the part.
+5. **What you did not read,** in one line, only when something was left out.
 6. **What the files do not answer,** three questions at most, and then the one
    that lets you write: "May I write this?"
+
+For example, in Portuguese, the whole message:
+
+> **Melhoria · li o projeto, e nada foi escrito.** Não é pequena: traz o
+> primeiro dado pessoal do projeto, o telefone do paciente.
+> O projeto, lido do código: um site em Django que mostra a agenda da clínica.
+> - `README.md`: bate com o código.
+> - `docs/acesso.md`: desatualizado. Diz que a entrada é por senha (o código
+>   manda um link por e-mail) e que há três perfis (o código tem dois).
+> - Não existem: requisitos, decisões, plano, plano de testes.
+>
+> Proponho:
+> - criar `docs/plan.md`, com o que entra, o que muda e o que sai, e uma spec
+>   por tarefa em `docs/specs/`;
+> - criar `.blueprint/state.md`, para qualquer sessão continuar daqui;
+> - em `docs/acesso.md`, corrigir só a parte dos perfis, que a mudança toca. A
+>   da senha fica anotada.
+>
+> 1. Quem pode ver o telefone: só a recepção, ou o médico também?
+> 2. Posso escrever isso?
+
+Keep it to that. What you took as given and the small things you decided are
+said after the go-ahead, with what you wrote: not in this message.
 
 This is one of the two places where you wait: you are about to write in a
 project that is not yours. The other is a decision that is costly to undo.
@@ -133,8 +163,10 @@ The five steps are the same. Each one asks only about the change:
 | Does not exist | Do not write it whole. Create only what this path writes: the plan with its specs, the decisions record when there is a decision, and for a refactor the test plan and the affected part of the architecture |
 
 When the change brings a new fact, such as the first personal data or the
-first screen, the document that fact brings enters the project
-([documents.md](documents.md) has the table).
+first screen, the document that fact brings enters the project: list it in the
+state ([documents.md](documents.md) has the table). The modeling documents are
+not written yet in this version of Blueprint ([steps.md](steps.md)): keep the
+answers in the state, and do not propose to write them.
 
 The file an agent reads first (`AGENTS.md`) is prepared by the
 `blueprint-setup` skill, which is not built yet in this version of Blueprint.
