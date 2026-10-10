@@ -70,22 +70,32 @@ depends on it, and go on with the rest.
 
 ## Research
 
-1. Write the question you are researching.
-2. Read the sources in this session, and date them. The official page and the
-   pricing page come first. Say when a source is not the official one.
-3. Compare the options by the criteria the person declared.
-4. Give one recommendation, with the reason in one line.
-5. Write the result in the `research` document: decision, reason, alternatives,
-   sources.
-6. If you cannot search the web, say so. Do not answer from memory as if you
-   had researched.
+Research with the `blueprint-research` skill: before each decision that is
+costly to undo, and when the person hands a question back. It returns one
+recommendation with its reason, and writes the comparison and the sources in the
+`research` document. Do it in the same turn in which you record the answers:
+research never holds the conversation.
 
 The person sees only the recommendation and its reason. The rest is in the document.
 
-Do the research yourself, by these rules. The skills that will standardise
-research and costly decisions, `blueprint-research` and `blueprint-decide`, are
-not built yet in this version: do not call them, and do not mention them to the
-person.
+If that skill is not available, say so, and research by the same standard:
+
+<!-- shared: research-standard -->
+1. **Write the question** you are researching, in one sentence.
+2. **Read the sources in this session, and date them.** The official page and
+   the pricing page come first. Say when a source is not the official one.
+3. **Compare the options by the criteria the person declared.** Where they
+   declared none, compare by what is best for this kind of project, and say so.
+4. **Give one recommendation,** with the reason in one line.
+5. **Write the result** in the research document: decision, reason,
+   alternatives, sources.
+6. **If you cannot search the web, say so.** Do not answer from memory as if
+   you had researched.
+<!-- /shared: research-standard -->
+
+The skill that will standardise costly decisions, `blueprint-decide`, is not
+built yet in this version: do not call it, and do not mention it to the person.
+Present those decisions yourself, by the rules above.
 
 ## Refinement questions
 

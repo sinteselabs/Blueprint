@@ -20,9 +20,13 @@ from its kind:
 | `playbooks` | `developers` is more than 1 |
 <!-- /shared: documents-by-kind -->
 
-Templates for the six fixed documents and for a task's spec are in
-`assets/documents/`. The decisions record is written by the `blueprint-record`
-skill, which has its template.
+Templates for the system description, the requirements, the architecture, the
+plan and a task's spec are in `assets/documents/`. Two documents are written by
+other skills, each with its own template: the decisions record by
+`blueprint-record`, and the research document by `blueprint-research`. If the
+research skill is not available, write the research document yourself: one
+section per question, with the decision, the reason, the alternatives and the
+sources, and a last section for what was not verified.
 
 ## Where they go
 
