@@ -171,6 +171,25 @@ def spoke_before_leaving(session: Session, project: Path) -> bool | None:
     return None
 
 
+def used_skill(session: Session, name: str) -> bool:
+    """Whether a skill guided the turn: the agent called it, or read a file of it.
+
+    An agent reaches a skill's text either way, and what is being tested is the
+    behaviour the text asks for, not which tool carried it.
+    """
+    folder = f"skills/{name}/"
+    for kind, what in session.steps:
+        if kind != "tool":
+            continue
+        head, _, raw = what.partition(" ")
+        low = raw.replace("\\\\", "/").replace("\\", "/").lower()
+        if head == "Skill" and name in low:
+            return True
+        if head in ("Read", "Glob", "Grep") and folder in low:
+            return True
+    return False
+
+
 def read_state(project: Path) -> tuple[dict[str, str], dict[str, tuple[str, str]], dict[str, str]]:
     """What a project's state file says: the situation of each step, the situation and place of each document, and the header.
 

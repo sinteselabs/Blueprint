@@ -20,6 +20,13 @@ If the person names another place, use it for this session and tell them, in one
 line, that the next session will look in `~/.blueprint/` again unless they say
 it. Never guess another place on your own.
 
+**Never write in the coding agent's own memory,** such as `~/.claude/CLAUDE.md`,
+a file in `~/.codex/` or an `AGENTS.md` in the home folder. Those belong to the
+agent and to the person, they are read in every project they open, and Blueprint
+does not touch them. When the agent you are running in has a memory of its own,
+you may offer the person the text to paste there, in a block they can copy, and
+say that it is theirs to do. What Blueprint records goes to `~/.blueprint/`.
+
 When the state's `memory` names a tool, the same records go to that tool's
 personal space, following its own instructions, and the folder is not needed.
 If the tool does not answer, say so in one line and keep the learning in the
@@ -34,9 +41,16 @@ of theirs outside the project, which is theirs to read, correct or delete.
 - **They say yes:** create the folder and the file, write it, and say in one
   line what you saved and where.
 - **They say no:** write nothing outside the project. Keep the learning in the
-  project journal and go on. Everything works, it only does not carry over.
-  Do not ask again in this project.
+  project (the next rule says where) and go on. Everything works, it only does
+  not carry over. Do not ask again in this project.
 - **They do not answer:** treat it as no.
+
+**Whatever happens to the folder, the learning is saved in this project.** A
+preference that will guide choices here is a criterion: it goes under
+`## Criteria the person declared` in the state file, in the person's own words.
+A lesson goes in the session record. So a refused permission, or a write that
+was blocked, never costs what the person said. When the write was blocked, say
+so and say where you kept it.
 
 A refusal cannot be remembered, because remembering it would need the folder.
 In another project, ask once again, and say that you are asking because there is

@@ -1,6 +1,6 @@
 ---
 name: blueprint-record
-description: Keeps a Blueprint project's state and journal in files, so nothing depends on the conversation. Use at the end of a block of questions, when a decision is taken or left open, when a step closes or a document becomes ready, when a session is ending, or when the user asks to save where the project is. Saves the interview state, updates the project journal, and says in one line what it saved.
+description: Keeps a Blueprint project's state and journal in files, and the personal memory that follows the user from one project to the next. Use at the end of a block of questions, when a decision is taken or left open, when a step closes or a document becomes ready, when a session is ending, when the user asks to save where the project is, and whenever they say something about themselves that holds in any project, such as a tool they always use, how they like to work, or a lesson, including when they ask for it to be remembered for next time. Saves the state, the journal and, with the user's permission, their own folder outside the project, and says in one line what it saved.
 ---
 
 # Blueprint: record
@@ -156,8 +156,10 @@ write there for the first time. In short:
 
 1. **Ask once,** the first time there is something worth saving, saying what you
    learned and where it would go. No answer means no.
-2. **Without permission, write nothing outside the project.** Keep the learning
-   in the project journal. Everything works; it only does not carry over.
+2. **Without permission, write nothing outside the project,** and never in the
+   coding agent's own memory, such as `~/.claude/CLAUDE.md`. A preference that
+   guides choices here is saved as a criterion in the state file either way, so
+   nothing the person said is lost.
 3. **Only what is true of the person:** how they like to work, what they
    already use, a lesson. Never a project's content, never a person's data,
    never a key.
@@ -177,7 +179,8 @@ it is back.
 
 - Never write a key, a token or a password in any of these files.
 - Never write outside the project folder, except the person's own folder, with
-  their permission, and only what is true of them in any project.
+  their permission, and only what is true of them in any project. The coding
+  agent's own memory files are never one of those places.
 - Never carry what belongs to one project into another.
 - Never drop what was already answered. Correct an answer in place and keep the rest.
 - Never mark a step `advanced` or `closed` with a main question unanswered.
