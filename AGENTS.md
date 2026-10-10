@@ -9,9 +9,9 @@ Blueprint takes a software project from an idea in plain language to requirement
 and a repository ready for agentic development. It is delivered as agent skills
 (the product), a Claude Code plugin that carries them, and a CLI.
 
-It is under construction. The skills in `skills/` are placeholders, and the
-previous form of Blueprint, a template to copy into a project, still lives in
-`.ai/` until the skills absorb it.
+It is under construction. Some of the skills in `skills/` are still
+placeholders, each saying so at its top, and the previous form of Blueprint, a
+template to copy into a project, still lives in `.ai/` until the skills absorb it.
 
 ## Map
 

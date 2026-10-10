@@ -22,6 +22,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
 TOOLS = ["Skill", "Read", "Write", "Edit", "Glob", "Grep", "Bash(date *)"]
+WEB = ["WebFetch", "WebSearch"]  # allowed when a session may use the web: a headless session has nobody to approve them
 FENCE = json.dumps({"permissions": {"blockReadsOutsideWorkingDirectories": True}})
 CLIMBS = re.compile(r"(?<![\w.])\.\.(?![\w.])")  # `..` standing as a path, not as part of a name or of an ellipsis
 
@@ -45,7 +46,7 @@ def run(claude: str, project: Path, prompt: str, allow_folders: tuple[Path, ...]
     """Runs one turn in `project` with `prompt` and returns what the agent said and did, in order.
 
     With `keep`, Claude Code keeps the session, so a later call can pass its id in `resume` and go on from it.
-    With `web` off, the agent cannot search or fetch pages, which is cheaper and tests what it does then.
+    With `web` on, the agent may search and fetch pages. With it off, it cannot, which is cheaper and tests what it does then.
     """
     command = [claude, "-p", "--plugin-dir", str(REPO), "--add-dir", str(REPO / "skills"), "--strict-mcp-config"]
     if resume:
@@ -53,13 +54,13 @@ def run(claude: str, project: Path, prompt: str, allow_folders: tuple[Path, ...]
     for folder in allow_folders:
         command += ["--add-dir", str(folder)]
     command += [
-        "--settings", FENCE, "--permission-mode", "acceptEdits", "--allowedTools", *TOOLS,
+        "--settings", FENCE, "--permission-mode", "acceptEdits", "--allowedTools", *TOOLS, *(WEB if web else ()),
         "--output-format", "stream-json", "--verbose",
     ]
     if not (keep or resume):
         command.append("--no-session-persistence")
     if not web:
-        command += ["--disallowedTools", "WebFetch", "WebSearch"]
+        command += ["--disallowedTools", *WEB]
     done = subprocess.run(command, cwd=project, input=prompt.encode("utf-8"), capture_output=True, timeout=timeout)
     out = done.stdout.decode("utf-8", errors="replace")
     session = Session(done.returncode, "")

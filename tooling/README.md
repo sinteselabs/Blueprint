@@ -171,6 +171,7 @@ then check the files the sessions left.
 | [`sessions/test_entry_skill.py`](sessions/test_entry_skill.py) | The blueprint skill finds the starting point in five situations (an empty folder, a folder with a state, a folder with code, a similar project in the next folder, and no access to the folders around), says it is going to look before it looks outside the project, goes on without asking again when the person asked for what the folder shows, asks when there is something to choose or when it cannot look, and creates nothing before the person answers | `python tooling/sessions/test_entry_skill.py` |
 | [`sessions/test_start_interview.py`](sessions/test_start_interview.py) | A whole interview of a new project, in one session of several turns with a scripted person who never approves a document: the state passes `check_state.py` with the steps closed, the six fixed documents are ready, in the person's language and free of template leftovers, the plan has a spec per task that says how to test it, and every message opened with where the conversation was | `python tooling/sessions/test_start_interview.py` |
 | [`sessions/test_status_skill.py`](sessions/test_status_skill.py) | The status skill answers "where are we?" from the state file in a new session (the step, the decision taken, the next question), reports a planted problem (a document the state calls ready that does not exist), says there is no project in an empty folder, and changes no file | `python tooling/sessions/test_status_skill.py` |
+| [`sessions/test_research_skill.py`](sessions/test_research_skill.py) | The research skill in three situations: alone with the web open, it reads pages in the session, recommends one option by the criterion the person gave, names its sources with the date and creates no file; in a project with the web closed, it says it could not read the pages, recommends all the same by the criterion in the state and writes the research document with what is left to verify; with no criterion declared, it says which criteria it used. It never calls its own recommendation weak | `python tooling/sessions/test_research_skill.py` |
 | [`sessions/test_continue.py`](sessions/test_continue.py) | Continuing a project in a new session: stopped mid-step, the agent asks the question the state has as next and none that is answered, then closes the step, writes its document and moves on; with a state that is behind the files, it says so, shows what it rebuilt, asks to confirm and does not touch the state before that | `python tooling/sessions/test_continue.py` |
 
 They are not among the checks to run before every change: they need Claude Code
@@ -188,7 +189,7 @@ minutes of agent time and under two dollars at API prices.
 
 What the person says in each test is written in Portuguese, as someone
 conducting an interview would write it: in [`sessions/record/`](sessions/record/)
-for the record skill, and inside the test itself for the entry skill.
+for the record skill, and inside the test itself for the others.
 
 Every test but the record skill's, which still calls Claude Code on its own,
 runs its sessions through [`sessions/harness.py`](sessions/harness.py), which
