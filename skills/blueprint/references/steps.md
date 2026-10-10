@@ -113,7 +113,15 @@ tasks and a spec for every task.
 
 ## After the plan
 
-Preparing the repository for development (the entry file, memory and
-observability, the project check) is not built yet in this version of
-Blueprint. Tell the person so, and tell them what they have: the documents, the
-plan with a spec per task, and the state file that lets any session continue.
+Prepare the repository for development with the `blueprint-setup` skill: the
+Blueprint block of the entry file, memory and observability, a playbook per
+role when a team develops, and the project check. It is the last thing the
+interview does, and it comes before the first task, so that an agent opening
+the project finds the rules, the plan and where to record.
+
+Then tell the person what they have, in a few lines: the documents, the plan
+with a spec per task, the state file that lets any session continue, and the
+first task, by its number. Development starts when they say so.
+
+If that skill is not available, say so, and say what is missing: without the
+entry file, an agent that opens the project does not know its rules.
