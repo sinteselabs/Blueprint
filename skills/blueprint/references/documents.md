@@ -20,10 +20,14 @@ from its kind:
 | `playbooks` | `developers` is more than 1 |
 <!-- /shared: documents-by-kind -->
 
-Templates for the system description, the requirements, the architecture, the
-plan and a task's spec are in `assets/documents/`. Three documents are written
-by other skills, each with its own template: the decisions record and the test
-plan by `blueprint-record`, and the research document by `blueprint-research`. If the
+Templates are in `assets/documents/`, one per document: `system-description`,
+`requirements`, `architecture`, `plan`, a task's spec, and the ones the kind of
+project brings: `use-cases`, `data-model`, `data-classification`, `wireframes`,
+`design`, `interface-contract`, `ai-features`.
+
+Four documents are written by other skills, each with its own template: the
+decisions record and the test plan by `blueprint-record`, the research document
+by `blueprint-research`, and a playbook per role by `blueprint-setup`. If the
 research skill is not available, write the research document yourself: one
 section per question, with the decision, the reason, the alternatives and the
 sources, and a last section for what was not verified.

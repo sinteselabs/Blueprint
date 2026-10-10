@@ -10,7 +10,7 @@ and a repository ready for agentic development. It is delivered as agent skills
 (the product), a Claude Code plugin that carries them, and a CLI.
 
 It is under construction. The seven skills in `skills/` are written; what is
-missing from the product is the CLI and the modeling documents. The previous
+missing from the product is the CLI. The previous
 form of Blueprint, a template to copy into a project, still lives in `.ai/`
 until the skills absorb it.
 

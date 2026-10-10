@@ -12,8 +12,7 @@ way in. There is only one, whatever the person wants to do.
 > **Under construction.** This skill finds the starting point, conducts the
 > interview of a new project from the idea to a prepared repository, continues a
 > project that stopped, and conducts a change to a project that already exists.
-> The modeling documents (use cases, data model, wireframes and the others) are
-> not written yet: their answers are kept in the state.
+> What is missing from Blueprint is the CLI.
 
 ## How to talk
 

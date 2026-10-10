@@ -10,9 +10,8 @@ It was called `ai-template` until October 2026.
 > **Status: under construction.** The four starting points work today: starting
 > a new project, continuing one, and improving or refactoring a project that
 > already exists, with the project's state, the answer to "where are we?", the
-> research standard, the decisions that are costly to undo and the prepared
-> repository. What is not written yet are the modeling documents, such as the
-> use cases and the data model: their answers are kept in the project's state.
+> research standard, the decisions that are costly to undo, the documents the
+> kind of project asks for and the prepared repository.
 > The CLI does not exist yet. The previous form of Blueprint, a template
 > to copy into a project, is still in [`.ai/`](#the-previous-template) while the
 > skills absorb it.

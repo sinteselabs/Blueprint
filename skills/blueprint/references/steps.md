@@ -72,12 +72,22 @@ Main questions, by the kind of project:
 - always: the journeys that cannot go wrong;
 - when it stores data: what the system stores, and whether there is personal data;
 - when it has screens: which are the main screens;
-- when it is used by command or by code: which commands or calls it offers.
+- when it is used by command or by code: which commands or calls it offers;
+- when it calls a model: what the model does in the product, and what the
+  product does when it gets it wrong.
 
-Documents: the ones the kind of project brings. **They are not written yet in
-this version of Blueprint.** Ask the main questions, keep the answers in the
-state, and when the step advances tell the person in one line that the modeling
-documents will be written when Blueprint knows how. The step stays `advanced`.
+Documents: the ones the kind of project brings
+([documents.md](documents.md) has the table and the templates). One question of
+this step usually brings one document: the journeys bring `use-cases`, what is
+stored brings `data-model` and, when there is personal data,
+`data-classification`, the screens bring `wireframes` and, when the visual
+identity is still open, `design`, the commands bring `interface-contract`, and
+the model brings `ai-features`.
+
+Write each one from what the person answered, and no more: a field nobody asked
+for is a field to maintain. What they did not say is left as an open point of
+the document, not invented. The step closes when the documents the project's
+kind asks for are ready.
 
 ## 4. Architecture
 

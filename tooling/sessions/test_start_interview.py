@@ -13,10 +13,10 @@ and when the plan is closed she asks where things are.
 
 What is checked afterwards:
 
-- the state passes check_state.py, with the system description, requirements,
-  architecture and plan closed, and the modeling advanced;
-- the six fixed documents are ready, exist where the state says, are written in
-  Portuguese, and carry no leftover of their templates;
+- the state passes check_state.py, with the five steps closed;
+- the six fixed documents, and the four this project's kind asks for, are
+  ready, exist where the state says, are written in Portuguese, and carry no
+  leftover of their templates;
 - the plan has a spec per task, each with how to test it;
 - every message of the interview opened by saying where the conversation was;
 - the agent used the blueprint-record skill, wrote nothing outside the project
@@ -65,8 +65,10 @@ BY_STEP = {
 GO_ON = "Pode seguir com o que você recomendar." + DECIDE
 WHERE = "Onde estamos?"
 MAX_TURNS = 12
-CLOSED = ["system-description", "requirements", "architecture", "plan"]
-ENGLISH_TITLES = {"system description", "requirements", "research", "architecture", "plan", "decisions"}
+CLOSED = ["system-description", "requirements", "modeling", "architecture", "plan"]
+FIXED = ["system-description", "requirements", "research", "architecture", "decisions", "plan"]
+BY_KIND = ["use-cases", "data-model", "data-classification", "wireframes"]  # what this project's five facts ask for
+ENGLISH_TITLES = {"system description", "requirements", "research", "architecture", "plan", "decisions", "use cases", "data model", "data classification", "screens"}
 POSITION = re.compile(r"^[\W_]*etapa\s+(\d)\s+de\s+5", re.IGNORECASE)
 
 
@@ -156,10 +158,8 @@ def main() -> int:
         steps, documents, _ = read_state(project)
         for step in CLOSED:
             check(f"the step {step} is closed", steps.get(step) == "closed", steps.get(step, "missing"))
-        check("the modeling step is advanced, its documents not being written yet", steps.get("modeling") in ("advanced", "closed"), steps.get("modeling", "missing"))
-
         written: dict[str, Path] = {}
-        for name in ("system-description", "requirements", "research", "architecture", "decisions", "plan"):
+        for name in FIXED + BY_KIND:
             situation, where = documents.get(name, ("missing", "-"))
             path = project / where
             ok = situation == "ready" and where != "-" and path.is_file()
