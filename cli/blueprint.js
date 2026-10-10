@@ -5,6 +5,7 @@
 import { realpathSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
+import { check, usage as checkUsage } from "./check.js";
 import { init, usage as initUsage } from "./init.js";
 import { readPackageFile } from "./files.js";
 
@@ -21,14 +22,15 @@ Usage: blueprint <command> [options]
   --help    this text
   --version the version
 
-${initUsage}`;
+${initUsage}
+
+${checkUsage}`;
 
 const NOT_BUILT = {
-  check: "`blueprint check` is not built yet. Until it is, ask your coding agent: the `blueprint-status` skill goes through the same list by reading.",
   update: "`blueprint update` is not built yet. Until it is, install the new version in a copy of the folder and compare, or ask your coding agent to.",
 };
 
-export function run(argv, folder, write) {
+export async function run(argv, folder, write) {
   const [command, ...rest] = argv;
   if (!command || command === "--help" || command === "-h" || command === "help") {
     write(usage);
@@ -39,6 +41,7 @@ export function run(argv, folder, write) {
     return 0;
   }
   if (command === "init") return init(rest, folder, write);
+  if (command === "check") return check(rest, folder, write);
   if (command in NOT_BUILT) {
     write(NOT_BUILT[command]);
     return 2;
@@ -49,5 +52,5 @@ export function run(argv, folder, write) {
 
 // Run only when this file is what was called, not when a test imports it.
 if (process.argv[1] && realpathSync(process.argv[1]) === realpathSync(fileURLToPath(import.meta.url))) {
-  process.exitCode = run(process.argv.slice(2), process.cwd(), (line) => process.stdout.write(`${line}\n`));
+  process.exitCode = await run(process.argv.slice(2), process.cwd(), (line) => process.stdout.write(`${line}\n`));
 }

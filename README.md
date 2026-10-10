@@ -11,8 +11,8 @@ It was called `ai-template` until October 2026.
 > a new project, continuing one, and improving or refactoring a project that
 > already exists, with the project's state, the answer to "where are we?", the
 > research standard, the decisions that are costly to undo, the documents the
-> kind of project asks for and the prepared repository. Of the CLI, `init`
-> works; `check` and `update` are not built yet. The previous form of Blueprint, a template
+> kind of project asks for and the prepared repository. Of the CLI, `init` and
+> `check` work; `update` is not built yet. The previous form of Blueprint, a template
 > to copy into a project, was absorbed by the skills and left the repository
 > ([what it was](#before-the-skills)).
 
@@ -60,9 +60,15 @@ npx blueprintx init
 It copies the skills where each agent reads them, writes the Blueprint block of
 `AGENTS.md`, and records what it installed and in which version. It never
 overwrites a file that is already there, and `--dry-run` shows what it would do
-without writing. `blueprint check` and `blueprint update` are not built yet, and
-say so when called. While the package is not published, run it from a clone:
-`node cli/blueprint.js init`.
+without writing.
+
+```
+npx blueprintx check
+```
+
+says whether the project is whole and how to fix what is not, and only reads.
+`blueprint update` is not built yet, and says so when called. While the package
+is not published, run it from a clone: `node cli/blueprint.js init`.
 
 ---
 

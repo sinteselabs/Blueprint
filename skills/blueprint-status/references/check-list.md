@@ -3,9 +3,16 @@
 What to verify in a Blueprint project. Each item is something that can be
 looked at, and each problem is reported with how to fix it. Nothing is changed.
 
+**The script in this skill, `check.js`, does all of this.** Run it, and this
+list is what it goes through. Read the list yourself only when there is no Node
+on the machine or the script cannot run, and then say that you checked by
+reading.
+
+Two items no script can settle, which it reports as skipped: whether a memory or
+observability tool is answering, and whether two documents with different names
+serve the same purpose. Those are for you to look at.
+
 Report the result as one line per problem. When there is none, one line says so.
-Always say that the check was made by reading, because a script does it more
-reliably and is not part of this version.
 
 ## The state file
 
