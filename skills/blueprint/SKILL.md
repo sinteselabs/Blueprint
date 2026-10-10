@@ -10,9 +10,9 @@ requirements and a repository ready for agentic development. This skill is the
 way in. There is only one, whatever the person wants to do.
 
 > **Under construction.** This skill finds the starting point, conducts the
-> interview of a new project up to the plan, and continues a project that
-> stopped. Improving and refactoring are not built yet: see
-> [The other starting points](#4-the-other-starting-points).
+> interview of a new project up to the plan, continues a project that stopped,
+> and conducts a change to a project that already exists. Preparing the
+> repository for development is not built yet.
 
 ## How to talk
 
@@ -79,12 +79,12 @@ that it is new.
 
 | What you found | Starting point | What you do |
 |---|---|---|
-| `.blueprint/state.md` in this folder | continue | Say where the project stopped, from the state file. If the person asked to continue, go on without asking again; otherwise ask to confirm |
+| `.blueprint/state.md` in this folder | continue | Say where the project stopped, from the state file. If the person asked to continue, go on without asking again. If they asked to change, add or reorganise something, it is a change to this project: section 4. Otherwise ask to confirm |
 | `.blueprint/state.md` in a folder above | continue | The project is that one, and this folder is part of it. Use that state. Never create another |
 | `.blueprint/state.md` in one or more folders inside | to be asked | List the projects found, with their paths, and ask which one, or whether this is a new project |
 | An empty folder, and nothing like the project nearby | start | Say so. If the person asked to start a new project, go on to the first block of questions in the same message, without asking again; otherwise ask to confirm |
 | An empty folder, and a project like the one described in a folder beside | to be asked | Name that folder and ask whether it is that project or a new one |
-| Code or documents, and no state file anywhere | improve or refactor | Ask which: to change or add something, or to reorganise it inside, which includes documenting what exists |
+| Code or documents, and no state file anywhere | improve or refactor | If the request says which, take it, say what you took and go on to read the project. Otherwise ask which: to change or add something, or to reorganise it inside, which includes documenting what exists |
 
 When what the person asked for does not match what you found, say both and ask:
 
@@ -172,8 +172,24 @@ When the starting point is to continue, read
    repository show, say what is missing, rebuild it marked as rebuilt, and save
    only after the person confirms.
 
-## 4. The other starting points
+## 4. Improving or refactoring a project
 
-Improving a project and refactoring one are not built yet. When the confirmed
-starting point is one of them, tell the person plainly that Blueprint is still
-being built and does not conduct that path yet. Do not improvise it.
+When the project already exists and the person wants to change it, read
+[references/change.md](references/change.md) and follow it. In short:
+
+1. **Read before you ask,** with the `blueprint-survey` skill: what the project
+   is, each document as matching the code, outdated or missing, and the size of
+   the change.
+2. **One first message:** what you read, what you concluded and what you
+   propose to write. Nothing is written before the person answers it.
+3. **A small change** becomes one task with its spec, and nothing else.
+4. **Improving** writes the change as a difference: what enters, what changes
+   and what leaves. **Refactoring** leaves the requirements as they are, and
+   writes the affected part as it is and as it will be, the decision, and how
+   to check that nothing broke.
+5. **Nothing is rewritten in silence.** A document that matches the code is
+   left alone; an outdated one is corrected only where the change touches it,
+   and the rest is reported.
+
+The same path serves a project that went through Blueprint and now gets a
+change: its state is kept, and the steps the change touches open again.

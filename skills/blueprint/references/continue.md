@@ -45,6 +45,11 @@ From there the interview follows the same rules as a new project
 - The questions under `## Refinement questions left for later` wait until you
   need them.
 
+When the state's `starting_point` is `improve` or `refactor`, the steps ask
+only about the change, and [change.md](change.md) says what each one asks and
+writes. A step with `0 of 0` main questions is one the change does not touch:
+it is not left to do.
+
 When every step is closed, the interview is over. Say so, and that the next
 thing is the first task of the plan that is not done.
 

@@ -46,6 +46,22 @@ apply, and remove these comments. Keep the prose short: diagrams and tables firs
 
 - {{Who can see and do what, where secrets live, how personal data is handled.}}
 
+## Reorganisation: {{name}}
+
+<!-- Only when the project is being reorganised inside: drop this section
+otherwise. It covers the affected part and nothing else. In a project that had
+no architecture document, this section may be the whole document. -->
+
+### As it is
+
+{{The affected part today: its pieces, what depends on what, and what makes it hard to change.}}
+
+### As it will be
+
+{{The same part after the change: what moves where, and what stays.}}
+
+**Decision:** {{D-NNN, in the decisions record.}} **What must keep working:** {{the rows of the test plan, T-NNN to T-NNN.}}
+
 ## Decisions behind it
 
 - {{Number and title of each decision in the decisions record that shaped this architecture.}}

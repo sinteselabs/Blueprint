@@ -74,6 +74,10 @@ each of the five steps: `system-description`, `requirements`, `modeling`,
 `Main questions` is written `2 of 4`: how many are answered, of how many. A step
 never waits for approval, and more than one step may be under way at once.
 
+In a project that came to be improved or refactored, a step asks only about
+the change, and it is `closed` when what the change needed from it is written.
+A step the change does not touch stays `not-started`, with `0 of 0`.
+
 ### `## Documents`
 
 A table with the columns `Document`, `Situation` and `Where`, one row per

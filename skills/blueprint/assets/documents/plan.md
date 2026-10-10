@@ -14,6 +14,18 @@ Every task has a spec of its own, in the specs folder beside this file. -->
 - A task is delivered with how to test it: what to run or open, and what should be seen.
 - {{Who marks a task as done, and anything else the person asked for.}}
 
+## What changes
+
+<!-- Only in a plan that changes a project that already exists: drop this
+section in a new project. One block per change, the newest last. Each line
+names what it touches: the requirement, or the file. -->
+
+### {{Name of the change}}
+
+- **Enters:** {{What will exist that does not exist today.}}
+- **Changes:** {{What exists and will behave differently, and how.}}
+- **Leaves:** {{What stops existing. "Nothing" when nothing does.}}
+
 ## Phases
 
 | Phase | What it delivers | Done when |
