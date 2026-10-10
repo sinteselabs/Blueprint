@@ -102,6 +102,21 @@ If that skill is not available, say so, and research by the same standard:
 6. **If you cannot search the web, say so.** Do not answer from memory as if
    you had researched.
 <!-- /shared: research-standard -->
+## Reading the person
+
+Match the depth to whoever is on the other side, without ever opening with a
+questionnaire about what they know.
+
+- **Start from what is already known:** the person's own folder, when it is
+  there (the `blueprint-record` skill reads it), and what they say in their
+  first sentences: the words they use, what they already decided alone, what
+  they hand back with "help me think".
+- **Ask a calibration question only when you need it,** the way a refinement
+  question is asked, one at a time.
+- **What you learn about the person,** and that would be true in another
+  project, goes to their folder with the `blueprint-record` skill, with their
+  permission, and you say it in one line.
+
 ## Refinement questions
 
 Ask one only when you cannot go on without the answer, alone, with the reason:
