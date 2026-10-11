@@ -70,9 +70,22 @@ claude plugin validate .
 or newer; there are no dependencies to install. Every one of these also runs on
 GitHub, on every push, and the CLI's tests run there on Windows, macOS and
 Linux with Node 22 and 24 (`.github/workflows/checks.yml`). `claude plugin
-validate` is the one gate that stays local: it needs Claude Code. It reports one expected warning: a
-`CLAUDE.md` at the plugin root is not loaded as plugin context. What each check
-guards is in [tooling/README.md](tooling/README.md).
+validate` is the one gate that stays local: it needs Claude Code, and it has to
+pass with no warnings. What each check guards is in
+[tooling/README.md](tooling/README.md).
+
+**This file is the one that holds the rules, and there is no `CLAUDE.md` beside
+it on purpose.** The repository root is the plugin root, so a `CLAUDE.md` here
+ships to everyone who installs the plugin and is loaded by nobody — the
+validator says so. Claude Code reads `AGENTS.md` when a folder has no
+`CLAUDE.md`, which is this case. If your Claude Code does not pick it up, say
+so rather than adding a `CLAUDE.md` back: the fallback depends on a feature
+flag, and `/config` has the setting under project instructions.
+
+That asymmetry is deliberate and does not apply to the projects Blueprint
+prepares. There, the CLI and `blueprint-setup` do write `CLAUDE.md` and
+`GEMINI.md` pointing at `AGENTS.md`, because a project folder is not a plugin
+root and a silent fallback is not good enough for someone else's repository.
 
 ## Project memory
 

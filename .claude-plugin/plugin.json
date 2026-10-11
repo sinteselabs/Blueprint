@@ -8,5 +8,6 @@
   },
   "repository": "https://github.com/sinteselabs/Blueprint",
   "license": "MIT",
+  "icon": ".claude-plugin/icon.png",
   "keywords": ["planning", "requirements", "specification", "project-setup"]
 }
