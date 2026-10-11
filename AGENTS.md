@@ -9,11 +9,15 @@ Blueprint takes a software project from an idea in plain language to requirement
 and a repository ready for agentic development. It is delivered as agent skills
 (the product), a Claude Code plugin that carries them, and a CLI.
 
-It is under construction. The seven skills in `skills/` are written and the CLI
-has its three commands. What is left is the testing in the other agents and the
-publication. The previous form of Blueprint, a template
-to copy into a project, was absorbed by the skills and deleted in October 2026;
-it is in the history, and in the repository it came from.
+The seven skills in `skills/` are written, the CLI has its three commands, and
+the method is measured in real sessions of Claude Code, Codex and the
+Antigravity CLI. The previous form of Blueprint, a template to copy into a
+project, was absorbed by the skills and deleted in October 2026; it is in the
+history, and in the repository it came from.
+
+The repository is public, and the CLI is published to npm as `blueprintx`. So a
+change here reaches people: anything that ships — `skills/`, `cli/`, `LICENSE`,
+`README.md` — is public the moment it is released.
 
 ## Map
 
