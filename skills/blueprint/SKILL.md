@@ -9,11 +9,6 @@ Blueprint takes a software project from an idea in plain language to
 requirements and a repository ready for agentic development. This skill is the
 way in. There is only one, whatever the person wants to do.
 
-> **Under construction.** This skill finds the starting point, conducts the
-> interview of a new project from the idea to a prepared repository, continues a
-> project that stopped, and conducts a change to a project that already exists.
-> What is missing from Blueprint is the CLI.
-
 ## How to talk
 
 These hold from the first message to the last.
