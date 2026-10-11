@@ -1,5 +1,6 @@
 {
-  "_comment": "Declare the MCP servers this project uses. Delete the ones you don't need and add your own. The filename MUST be `.mcp.json` (dotfile) and the root key MUST be `mcpServers` — that is the project-scoped format AI tooling (e.g. Claude Code) looks for; anything else is silently ignored. NEVER hardcode API keys or tokens here: this file is committed to git. Use ${ENV_VAR} expansion and export the value in your shell, as in the _example_with_secret entry below (delete it). lore (the optional project memory) is deliberately NOT declared here: its key could only be written as ${VAR}, and project config overrides the user-level registration — in an app launched from the GUI the variable is empty, the header goes out as a bare `Bearer `, and lore answers 401. Register lore once per machine instead: `claude mcp add --scope user --transport http lore <server>/mcp --header \"Authorization: Bearer <key>\"`.",
+  "_comment": "Declare the MCP servers this project uses. Delete the ones you don't need and add your own. The filename MUST be `.mcp.json` (dotfile) and the root key MUST be `mcpServers` — that is the project-scoped format AI tooling (e.g. Claude Code) looks for; anything else is silently ignored. Pin every package a launcher runs to an exact version, as the firebase entry does: `@latest` means a different program on a different day. lore (the optional project memory) is deliberately NOT declared here: its key could only be written as a variable, and project config overrides the user-level registration — in an app launched from the GUI the variable is empty, the header goes out as a bare `Bearer `, and lore answers 401. Register lore once per machine instead: `claude mcp add --scope user --transport http lore <server>/mcp --header \"Authorization: Bearer <key>\"`.",
+  "_keys": "NEVER put an API key or a token in this file: it is committed to git. A server that needs one is registered once per machine, outside the project, the way the lore line above shows — `claude mcp add --scope user`, with the key on that command line. That keeps the key in your own machine's configuration, which git never sees, and keeps this file safe to commit and to share.",
   "mcpServers": {
     "notion": {
       "type": "http",
@@ -8,15 +9,7 @@
     "firebase": {
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "firebase-tools@latest", "mcp", "--dir", "./firebase", "--only", "firestore,functions,auth,storage"]
-    },
-    "_example_with_secret": {
-      "type": "stdio",
-      "command": "npx",
-      "args": ["-y", "some-mcp-server", "--header", "Authorization:Bearer ${SOME_MCP_TOKEN}"],
-      "env": {
-        "SOME_MCP_TOKEN": "${SOME_MCP_TOKEN}"
-      }
+      "args": ["-y", "firebase-tools@15.33.0", "mcp", "--dir", "./firebase", "--only", "firestore,functions,auth,storage"]
     }
   }
 }
