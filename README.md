@@ -31,19 +31,43 @@ Blueprint is for a software project you want to:
 It is designed for Claude Code, which is the main experience, and for Codex and
 Antigravity CLI. Nothing external is required: everything mandatory works with
 Markdown files. lore (memory), Langfuse (observability) and Notion (documents and
-tasks) are optional.
+tasks) are optional — and for observability, Blueprint carries
+[the page that says when a tool is worth it and when the project's own journal
+is the better answer](skills/blueprint-setup/references/observability.md),
+because the choice only means something if you know what you are choosing.
 
 ---
 
-## Three ways to get it
+## Four ways to get it
 
-**1. The Claude Code plugin.** In Claude Code 2.1.275 or later:
+**1. The Claude Code plugin.** This repository is its own marketplace, so two
+commands are the whole of it:
 
 ```
-/plugin install blueprint --marketplace sinteselabs/Blueprint
+claude plugin marketplace add sinteselabs/Blueprint
+claude plugin install blueprint@sinteselabs
 ```
 
-While this repository is private, that needs access to it.
+The same thing from inside a session: `/plugin marketplace add
+sinteselabs/Blueprint`, then `/plugin install blueprint@sinteselabs`. The
+skills then work in every project you open, and nothing is written into your
+projects.
+
+**While this repository is private,** a stranger cannot reach it. Anyone with
+access clones it and adds the clone instead, which is the same two commands
+with a path (measured 11/10/2026):
+
+```
+git clone https://github.com/sinteselabs/Blueprint
+claude plugin marketplace add ./Blueprint
+claude plugin install blueprint@sinteselabs
+```
+
+To bring a new version: `claude plugin marketplace update sinteselabs` (from a
+clone, `git pull` first). To go back: `claude plugin uninstall
+blueprint@sinteselabs`, and `claude plugin marketplace remove sinteselabs`.
+Installing puts nothing in your projects and starts nothing running: the
+plugin carries skills and no hooks or servers.
 
 **2. The skills folder.** [`skills/`](skills/) follows the open
 [Agent Skills](https://agentskills.io) format, so any agent that reads skills
@@ -51,14 +75,26 @@ can use it. Ask your agent to install the skills from this repository, or copy
 the folders to where your agent looks: `.claude/skills/` for Claude Code,
 `.agents/skills/` for Codex and Antigravity.
 
-**3. The CLI.** In a project folder, with Node 22 or newer:
+**3. Your agent's own skills installer.** Because the folder follows the
+format, the installers do the copying. Measured on 10 and 11/10/2026, both
+bringing all seven skills with their references, templates and the check
+script:
+
+```
+gemini skills install <path to this repository>/skills --scope workspace
+npx skills add https://github.com/sinteselabs/Blueprint
+```
+
+**4. The CLI.** In a project folder, with Node 22 or newer:
 
 ```
 npx blueprintx init
 ```
 
 It copies the skills where each agent reads them, writes the Blueprint block of
-`AGENTS.md`, and records what it installed and in which version. It never
+`AGENTS.md`, points `CLAUDE.md` and `GEMINI.md` at it so an agent that reads
+only its own file gets the same rules, and records what it installed and in
+which version. It never
 overwrites a file that is already there, and `--dry-run` shows what it would do
 without writing.
 

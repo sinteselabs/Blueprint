@@ -123,7 +123,7 @@ def main() -> int:
         print(("PASS  " if ok else "FAIL  ") + name + (f"  [{detail}]" if detail and not ok else ""), flush=True)
 
     print(f"running Codex with the model {model} ...", flush=True)
-    with tempfile.TemporaryDirectory(prefix="blueprint é codex ") as folder:
+    with tempfile.TemporaryDirectory(ignore_cleanup_errors=True, prefix="blueprint é codex ") as folder:
         root = Path(folder)
 
         # 1. a new project, with Blueprint installed by our own CLI, for Codex

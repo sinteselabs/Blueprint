@@ -204,7 +204,10 @@ the entry test is five sessions, about four minutes of agent time and under two
 dollars at API prices; the whole interview is one session of seven or eight
 turns, about fourteen minutes and three and a half dollars. Every test ends by
 naming the checks that failed, so the last lines of its output are enough to
-report a failure.
+report a failure. For the same reason, a test's temporary folder is removed
+with `ignore_cleanup_errors=True`: on Windows a file handle that outlives the
+session makes the removal raise, and that traceback used to land where the
+verdict should be, destroying the result of a run that had already finished.
 
 What the person says in each test is written in Portuguese, as someone
 conducting an interview would write it: in [`sessions/record/`](sessions/record/)

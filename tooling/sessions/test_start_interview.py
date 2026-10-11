@@ -103,7 +103,7 @@ def main() -> int:
         print(("PASS  " if ok else "FAIL  ") + name + (f"  [{detail}]" if detail and not ok else ""), flush=True)
 
     before = skills_changes()
-    temporary = None if kept_folder else tempfile.TemporaryDirectory(prefix="blueprint interview é ")
+    temporary = None if kept_folder else tempfile.TemporaryDirectory(ignore_cleanup_errors=True, prefix="blueprint interview é ")
     folder = kept_folder or Path(temporary.name)
     try:
         around = folder / "caso"

@@ -178,7 +178,7 @@ def main() -> int:
             return 1
 
     before = skills_changes()
-    with tempfile.TemporaryDirectory(prefix="blueprint entry é ") as folder:
+    with tempfile.TemporaryDirectory(ignore_cleanup_errors=True, prefix="blueprint entry é ") as folder:
         todo = cases(Path(folder))
         built = files(Path(folder))
         print(f"running {len(todo)} sessions at once ...", flush=True)

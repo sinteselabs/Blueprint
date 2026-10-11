@@ -12,12 +12,18 @@
   },
   "files": [
     "cli/",
+    "!cli/**/*.test.js",
     "skills/",
     "LICENSE",
     "README.md"
   ],
   "scripts": {
     "test": "node --test \"cli/**/*.test.js\""
+  },
+  "author": "Síntese Labs",
+  "homepage": "https://github.com/sinteselabs/Blueprint#readme",
+  "bugs": {
+    "url": "https://github.com/sinteselabs/Blueprint/issues"
   },
   "repository": {
     "type": "git",
@@ -27,6 +33,10 @@
     "agent-skills",
     "requirements",
     "specification",
-    "claude-code"
+    "claude-code",
+    "codex",
+    "antigravity",
+    "agentic-development",
+    "project-setup"
   ]
 }

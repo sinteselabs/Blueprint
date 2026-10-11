@@ -108,7 +108,7 @@ def main() -> int:
         print(("PASS  " if ok else "FAIL  ") + name + (f"  [{detail}]" if detail and not ok else ""), flush=True)
 
     before_skills = skills_changes()
-    temporary = None if kept else tempfile.TemporaryDirectory(prefix="blueprint change é ")
+    temporary = None if kept else tempfile.TemporaryDirectory(ignore_cleanup_errors=True, prefix="blueprint change é ")
     root = kept or Path(temporary.name)
     try:
         for case in CASES:

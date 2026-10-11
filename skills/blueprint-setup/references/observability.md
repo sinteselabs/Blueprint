@@ -116,10 +116,16 @@ be pasted into an agent session.
 
 ## One Langfuse project per software project
 
-Langfuse's own advice, and it matters here: create a Langfuse project for each
-software project, with its own key pair. Traces from two projects do not mix,
-the cost of each is readable on its own, and a key that leaks reaches one
-project only.
+A key pair in Langfuse belongs to a project, not to a person, and Langfuse's
+own guidance is to put several projects under one organisation and keep a
+separate project, with its own keys, for each environment — production,
+staging, development (read 11/10/2026). The same reasoning gives one Langfuse
+project per software project: traces from two of them do not mix, the cost of
+each is readable on its own, and a key that leaks reaches one project only.
+
+So say it as a step, not as a detail: **create a project in Langfuse for this
+one, and use its key pair here.** A key shared between two projects is the
+mistake this avoids.
 
 The person does that part. **Never ask for a key in the conversation, and never
 write a key in a file of the project.** You say what to create and where the

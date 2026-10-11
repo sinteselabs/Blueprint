@@ -260,9 +260,16 @@ export function report(found) {
 export function main(argv, from, write) {
   const json = argv.includes("--json");
   const given = argv.find((argument) => !argument.startsWith("--"));
-  const project = findProject(given ? resolve(from, given) : from);
+  const where = given ? resolve(from, given) : from;
+  const project = findProject(where);
   if (!project) {
-    write(json ? JSON.stringify({ project: null, checks: [] }, null, 2) : "I found no Blueprint project here: there is no .blueprint/state.md in this folder or above it.");
+    // Blueprint installed and no state file is the normal first minute, not a problem:
+    // the state is born from the conversation, so say what to do instead of what is missing.
+    const installed = existsSync(join(where, ".blueprint", "installed.json"));
+    const message = installed
+      ? "Blueprint is installed in this folder, and no project has been started in it yet. Open your coding agent here and say what you want to do: the state file is written as the conversation goes."
+      : "I found no Blueprint project here: there is no .blueprint/state.md in this folder or above it.";
+    write(json ? JSON.stringify({ project: null, installed, checks: [] }, null, 2) : message);
     return 2;
   }
   let found;

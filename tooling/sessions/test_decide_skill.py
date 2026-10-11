@@ -114,7 +114,7 @@ def main() -> int:
         print(("PASS  " if ok else "FAIL  ") + name + (f"  [{detail}]" if detail and not ok else ""), flush=True)
 
     before = skills_changes()
-    with tempfile.TemporaryDirectory(prefix="blueprint decide é ") as folder:
+    with tempfile.TemporaryDirectory(ignore_cleanup_errors=True, prefix="blueprint decide é ") as folder:
         root = Path(folder)
         for case in CASES:
             project = case["path"] = root / case["folder"] / "projetos" / "padaria-pedidos"

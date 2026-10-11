@@ -63,7 +63,7 @@ def main() -> int:
         print(("PASS  " if ok else "FAIL  ") + name + (f"  [{detail}]" if detail and not ok else ""), flush=True)
 
     before = skills_changes()
-    with tempfile.TemporaryDirectory(prefix="blueprint status é ") as folder:
+    with tempfile.TemporaryDirectory(ignore_cleanup_errors=True, prefix="blueprint status é ") as folder:
         root = Path(folder)
         project = root / "a" / "projetos" / "agenda-clinica"
         put(project / ".blueprint" / "state.md", EXAMPLE_STATE.read_text(encoding="utf-8"))

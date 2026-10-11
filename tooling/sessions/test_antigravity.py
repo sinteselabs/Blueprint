@@ -91,7 +91,7 @@ def main() -> int:
     version = gemini(Path.cwd(), "--version")[1].strip().splitlines()[-1]
     print(f"Antigravity CLI {version}\n", flush=True)
 
-    with tempfile.TemporaryDirectory(prefix="blueprint é antigravity ") as folder:
+    with tempfile.TemporaryDirectory(ignore_cleanup_errors=True, prefix="blueprint é antigravity ") as folder:
         root = Path(folder)
 
         # 1. our own CLI puts the skills where this agent reads them

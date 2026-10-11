@@ -170,6 +170,19 @@ describe("blueprint check", () => {
     assert.match(out, /I found no Blueprint project here/);
   });
 
+  it("after init, says the project has not started instead of that nothing is here", async () => {
+    // The first minute of a fresh install: Blueprint is there and the state file is not,
+    // because the conversation writes it. That is not a missing piece.
+    const folder = join(root, "just-installed");
+    mkdirSync(folder, { recursive: true });
+    await cli(folder, "init");
+    const { code, out } = await cli(folder, "check");
+    assert.equal(code, 2);
+    assert.match(out, /Blueprint is installed in this folder/);
+    assert.match(out, /say what you want to do/);
+    assert.doesNotMatch(out, /I found no Blueprint project here/);
+  });
+
   it("says when the state file cannot be read as a state file", async () => {
     const folder = join(root, "unreadable");
     put(join(folder, ".blueprint", "state.md"), "this is not a state file\n");
