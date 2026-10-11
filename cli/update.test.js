@@ -189,7 +189,7 @@ describe("blueprint update", () => {
     const folder = await installed("then-check");
     rmSync(join(folder, ...SKILL.split("/")));
     const { out } = await cli(folder, "update", "--yes");
-    assert.match(out, /I found no Blueprint project here/, "the check ran, and said there is no project yet");
+    assert.match(out, /no project has been started in it yet/, "the check ran, and said there is no project yet");
   });
 
   it("says plainly when there is no installation in this folder", async () => {

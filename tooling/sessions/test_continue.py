@@ -146,7 +146,7 @@ def main() -> int:
             print("      " + line)
 
     before = skills_changes()
-    with tempfile.TemporaryDirectory(prefix="blueprint continue é ") as folder:
+    with tempfile.TemporaryDirectory(ignore_cleanup_errors=True, prefix="blueprint continue é ") as folder:
         root = Path(folder)
         stopped = root / "a" / "projetos" / "padaria-pedidos"
         put(stopped / ".blueprint" / "state.md", STATE)

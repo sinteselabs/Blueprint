@@ -28,7 +28,7 @@ In this order. Stop when you can write the report: this is not an audit.
 2. **What says what the project is.** The README. The manifest:
    `package.json`, `pyproject.toml`, `go.mod`, `Cargo.toml`, `pom.xml`, a
    `.csproj`, `Gemfile`, `composer.json`. The file agents read first:
-   `AGENTS.md`, `CLAUDE.md`. What says where it runs and how it is checked:
+   `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`. What says where it runs and how it is checked:
    a `Dockerfile`, a hosting configuration, the pipeline files, the tests
    folder. What says what it stores: the schema or the migrations.
 3. **The documents.** `docs/` or `doc/`, decision records, a plan or a task

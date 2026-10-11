@@ -63,7 +63,7 @@ def main() -> int:
         print(("PASS  " if ok else "FAIL  ") + name + (f"  [{detail}]" if detail and not ok else ""), flush=True)
 
     before = skills_changes()
-    with tempfile.TemporaryDirectory(prefix="blueprint session é ") as folder:
+    with tempfile.TemporaryDirectory(ignore_cleanup_errors=True, prefix="blueprint session é ") as folder:
         project = Path(folder) / "padaria-pedidos"
         project.mkdir()
         state = project / ".blueprint" / "state.md"

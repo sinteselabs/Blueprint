@@ -24,7 +24,9 @@ The two marks stay exactly as they are: they are what the next session finds. --
    is. Never act as if you remembered a conversation: it may have been another
    session, another day or another agent.
 2. **One task at a time, from the plan, in order.** The task's spec says what it
-   does, what it does not do, and when it is done.
+   does, what it does not do, and when it is done. **Say which task you are on,
+   by its number and its name, before you start it** — the person has to be able
+   to tell which one you chose without reading the plan again.
 3. **Every delivery says how to test it:** what to run or open, and what should
    be seen. It goes in the spec's "How to test" and in what you tell the person.
 4. **Record what happened.** At the end of a session, one record in

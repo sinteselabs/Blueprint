@@ -228,9 +228,11 @@ export function check(project) {
       else ok("what the entry file names is there");
       ok("the repository is prepared for development");
     }
-    const claude = there("CLAUDE.md") ? read("CLAUDE.md") : "";
-    if (!claude.includes("AGENTS.md")) problem("CLAUDE.md names AGENTS.md", "Claude Code reads CLAUDE.md first: one line pointing at AGENTS.md puts both agents on the same rules");
-    else ok("CLAUDE.md names AGENTS.md");
+    // An agent that reads only its own file opens a prepared project knowing none of its
+    // rules. Claude Code reads CLAUDE.md; the Antigravity CLI reads GEMINI.md.
+    const blind = ["CLAUDE.md", "GEMINI.md"].filter((name) => !(there(name) ? read(name) : "").includes("AGENTS.md"));
+    if (blind.length) problem("the agents' own files name AGENTS.md", `${blind.join(" and ")}: an agent that reads only that file needs one line pointing at AGENTS.md, or it opens this project without its rules`);
+    else ok("the agents' own files name AGENTS.md");
 
     const developers = Number(state.header.developers || "1");
     if (developers > 1 && folder) {
@@ -258,9 +260,16 @@ export function report(found) {
 export function main(argv, from, write) {
   const json = argv.includes("--json");
   const given = argv.find((argument) => !argument.startsWith("--"));
-  const project = findProject(given ? resolve(from, given) : from);
+  const where = given ? resolve(from, given) : from;
+  const project = findProject(where);
   if (!project) {
-    write(json ? JSON.stringify({ project: null, checks: [] }, null, 2) : "I found no Blueprint project here: there is no .blueprint/state.md in this folder or above it.");
+    // Blueprint installed and no state file is the normal first minute, not a problem:
+    // the state is born from the conversation, so say what to do instead of what is missing.
+    const installed = existsSync(join(where, ".blueprint", "installed.json"));
+    const message = installed
+      ? "Blueprint is installed in this folder, and no project has been started in it yet. Open your coding agent here and say what you want to do: the state file is written as the conversation goes."
+      : "I found no Blueprint project here: there is no .blueprint/state.md in this folder or above it.";
+    write(json ? JSON.stringify({ project: null, installed, checks: [] }, null, 2) : message);
     return 2;
   }
   let found;

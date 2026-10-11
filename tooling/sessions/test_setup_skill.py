@@ -198,7 +198,7 @@ def main() -> int:
 
     before_skills = skills_changes()
     bare = None
-    temporary = None if kept else tempfile.TemporaryDirectory(prefix="blueprint setup é ")
+    temporary = None if kept else tempfile.TemporaryDirectory(ignore_cleanup_errors=True, prefix="blueprint setup é ")
     root = kept or Path(temporary.name)
     try:
         for case in CASES:

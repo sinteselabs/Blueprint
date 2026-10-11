@@ -56,9 +56,17 @@ function entryFile(folder, { pretend }) {
   return { what: "added to", path };
 }
 
-/** CLAUDE.md is where Claude Code looks first, so it points at the one file that holds the rules. */
-function claudeFile(folder, { pretend }) {
-  const path = join(folder, "CLAUDE.md");
+/**
+ * An agent that reads a file of its own, and not AGENTS.md, gets one line pointing at it.
+ * Claude Code looks at CLAUDE.md first; the Antigravity CLI reads GEMINI.md and does not
+ * read AGENTS.md at all (measured on version 0.63.0, 11/10/2026: the word AGENTS.md does
+ * not appear anywhere in it). Without this, those agents open a prepared project knowing
+ * none of its rules.
+ */
+const POINTERS = ["CLAUDE.md", "GEMINI.md"];
+
+function pointerFile(folder, name, { pretend }) {
+  const path = join(folder, name);
   const line = "See @AGENTS.md for how to work on this project.\n";
   if (!isFile(path)) return { what: writeNew(path, line, { pretend }), path };
   const existing = readFileSync(path, "utf8");
@@ -90,7 +98,7 @@ export function init(argv, folder, write) {
   }
 
   const entry = entryFile(folder, { pretend });
-  const claude = claudeFile(folder, { pretend });
+  const pointers = POINTERS.map((name) => pointerFile(folder, name, { pretend }));
   const { version } = writeRecord(folder, done, { pretend });
 
   const created = done.filter((f) => f.what === "created").length;
@@ -98,7 +106,7 @@ export function init(argv, folder, write) {
   write(pretend ? `Blueprint ${version} would be installed in this folder:` : `Blueprint ${version} installed in this folder.`);
   write(`  ${pretend ? "would create" : "created"}   ${created} file${created === 1 ? "" : "s"}`);
   if (skipped) write(`  kept        ${skipped} file${skipped === 1 ? "" : "s"} that were already there`);
-  for (const file of [entry, claude]) {
+  for (const file of [entry, ...pointers]) {
     const name = relative(folder, file.path).split(sep).join("/");
     write(`  ${file.what === "skipped" ? "kept" : file.what === "created" ? (pretend ? "would create" : "created") : pretend ? "would add to" : "added to"}  ${name}`);
   }
