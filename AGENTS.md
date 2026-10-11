@@ -15,7 +15,7 @@ Antigravity CLI. The previous form of Blueprint, a template to copy into a
 project, was absorbed by the skills and deleted in October 2026; it is in the
 history, and in the repository it came from.
 
-The repository is public, and the CLI is published to npm as `blueprintx`. So a
+The repository is public, and the CLI is published to npm as `blueprintlabs`. So a
 change here reaches people: anything that ships — `skills/`, `cli/`, `LICENSE`,
 `README.md` — is public the moment it is released.
 

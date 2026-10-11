@@ -8,7 +8,7 @@ You describe the project you want. Blueprint interviews you, researches the
 choices, writes the requirements and hands back a repository where any coding
 agent already knows the rules, the plan and where to record what it did.
 
-[![npm](https://img.shields.io/npm/v/blueprintx?label=blueprintx)](https://www.npmjs.com/package/blueprintx)
+[![npm](https://img.shields.io/npm/v/blueprintlabs?label=blueprintlabs)](https://www.npmjs.com/package/blueprintlabs)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Node](https://img.shields.io/badge/node-%E2%89%A522-brightgreen)](package.json)
 [![Agent Skills](https://img.shields.io/badge/format-Agent%20Skills-blue)](https://agentskills.io)
@@ -159,7 +159,7 @@ workspace`.
 Node 22 or newer, no dependencies to install:
 
 ```bash
-npx blueprintx init
+npx blueprintlabs init
 ```
 
 It copies the skills where each agent reads them, writes the Blueprint block of
@@ -169,8 +169,8 @@ which version. It never overwrites a file that is already there, and
 `--dry-run` shows what it would do without writing.
 
 ```bash
-npx blueprintx check     # is the project whole? only reads
-npx blueprintx update    # bring the new version, showing what changes first
+npx blueprintlabs check     # is the project whole? only reads
+npx blueprintlabs update    # bring the new version, showing what changes first
 ```
 
 `update` touches only Blueprint's own files, and only the ones you have not
