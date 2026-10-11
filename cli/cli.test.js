@@ -60,7 +60,7 @@ describe("blueprint init", () => {
     assert.ok(Object.keys(record.files).length > 20, "every file it copied is in the record");
   });
 
-  it("writes the Blueprint block of AGENTS.md and points CLAUDE.md at it", async () => {
+  it("writes the Blueprint block of AGENTS.md and points each agent's own file at it", async () => {
     const folder = project("entry");
     await cli(folder, "init");
     const agents = readFileSync(join(folder, "AGENTS.md"), "utf8");
@@ -68,7 +68,11 @@ describe("blueprint init", () => {
     assert.ok(!agents.includes("{{"), "no placeholder is left");
     assert.ok(!agents.includes("<!-- The block the CLI writes"), "the template's own comment is not copied");
     assert.match(agents, /\.blueprint\/state\.md/);
-    assert.match(readFileSync(join(folder, "CLAUDE.md"), "utf8"), /AGENTS\.md/);
+    // The Antigravity CLI reads GEMINI.md and never opens AGENTS.md, so without this
+    // line it works in a prepared project knowing none of its rules.
+    for (const name of ["CLAUDE.md", "GEMINI.md"]) {
+      assert.match(readFileSync(join(folder, name), "utf8"), /AGENTS\.md/, `${name} points at AGENTS.md`);
+    }
   });
 
   it("never overwrites what is already there", async () => {
@@ -76,6 +80,7 @@ describe("blueprint init", () => {
     const rules = "# Meu projeto\n\n- Commits em portugues.\n";
     writeFileSync(join(folder, "AGENTS.md"), rules, "utf8");
     writeFileSync(join(folder, "CLAUDE.md"), "Leia o AGENTS.md.\n", "utf8");
+    writeFileSync(join(folder, "GEMINI.md"), "# Regras minhas\n", "utf8");
     mkdirSync(join(folder, ".claude", "skills", "blueprint"), { recursive: true });
     writeFileSync(join(folder, ".claude", "skills", "blueprint", "SKILL.md"), "mine\n", "utf8");
 
@@ -87,6 +92,9 @@ describe("blueprint init", () => {
     assert.ok(agents.startsWith(rules.trimEnd()), "the person's rules stay at the top, as they were");
     assert.ok(agents.includes(MARKS[0]), "and the block was added after them");
     assert.equal(readFileSync(join(folder, "CLAUDE.md"), "utf8"), "Leia o AGENTS.md.\n", "a CLAUDE.md that already names AGENTS.md is left alone");
+    const gemini = readFileSync(join(folder, "GEMINI.md"), "utf8");
+    assert.ok(gemini.startsWith("# Regras minhas"), "the person's GEMINI.md keeps what it had");
+    assert.match(gemini, /AGENTS\.md/, "and the pointing line was added at the end");
   });
 
   it("leaves a block that is already there for the setup skill to update", async () => {

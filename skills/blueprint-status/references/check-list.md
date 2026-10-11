@@ -66,7 +66,9 @@ written yet.
     `blueprint-setup` skill.
 15. **What the block names exists:** the documents folder, the plan, the state
     file and the journal, at the paths the block gives.
-16. **`CLAUDE.md` names `AGENTS.md`,** so Claude Code reads the same rules.
+16. **`CLAUDE.md` and `GEMINI.md` name `AGENTS.md`,** so an agent that reads
+    only its own file reads the same rules. Claude Code reads `CLAUDE.md` first;
+    the Antigravity CLI reads `GEMINI.md` and does not read `AGENTS.md`.
 17. **A playbook per role,** only when the state's `developers` is more than 1.
 
 ## Nothing twice

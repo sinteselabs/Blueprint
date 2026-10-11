@@ -19,6 +19,15 @@ Set it up once and forget it. From then on, every turn of every Claude Code sess
 in a configured repository is recorded, and you open Langfuse only when you need to
 look something up.
 
+**Langfuse now ships this same hook itself,** as an official Claude Code plugin
+(`langfuse/claude-observability-plugin`, read 11/10/2026): the same trace names,
+the same `TRACE_TO_LANGFUSE` and `CC_LANGFUSE_*` variables, the same place in
+`~/.claude/hooks/`. That is why Blueprint carries no hook of its own and points
+people at the plugin instead — see
+[`skills/blueprint-setup/references/observability.md`](../skills/blueprint-setup/references/observability.md).
+The copy here is what this repository runs; switching it to the plugin is a
+separate decision, and nothing depends on it.
+
 ### What it sends
 
 For each turn of a Claude Code session: a trace named `Claude Code - Turn N`,
@@ -175,12 +184,13 @@ then check the files the sessions left.
 | [`sessions/test_decide_skill.py`](sessions/test_decide_skill.py) | The decide skill on one decision that is costly to undo, answered in three ways. It presents the recommendation before the other options, four at most, in a short message, and records nothing before the answer. Taking the recommendation records the decision with its reason, who decided, the date and the sources, and what was left to verify becomes an item of the test plan; deciding later records it as open and goes on; choosing against the recommendation records the person's choice, and the agent does not insist | `python tooling/sessions/test_decide_skill.py` |
 | [`sessions/test_continue.py`](sessions/test_continue.py) | Continuing a project in a new session: stopped mid-step, the agent asks the question the state has as next and none that is answered, then closes the step, writes its document and moves on; with a state that is behind the files, it says so, shows what it rebuilt, asks to confirm and does not touch the state before that | `python tooling/sessions/test_continue.py` |
 | [`sessions/test_codex.py`](sessions/test_codex.py) | Blueprint in Codex, the agent the skills were not written in: the CLI installs them for it, Codex finds the entry skill on its own and says which step the conversation is in, and a project started in Claude Code is continued from the question its state has as next. Runs `codex exec`, so it spends the account's ChatGPT quota, not the Claude one, and takes `--model` because a ChatGPT account refuses some models through Codex | `python tooling/sessions/test_codex.py` |
+| [`sessions/test_antigravity.py`](sessions/test_antigravity.py) | Blueprint in the Antigravity CLI (the `gemini` command), split by what it costs. The half that costs nothing: it discovers the seven skills where `blueprint init --agent antigravity` puts them, the entry file this family of agents actually reads (`GEMINI.md`, because it never opens `AGENTS.md`) is there and points at `AGENTS.md`, and its own `gemini skills install` takes our `skills/` folder whole, with the references and the check script. The half that spends the Google account: one turn in a prepared project. With no model to spend on, it says so and exits 2 instead of reporting failures; `--no-turn` asks for the free half alone | `python tooling/sessions/test_antigravity.py [--no-turn]` |
 | [`sessions/test_personal_memory.py`](sessions/test_personal_memory.py) | What the record skill learns about the person, in three cases: told not to write outside the project, it does not and says the learning will not carry over; allowed but unable to reach the person's folder, it says so instead of reporting it saved; allowed and told where the folder is, it writes the preference there, with no content of the project, and the project's line in the list. A test session cannot write to the real `~/.blueprint/`, and that is on purpose | `python tooling/sessions/test_personal_memory.py` |
 | [`sessions/test_setup_skill.py`](sessions/test_setup_skill.py) | Preparing a repository whose plan is closed, in three cases: an entry file that already exists keeps the person's rules and gains the Blueprint block; without one, the file is created and a team gets a playbook per role; and "let's go on" prepares the repository before the first task. Then the acceptance of FR-30: a new session **with Blueprint not loaded** is told to start the first task, and names the task, where it is written and where to record | `python tooling/sessions/test_setup_skill.py` |
 | [`sessions/test_change_path.py`](sessions/test_change_path.py) | A change to a project that already exists, in three cases: a small change becomes one spec and nothing else; an improvement gets a plan with what enters, what changes and what leaves, with the document that matches the code left alone and the outdated part the change does not touch reported and not corrected; a reorganisation leaves the requirements untouched and writes what must keep working, the affected part as it is and as it will be, and the decision. In all three the agent reads the code first, writes nothing before the person answers, and changes no code | `python tooling/sessions/test_change_path.py` |
 
 They are not among the checks to run before every change: they need Claude Code
-on the PATH (the Codex one needs `codex` instead), take a few minutes (the interview about twenty) and spend model
+on the PATH (the Codex one needs `codex` instead, and the Antigravity one `gemini`), take a few minutes (the interview about twenty) and spend model
 usage, from the same account as your own sessions. Run the one for a skill after
 changing that skill. When the account's usage limit is reached, a test says it
 could not run and exits with 2, instead of reporting failures.
@@ -204,7 +214,7 @@ states in [`sessions/entry/`](sessions/entry/) and
 [`sessions/decide/`](sessions/decide/), and two small projects with code that
 runs in [`sessions/change/`](sessions/change/).
 
-Every test but the Codex one runs its sessions through
+Every test but the Codex and Antigravity ones runs its sessions through
 [`sessions/harness.py`](sessions/harness.py), which
 fences each session into its project folder: reading outside it is refused
 unless the test grants a folder, which stands for the person giving access. A

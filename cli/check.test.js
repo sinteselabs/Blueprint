@@ -149,10 +149,17 @@ describe("blueprint check", () => {
 
     put(join(folder, "AGENTS.md"), `# Projeto\n\n${MARKS[0]}\n## Blueprint\n\nO plano está em \`docs/plan.md\`, e o estado em \`.blueprint/state.md\`.\n${MARKS[1]}\n`);
     put(join(folder, "CLAUDE.md"), "See @AGENTS.md for how to work on this project.\n");
+    const pointing = await cli(folder, "check");
+    assert.equal(pointing.code, 1, "an agent that reads only GEMINI.md would still be blind here");
+    assert.match(pointing.out, /problem\s+the agents' own files name AGENTS\.md/);
+    assert.match(pointing.out, /GEMINI\.md/);
+
+    put(join(folder, "GEMINI.md"), "See @AGENTS.md for how to work on this project.\n");
     const again = await cli(folder, "check");
     assert.equal(again.code, 0, again.out);
     assert.match(again.out, /ok\s+the repository is prepared for development/);
     assert.match(again.out, /ok\s+what the entry file names is there/);
+    assert.match(again.out, /ok\s+the agents' own files name AGENTS\.md/);
   });
 
   it("says plainly when there is no project here", async () => {

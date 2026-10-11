@@ -54,10 +54,14 @@ in it, between two marks, and touches nothing else:
    the project's document language, with the project's real paths, taken from
    the state. Replace every `{{placeholder}}` and leave no section that does not
    apply.
-5. **`CLAUDE.md`:** Claude Code reads it first. If it does not exist, create it
-   with one line: `See @AGENTS.md for how to work on this project.`, in the
-   document language. If it exists and does not name `AGENTS.md`, add that line
-   at the end and say so. Never move the person's rules out of it.
+5. **`CLAUDE.md` and `GEMINI.md`:** some agents read a file of their own and
+   never open `AGENTS.md`. Claude Code reads `CLAUDE.md` first, and the
+   Antigravity CLI reads `GEMINI.md` and does not read `AGENTS.md` at all (read
+   in its version 0.63.0, 11/10/2026). So both files get one line:
+   `See @AGENTS.md for how to work on this project.`, in the document language.
+   One that does not exist is created with that line alone; one that exists and
+   does not name `AGENTS.md` gets the line at the end, and you say so. Never
+   move the person's rules out of either.
 
 The block is also what says that this project was prepared. Nothing in the
 state file records it: the mark in the entry file is the fact.
@@ -86,6 +90,15 @@ read something from it, or write a test line and read it back. Then:
 
 If the person says they want a tool that the state does not name, say what it
 takes, and change the state only through the `blueprint-record` skill.
+
+**When the state says `journal` and a tool would be worth it,** offer it once,
+in one line, with the reason it fits this project, and go on either way. Most
+people have never heard of the tools in this field and cannot answer a bare
+"do you want observability?": the offer carries the reason or it is noise.
+[references/observability.md](references/observability.md) has when it is worth
+it, when it is not, what to ask first, and what the person does to wire it.
+Blueprint ships no script for this and installs nothing: a no, or no answer, is
+a closed subject, and the journal keeps recording.
 
 ## 4. A playbook per role
 
