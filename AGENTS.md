@@ -26,7 +26,7 @@ change here reaches people: anything that ships — `skills/`, `cli/`, `LICENSE`
 | `skills/` | The product: one folder per skill, in the open Agent Skills format |
 | `.claude-plugin/` | The plugin manifest and the marketplace file. The repository root is the plugin root |
 | `cli/` | The CLI: `init`, `check` and `update`. Node, no dependencies. Shipped to people, together with `skills/`. The check itself lives in `skills/blueprint-status/check.js`, so the CLI and an agent run the same file |
-| `tooling/` | This repository's own tooling (a Langfuse hook for Claude Code, the checks). Not shipped to anyone |
+| `tooling/` | This repository's own tooling: the checks that guard a change, and the tests that run Blueprint in real agent sessions. Not shipped to anyone, and the plugin never loads or runs any of it |
 
 ## Rules
 
@@ -61,7 +61,6 @@ python tooling/checks/check_skills.py
 python tooling/checks/check_shared_text.py
 python tooling/checks/check_state.py
 python tooling/checks/test_checks.py
-python tooling/checks/test_langfuse_hook.py
 npm test
 claude plugin validate .
 ```

@@ -33,14 +33,12 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.13"
-      - run: pip install "langfuse>=4,<5"
       - run: python tooling/checks/check_links.py
       - run: python tooling/checks/check_root_names.py
       - run: python tooling/checks/check_skills.py
       - run: python tooling/checks/check_shared_text.py
       - run: python tooling/checks/check_state.py
       - run: python tooling/checks/test_checks.py
-      - run: python tooling/checks/test_langfuse_hook.py
 
   package:
     name: what the package would ship

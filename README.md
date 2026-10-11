@@ -223,12 +223,11 @@ and what you should see.
 
 One thing to be precise about, because the folder contains it: **`tooling/` is
 this repository's own tooling and is not part of the product.** The plugin
-never loads or runs any of it. It holds the checks that guard a change here,
-the tests that run Blueprint in real agent sessions, and a Langfuse hook that
-traces *this repository's* development sessions to *its own* Langfuse account.
-It travels in the plugin folder only because the repository root is the plugin
-root. Nothing installs it, nothing calls it, and deleting it would change
-nothing for anyone who uses Blueprint.
+never loads or runs any of it. It holds the checks that guard a change here
+and the tests that run Blueprint in real agent sessions, and it reaches the
+network for nothing. It travels in the plugin folder only because the
+repository root is the plugin root. Nothing installs it, nothing calls it, and
+deleting it would change nothing for anyone who uses Blueprint.
 
 ## Optional, never required
 
