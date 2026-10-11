@@ -35,11 +35,14 @@ from pathlib import Path
 from harness import REPO, verdict
 
 MODEL = "gpt-5.6-luna"
+TIMEOUT = 900  # one turn of Codex; it has sat for twenty minutes on one, so this is said and not waited out
+NODE = ["node", str(REPO / "cli" / "blueprint.js")]  # our own CLI, which is what installs the skills for Codex
 STATE = (Path(__file__).resolve().parent / "entry" / "padaria-pedidos-state.md").read_text(encoding="utf-8")
 CHECK_STATE = REPO / "tooling" / "checks" / "check_state.py"
 POSITION = re.compile(r"^[\W_]*etapa\s+(\d)\s+de\s+5", re.IGNORECASE)
 START = "Quero começar um projeto novo: um site para a padaria receber encomendas."
 GO_ON = "Vamos continuar o projeto."
+ANSWER = "O pagamento online fica fora da primeira versão: o cliente paga na retirada."
 NEXT_QUESTION = STATE.split("## Next question", 1)[1].strip().strip(".?!").lower()  # what the state has as the next question
 
 
@@ -51,6 +54,14 @@ def launcher() -> list[str]:
     return ["cmd", "/c", path] if path.lower().endswith((".cmd", ".bat")) else [path]
 
 
+def stop(pid: int) -> None:
+    """Takes down a process and everything it started."""
+    if sys.platform == "win32":
+        subprocess.run(["taskkill", "/F", "/T", "/PID", str(pid)], capture_output=True)
+    else:
+        subprocess.run(["pkill", "-TERM", "-P", str(pid)], capture_output=True)
+
+
 def codex(model: str, folder: Path, prompt: str, resume: str = "") -> tuple[int, str, str, list[str], str]:
     """One turn of Codex in `folder`: the exit code, the last message, the whole log, the skill files it read, and the session id."""
     with tempfile.NamedTemporaryFile("r+", suffix=".txt", delete=False, encoding="utf-8") as last:
@@ -60,8 +71,21 @@ def codex(model: str, folder: Path, prompt: str, resume: str = "") -> tuple[int,
         "-m", model, "--sandbox", "workspace-write", "--skip-git-repo-check",
         "-C", str(folder), "--json", "-o", str(answer), prompt,
     ]
-    done = subprocess.run(command, capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=1500)
-    log = (done.stdout or "") + (done.stderr or "")
+    # Codex has sat on a turn for more than half an hour. Say so and go on, and
+    # take the whole tree down: through the `.cmd` shim, killing the shell leaves
+    # `codex.exe` running, which then holds the pipes open for ever.
+    started = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, encoding="utf-8", errors="replace")
+    try:
+        out, error = started.communicate(timeout=TIMEOUT)
+        code, log = started.returncode, (out or "") + (error or "")
+    except subprocess.TimeoutExpired:
+        stop(started.pid)
+        try:
+            out, error = started.communicate(timeout=60)
+        except subprocess.TimeoutExpired:
+            out, error = "", ""
+        code = 124
+        log = f"codex did not answer within {TIMEOUT // 60} minutes\n{(out or '') + (error or '')}"
     read = []
     session = ""
     for line in log.splitlines():
@@ -81,7 +105,7 @@ def codex(model: str, folder: Path, prompt: str, resume: str = "") -> tuple[int,
         read.extend(re.findall(r"[\w./-]*skills/[\w./-]+\.md", flat))
     reply = answer.read_text(encoding="utf-8").strip() if answer.is_file() else ""
     answer.unlink(missing_ok=True)
-    return done.returncode, reply, log, sorted(set(read)), session
+    return code, reply, log, sorted(set(read)), session
 
 
 def main() -> int:
@@ -105,10 +129,7 @@ def main() -> int:
         # 1. a new project, with Blueprint installed by our own CLI, for Codex
         fresh = root / "novo"
         fresh.mkdir()
-        installed = subprocess.run(
-            ["node", str(REPO / "cli" / "blueprint.js"), "init", "--agent", "codex"],
-            cwd=fresh, capture_output=True, text=True, encoding="utf-8", errors="replace",
-        )
+        installed = subprocess.run([*NODE, "init", "--agent", "codex"], cwd=fresh, capture_output=True, text=True, encoding="utf-8", errors="replace")
         check("the CLI installs Blueprint for Codex", installed.returncode == 0 and (fresh / ".agents" / "skills" / "blueprint" / "SKILL.md").is_file(), installed.stdout.strip()[-200:])
 
         code, reply, log, read, session = codex(model, fresh, START)
@@ -127,12 +148,33 @@ def main() -> int:
         check("starting: it asks before writing", "?" in reply)
         check("starting: it wrote no document before the person answered", not (fresh / "docs").exists())
 
-        # 2. continuing, in Codex, a project that was started in Claude Code
+        # 2. a project like it in the folder beside: does Codex read outside the folder it was given?
+        beside = root / "vizinho" / "projetos" / "padaria-site"
+        beside.mkdir(parents=True)
+        other = root / "vizinho" / "projetos" / "padaria-pedidos" / ".blueprint"
+        other.mkdir(parents=True)
+        (other / "state.md").write_text(STATE, encoding="utf-8", newline="\n")
+        subprocess.run([*NODE, "init", "--agent", "codex"], cwd=beside, capture_output=True, text=True)
+
+        code, reply, log, read, _ = codex(model, beside, START)
+        print(f"\n--- a project like it in the folder beside\n    the person: {START}\n    Codex:", flush=True)
+        for line in reply.splitlines():
+            print("      " + line)
+        low = reply.lower()
+        named = "padaria-pedidos" in low
+        said_no = any(word in low for word in ("não consegui", "não pude", "não foi possível", "sem acesso", "fora da pasta", "não tenho acesso", "permiss", "bloque"))
+        print(f"    it found the folder beside: {named} · it said it could not look: {said_no}", flush=True)
+        check("beside: the turn ran", code == 0, f"exit {code}: {log.strip()[-300:]}")
+        check("beside: it either names the project beside or says it could not look", named or said_no, "it did neither, and concluded in silence")
+        check("beside: it asks which project this is", "?" in reply)
+        check("beside: it created nothing before the person answered", not (beside / "docs").exists() and not (beside / ".blueprint" / "state.md").exists())
+
+        # 3. continuing, in Codex, a project that was started in Claude Code
         going = root / "continuando" / "padaria-pedidos"
         going.mkdir(parents=True)
         (going / ".blueprint").mkdir()
         (going / ".blueprint" / "state.md").write_text(STATE, encoding="utf-8", newline="\n")
-        subprocess.run(["node", str(REPO / "cli" / "blueprint.js"), "init", "--agent", "codex"], cwd=going, capture_output=True, text=True)
+        subprocess.run([*NODE, "init", "--agent", "codex"], cwd=going, capture_output=True, text=True)
 
         code, reply, log, read, _ = codex(model, going, GO_ON)
         print(f"\n--- continuing a project started in Claude Code\n    the person: {GO_ON}\n    Codex:", flush=True)
@@ -146,6 +188,21 @@ def main() -> int:
         check("continuing: it goes on from the state's next question", NEXT_QUESTION in low, f"it did not ask: {NEXT_QUESTION}")
         passes = subprocess.run([sys.executable, str(CHECK_STATE), str(going / ".blueprint" / "state.md")], capture_output=True, text=True, encoding="utf-8")
         check("continuing: the state file still passes check_state.py", passes.returncode == 0, (passes.stdout.strip().splitlines() or ["no output"])[0])
+
+        # 4. answering that question: does the entry reach the skill that writes, in Codex?
+        before = (going / ".blueprint" / "state.md").read_text(encoding="utf-8")
+        code, reply, log, read, _ = codex(model, going, ANSWER)
+        print(f"\n--- answering the question\n    the person: {ANSWER}\n    Codex:", flush=True)
+        for line in reply.splitlines():
+            print("      " + line)
+        print(f"    skill files it read: {', '.join(read) or 'none'}", flush=True)
+        after = (going / ".blueprint" / "state.md").read_text(encoding="utf-8")
+        check("answering: the turn ran", code == 0, f"exit {code}: {log.strip()[-300:]}")
+        check("answering: the entry reached the skill that records", any("blueprint-record" in path for path in read), ", ".join(read) or "it read none")
+        check("answering: the state file was saved with the answer", after != before and "pagamento" in after.lower(), "the state did not change")
+        check("answering: the step's last question is ticked now", "- [x] O que fica fora da primeira versão" in after, "the checklist was not updated")
+        passes = subprocess.run([sys.executable, str(CHECK_STATE), str(going / ".blueprint" / "state.md")], capture_output=True, text=True, encoding="utf-8")
+        check("answering: the state it wrote passes check_state.py", passes.returncode == 0, (passes.stdout.strip().splitlines() or ["no output"])[0])
     return verdict(failures)
 
 
