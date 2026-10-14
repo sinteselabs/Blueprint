@@ -213,3 +213,84 @@ describe("blueprint check", () => {
     assert.ok(result.checks.some((one) => one.how === "skipped" && one.why), "and a skipped one says why");
   });
 });
+
+describe("blueprint check: the code and the documents", () => {
+  const NUMBERED = "# Requisitos\n\n| Nº | Requisito | Prioridade | Vem de |\n|---|---|---|---|\n| FR-01 | A recepção cancela uma consulta | Primeira versão | o que a pessoa disse |\n| FR-02 | O paciente confirma a presença | Primeira versão | o que a pessoa disse |\n";
+
+  /** A project whose requirements are numbered, so the code has something to point at. */
+  function numbered(name, files = {}) {
+    const folder = project(name);
+    put(join(folder, "docs", "requirements.md"), NUMBERED);
+    for (const [path, text] of Object.entries(files)) put(join(folder, ...path.split("/")), text);
+    return folder;
+  }
+
+  it("skips the three while the project has no anchor in its code", async () => {
+    const { code, out } = await cli(numbered("no-anchors"), "check");
+    assert.equal(code, 0, out);
+    assert.match(out, /skipped\s+no anchor in the code names an id the documents do not have \(there is no anchor/);
+    assert.match(out, /skipped\s+a task whose done-when list is complete is anchored in the code/);
+  });
+
+  it("finds an anchor the code has and no document has", async () => {
+    const folder = numbered("orphan", { "src/old.js": "// FR-99: ninguém escreveu isso.\nexport function mystery() {}\n" });
+    const { code, out } = await cli(folder, "check");
+    assert.equal(code, 1, out);
+    assert.match(out, /problem\s+no anchor in the code names an id the documents do not have/);
+    assert.match(out, /FR-99: the code names it and no document does/);
+    assert.match(out, /fix: /);
+  });
+
+  it("finds a task spec that comes from an id no document has", async () => {
+    const folder = numbered("broken-trace", {
+      "src/cancel.js": "// FR-01\nexport function cancel() {}\n",
+      "docs/specs/01-01-cancelar.md": "# Cancelar\n\n## Vem de\n\nFR-01, FR-42\n",
+    });
+    const { code, out } = await cli(folder, "check");
+    assert.equal(code, 1, out);
+    assert.match(out, /problem\s+every task spec comes from an id the documents have/);
+    assert.match(out, /01-01-cancelar\.md comes from FR-42/);
+  });
+
+  it("finds a task that says it is done and is anchored nowhere", async () => {
+    const folder = numbered("drift", {
+      "src/cancel.js": "// FR-01\nexport function cancel() {}\n",
+      "docs/specs/01-02-confirmar.md": "# Confirmar\n\n## Quando está pronta\n\n- [x] O paciente confirma\n\n## Vem de\n\nFR-02\n",
+    });
+    const { code, out } = await cli(folder, "check");
+    assert.equal(code, 1, out);
+    assert.match(out, /problem\s+a task whose done-when list is complete is anchored in the code/);
+    assert.match(out, /01-02-confirmar\.md: the task says it is done and nothing in the code carries the id/);
+  });
+
+  it("says nothing is wrong when the code and the documents agree", async () => {
+    const folder = numbered("agreeing", {
+      "src/cancel.js": "// FR-01\nexport function cancel() {}\n",
+      "src/confirm.js": "// FR-02\nexport function confirm() {}\n",
+      "docs/specs/01-01-cancelar.md": "# Cancelar\n\n## Quando está pronta\n\n- [x] A recepção cancela\n\n## Vem de\n\nFR-01\n",
+      "docs/specs/01-02-confirmar.md": "# Confirmar\n\n## Quando está pronta\n\n- [x] O paciente confirma\n\n## Vem de\n\nFR-02\n",
+    });
+    const { code, out } = await cli(folder, "check");
+    assert.equal(code, 0, out);
+    assert.match(out, /ok\s+no anchor in the code names an id the documents do not have/);
+    assert.match(out, /ok\s+every task spec comes from an id the documents have/);
+    assert.match(out, /ok\s+a task whose done-when list is complete is anchored in the code/);
+  });
+
+  it("does not fire on a task that is not finished yet", async () => {
+    const folder = numbered("unfinished", {
+      "src/cancel.js": "// FR-01\nexport function cancel() {}\n",
+      "docs/specs/01-02-confirmar.md": "# Confirmar\n\n## Quando está pronta\n\n- [ ] O paciente confirma\n\n## Vem de\n\nFR-02\n",
+    });
+    const { code, out } = await cli(folder, "check");
+    assert.equal(code, 0, out);
+    assert.match(out, /skipped\s+a task whose done-when list is complete is anchored in the code \(no task spec has its done-when list complete yet\)/);
+  });
+
+  it("skips the three when the documents live in a tool", async () => {
+    const folder = project("in-a-tool", (text) => text.replace("documents_at: docs/", "documents_at: notion"));
+    const { code, out } = await cli(folder, "check");
+    assert.equal(code, 0, out);
+    assert.match(out, /skipped\s+no anchor in the code names an id the documents do not have \(the documents are in notion/);
+  });
+});

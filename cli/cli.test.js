@@ -47,7 +47,7 @@ describe("blueprint init", () => {
       assert.ok(existsSync(join(folder, skills, "blueprint-record", "references", "state-format.md")), `${skills} has a reference`);
       assert.ok(readFileSync(join(folder, skills, "BLUEPRINT-LICENSE.md"), "utf8").includes("MIT"), `${skills} carries the licence`);
     }
-    assert.equal(readdirSync(join(folder, ".claude", "skills")).filter((n) => n.startsWith("blueprint")).length, 7, "seven skills");
+    assert.equal(readdirSync(join(folder, ".claude", "skills")).filter((n) => n.startsWith("blueprint")).length, 8, "eight skills");
   });
 
   it("records what it installed, with a hash per file", async () => {

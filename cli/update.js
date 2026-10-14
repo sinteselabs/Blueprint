@@ -150,6 +150,6 @@ export async function run(argv, folder, write, options) {
   if (code !== 0 || argv.includes("--dry-run")) return code;
   write("");
   const { main } = await import(`file:///${join(PACKAGE, "skills", "blueprint-status", "check.js").replace(/\\/g, "/")}`);
-  const checked = main([], folder, write);
+  const checked = await main([], folder, write);
   return checked === 2 ? 0 : checked; // no project yet is not a problem of the update
 }

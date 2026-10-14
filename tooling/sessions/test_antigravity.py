@@ -34,8 +34,8 @@ MODEL = "gemini-3.8-flash"
 TIMEOUT = 600
 NODE = ["node", str(REPO / "cli" / "blueprint.js")]
 STATE = (Path(__file__).resolve().parent / "entry" / "padaria-pedidos-state.md").read_text(encoding="utf-8")
-SKILLS = ["blueprint", "blueprint-decide", "blueprint-record", "blueprint-research",
-          "blueprint-setup", "blueprint-status", "blueprint-survey"]
+SKILLS = ["blueprint", "blueprint-decide", "blueprint-explain", "blueprint-record",
+          "blueprint-research", "blueprint-setup", "blueprint-status", "blueprint-survey"]
 GO_ON = "Vamos continuar o projeto."
 # What the environment says when the key has no credit left, or names no model we may use.
 NO_MODEL = ("credits are depleted", "RESOURCE_EXHAUSTED", "no longer available", "API key not valid",
@@ -103,7 +103,7 @@ def main() -> int:
 
         found = gemini(ours, "skills", "list")[1]
         enabled = sorted(re.findall(r"^(blueprint[\w-]*) \[Enabled\]", found, re.MULTILINE))
-        check("it discovers the seven skills where our CLI put them", enabled == SKILLS, f"it found {enabled or 'none'}")
+        check("it discovers the eight skills where our CLI put them", enabled == SKILLS, f"it found {enabled or 'none'}")
         check("and it reads them from .agents/skills", ".agents" in found and ".gemini" not in found.replace(".gemini/skills\n", ""), "the location it printed is another folder")
 
         # The entry file this family of agents actually reads. It does not open AGENTS.md:

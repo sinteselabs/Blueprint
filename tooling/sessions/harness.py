@@ -43,12 +43,13 @@ def find_claude() -> str | None:
     return shutil.which("claude")
 
 
-def run(claude: str, project: Path, prompt: str, allow_folders: tuple[Path, ...] = (), timeout: int = 900, resume: str = "", keep: bool = False, web: bool = True, plugin: bool = True) -> Session:
+def run(claude: str, project: Path, prompt: str, allow_folders: tuple[Path, ...] = (), timeout: int = 900, resume: str = "", keep: bool = False, web: bool = True, plugin: bool = True, extra_tools: tuple[str, ...] = ()) -> Session:
     """Runs one turn in `project` with `prompt` and returns what the agent said and did, in order.
 
     With `keep`, Claude Code keeps the session, so a later call can pass its id in `resume` and go on from it.
     With `web` on, the agent may search and fetch pages. With it off, it cannot, which is cheaper and tests what it does then.
     With `plugin` off, this repository is not loaded: a bare agent, which is what a person has when they open a prepared project without Blueprint installed.
+    `extra_tools` widens what the session may call, for a skill that carries a script: without it the agent cannot run one.
     """
     command = [claude, "-p", "--strict-mcp-config"]
     if plugin:
@@ -58,7 +59,7 @@ def run(claude: str, project: Path, prompt: str, allow_folders: tuple[Path, ...]
     for folder in allow_folders:
         command += ["--add-dir", str(folder)]
     command += [
-        "--settings", FENCE, "--permission-mode", "acceptEdits", "--allowedTools", *TOOLS, *(WEB if web else ()),
+        "--settings", FENCE, "--permission-mode", "acceptEdits", "--allowedTools", *TOOLS, *extra_tools, *(WEB if web else ()),
         "--output-format", "stream-json", "--verbose",
     ]
     if not (keep or resume):

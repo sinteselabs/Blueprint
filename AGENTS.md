@@ -9,7 +9,7 @@ Blueprint takes a software project from an idea in plain language to requirement
 and a repository ready for agentic development. It is delivered as agent skills
 (the product), a Claude Code plugin that carries them, and a CLI.
 
-The seven skills in `skills/` are written, the CLI has its three commands, and
+The eight skills in `skills/` are written, the CLI has its commands, and
 the method is measured in real sessions of Claude Code, Codex and the
 Antigravity CLI. The previous form of Blueprint, a template to copy into a
 project, was absorbed by the skills and deleted in October 2026; it is in the

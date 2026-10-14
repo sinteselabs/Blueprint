@@ -59,6 +59,41 @@ that one.
    told to them. Mark what you deduced as deduced. Never fill a gap by inventing.
 5. **Keep it short.** Tables and lists before prose.
 
+## The identifiers are anchors
+
+A document that numbers what it says — `FR-01`, `NFR-02`, `UC-03`, `D-004` —
+gives the code something to point back at. That is what later lets anyone ask
+why a line exists and be answered from the code, instead of being sent to read
+this document.
+
+<!-- shared: anchors-convention -->
+An **anchor** is one of those identifiers written in the code: in a comment, or
+in the name of a test. It says that this code exists because of that
+requirement, that use case or that decision.
+
+There is no index file to keep in step with anything. The anchor is the
+identifier itself, so it works in any language and it cannot go stale on its
+own:
+
+    // FR-12: only the receptionist cancels an appointment.
+    export function cancelAppointment(id, by) {
+
+    def test_only_reception_cancels():  # FR-12
+
+What carries an anchor, and what does not:
+
+- A requirement that became code carries its id where that code begins: the
+  function, the route, the component, the migration.
+- A test that proves a requirement carries the id in its name or beside it.
+- A decision that explains why the code is shaped the way it is carries its `D-`
+  id at that spot, and only there. The reason stays in the decisions record.
+- **Not every file has an anchor, and that is normal.** A file with no anchor is
+  not a problem. An anchor naming an id that no document has is.
+<!-- /shared: anchors-convention -->
+
+So: number every requirement, every use case and every decision, and keep the
+numbers stable. A renumbered requirement breaks every anchor that named it.
+
 ## When a document is ready
 
 - Set it to `ready` in the state, with its path, through the `blueprint-record` skill.
