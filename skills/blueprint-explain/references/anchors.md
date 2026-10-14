@@ -36,6 +36,19 @@ An index would be a second thing to maintain, and the first thing to rot. The
 whole point of this layer is that the developer does not have to trust a
 document to be current. A grep over the code is always current.
 
+## What is not an anchor
+
+Two things are deliberately not read as anchors, because reading them makes the
+layer cry wolf:
+
+- **Prose.** A `.md`, `.txt` or `.rst` file that mentions an identifier is saying
+  it, not anchoring it. Every README and entry file that explains this convention
+  would otherwise look like an orphaned anchor.
+- **An installed tool's files.** `.claude/`, `.agents/`, `.gemini/` and their kin
+  hold skills and configuration, not this project's code, and they are full of
+  identifiers used as examples — Blueprint's own skills name `FR-01` and `D-004`
+  to explain this very page.
+
 ## What reads them
 
 - `explain.js why <file:line>` answers "why is this the way it is" from the

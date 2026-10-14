@@ -29,7 +29,17 @@ const ID = /\b(FR|NFR|UC|D|ARD)-(\d{1,4})\b/g;
 const SKIP = new Set([
   "node_modules", ".git", ".hg", ".svn", "dist", "build", "out", "target", "coverage",
   ".next", ".nuxt", ".cache", ".venv", "venv", "__pycache__", "vendor", ".blueprint", ".worktrees",
+  // Where agents keep installed skills and configuration. Those files are a tool's,
+  // not this project's, and they are full of identifiers used as examples — Blueprint's
+  // own skills name FR-01 and D-004 to explain the convention. Reading them as anchors
+  // reports the whole installation as orphaned.
+  ".claude", ".agents", ".gemini", ".codex", ".cursor", ".windsurf", ".aider",
 ]);
+// An anchor is in the code: a comment, or the name of a test. A document that
+// mentions an identifier is saying it, not anchoring it, so prose is not scanned —
+// otherwise every README and entry file that explains the convention becomes an
+// orphaned anchor.
+const PROSE = new Set([".md", ".markdown", ".mdx", ".txt", ".rst", ".adoc", ".org"]);
 const BINARY = new Set([
   ".png", ".jpg", ".jpeg", ".gif", ".webp", ".ico", ".svg", ".pdf", ".zip", ".gz", ".tar",
   ".woff", ".woff2", ".ttf", ".otf", ".eot", ".mp3", ".mp4", ".mov", ".wav", ".exe", ".dll",
@@ -169,7 +179,8 @@ export function anchors(project, state) {
         walk(here, depth + 1);
         continue;
       }
-      if (!entry.isFile() || BINARY.has(extname(entry.name).toLowerCase())) continue;
+      const kind = extname(entry.name).toLowerCase();
+      if (!entry.isFile() || BINARY.has(kind) || PROSE.has(kind)) continue;
       if (folder && rel.startsWith(folder)) continue; // a document is not code
       seen += 1;
       let text;
