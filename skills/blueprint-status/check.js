@@ -23,6 +23,28 @@ const DOCUMENT_SITUATIONS = ["not-started", "in-progress", "ready"];
 const MARKS = { start: "<!-- blueprint:start -->", end: "<!-- blueprint:end -->" };
 const LINK = /(?<!!)\[[^\]]*\]\(([^)\s]+)(?:\s+"[^"]*")?\)/g;
 
+/**
+ * The anchor engine, which the blueprint-explain skill carries. There is one source
+ * for what an anchor is, so this check never disagrees with what `why` and `trace`
+ * answer. Null when that skill is not installed beside this one, and then the three
+ * checks that need it say they were skipped instead of guessing.
+ */
+async function anchorEngine() {
+  const path = join(dirname(import.meta.filename), "..", "blueprint-explain", "explain.js");
+  if (!existsSync(path)) return null;
+  try {
+    return await import(`file:///${path.replace(/\\/g, "/")}`);
+  } catch {
+    return null;
+  }
+}
+
+const ANCHOR_CHECKS = [
+  "no anchor in the code names an id the documents do not have",
+  "every task spec comes from an id the documents have",
+  "a task whose done-when list is complete is anchored in the code",
+];
+
 /** The project folder: the one given, or the nearest one above with `.blueprint/state.md`. */
 export function findProject(from) {
   let at = resolve(from);
@@ -89,8 +111,63 @@ function documentsFolder(state) {
   return /^[a-z]+$/i.test(at) && !at.includes("/") ? null : at; // a tool's name, not a folder
 }
 
+/**
+ * Whether the code and the documents still agree: the three checks that make the
+ * project notice when understanding has decayed. They never fire on a project that
+ * has no anchors yet, because having none is the normal state of a project whose
+ * code came first.
+ */
+async function codeAndDocuments(project, { ok, problem, skipped }) {
+  const engine = await anchorEngine();
+  if (!engine) {
+    const why = "the blueprint-explain skill is not installed beside this one, and it is what knows how to read anchors";
+    for (const what of ANCHOR_CHECKS) skipped(what, why);
+    return;
+  }
+  const state = engine.readState(project);
+  const says = engine.catalogue(project, state);
+  const found = engine.anchors(project, state);
+  const specs = engine.taskSpecs(project, state);
+
+  if (!says.size) {
+    for (const what of ANCHOR_CHECKS) skipped(what, "the documents do not number anything yet, so there is nothing for the code to point at");
+    return;
+  }
+
+  if (!found.length) {
+    skipped(ANCHOR_CHECKS[0], "there is no anchor in this project's code yet");
+  } else {
+    const orphans = [...new Set(found.map((anchor) => anchor.id))].filter((id) => !says.has(id)).sort();
+    if (orphans.length) {
+      problem(ANCHOR_CHECKS[0], `${orphans.join(", ")}: the code names it and no document does. Either a document lost it, or the anchor is wrong. The blueprint-explain skill's trace says where each one is`);
+    } else ok(ANCHOR_CHECKS[0]);
+  }
+
+  if (!specs.length) {
+    skipped(ANCHOR_CHECKS[1], "there is no task spec yet");
+  } else {
+    const broken = specs.flatMap((spec) => spec.ids.filter((id) => !says.has(id)).map((id) => `${spec.path} comes from ${id}`));
+    if (broken.length) {
+      problem(ANCHOR_CHECKS[1], `${broken.join("; ")}, and no document has that id. Fix the spec, or put the requirement back in the document`);
+    } else ok(ANCHOR_CHECKS[1]);
+  }
+
+  const delivered = specs.filter((spec) => spec.done && spec.ids.some((id) => says.has(id)));
+  const anchored = new Set(found.map((anchor) => anchor.id));
+  if (!found.length) {
+    skipped(ANCHOR_CHECKS[2], "this project does not use anchors yet, so there is nothing to compare a finished task against");
+  } else if (!delivered.length) {
+    skipped(ANCHOR_CHECKS[2], "no task spec has its done-when list complete yet");
+  } else {
+    const drifted = delivered.filter((spec) => !spec.ids.some((id) => anchored.has(id)));
+    if (drifted.length) {
+      problem(ANCHOR_CHECKS[2], `${drifted.map((spec) => spec.path).join(", ")}: the task says it is done and nothing in the code carries the id it comes from. Either the code lost it, or the task is not done`);
+    } else ok(ANCHOR_CHECKS[2]);
+  }
+}
+
 /** Every check, in the order of references/check-list.md. Each one says ok, problem or skipped. */
-export function check(project) {
+export async function check(project) {
   const found = [];
   const ok = (what) => found.push({ how: "ok", what });
   const problem = (what, fix) => found.push({ how: "problem", what, fix });
@@ -138,6 +215,9 @@ export function check(project) {
   const folder = documentsFolder(state);
   if (!folder) {
     skipped("the documents are where the state says", `the documents are in ${state.header.documents_at}, not in this folder`);
+    for (const what of ANCHOR_CHECKS) {
+      skipped(what, `the documents are in ${state.header.documents_at}, so what the code points at cannot be read from this folder`);
+    }
   } else {
     const missing = [];
     const leftovers = [];
@@ -188,6 +268,8 @@ export function check(project) {
       else ok("every decision in the state is in the decisions record");
     } else if (state.decisions.length) problem("every decision in the state is in the decisions record", "the state names decisions and there is no decisions record");
     else ok("every decision in the state is in the decisions record");
+
+    await codeAndDocuments(project, { ok, problem, skipped });
   }
 
   for (const kind of ["memory", "observability"]) {
@@ -257,7 +339,7 @@ export function report(found) {
   return lines.join("\n");
 }
 
-export function main(argv, from, write) {
+export async function main(argv, from, write) {
   const json = argv.includes("--json");
   const given = argv.find((argument) => !argument.startsWith("--"));
   const where = given ? resolve(from, given) : from;
@@ -274,7 +356,7 @@ export function main(argv, from, write) {
   }
   let found;
   try {
-    found = check(project);
+    found = await check(project);
   } catch (error) {
     write(json ? JSON.stringify({ project, error: String(error.message) }, null, 2) : `I could not finish the check: ${error.message}`);
     return 2;
@@ -284,5 +366,5 @@ export function main(argv, from, write) {
 }
 
 if (process.argv[1] && import.meta.filename === process.argv[1]) {
-  process.exitCode = main(process.argv.slice(2), process.cwd(), (line) => process.stdout.write(`${line}\n`));
+  process.exitCode = await main(process.argv.slice(2), process.cwd(), (line) => process.stdout.write(`${line}\n`));
 }
