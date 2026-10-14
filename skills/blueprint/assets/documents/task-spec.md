@@ -21,7 +21,16 @@ task number: 01-01-task-name.md. -->
 
 ## Comes from
 
-{{The requirements and decisions this task serves: FR-01, D-002.}}
+{{The requirements and decisions this task serves: FR-01, D-002.}} These are the
+identifiers the code will carry as anchors, so that anyone can ask why that code
+exists and get the answer from the code itself.
+
+## Result of the delivery
+
+{{Written when the task is delivered, from the review brief: what changed, which
+requirement it serves, which decision it depended on, what was assumed, what
+could not be verified, and where to look first — the two or three riskiest
+places, hardest first. Until then: "To be written on delivery."}}
 
 ## How to test
 
