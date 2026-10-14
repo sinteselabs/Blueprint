@@ -64,7 +64,7 @@ reads skills can run it, whatever LLM is behind it.
 |---|---|---|
 | **Claude Code** | Plugin, claude.ai, the skills folder, or the CLI | **Best supported.** Where it is developed, and measured end to end in real sessions |
 | **Codex** | The skills folder or the CLI | **Measured** in real sessions: it finds the entry skill on its own, says which step the conversation is in, and continues a project started elsewhere |
-| **Antigravity CLI** (`gemini`) | Its own installer, the skills folder, or the CLI | **Measured**, except a model turn: it discovers all seven skills and reads the entry file |
+| **Antigravity CLI** (`gemini`) | Its own installer, the skills folder, or the CLI | **Measured**, except a model turn: it discovers every skill and reads the entry file |
 | **Any other agent that reads skills** | The skills folder, or its own installer | Should work, and is not measured. The format is the same for everyone |
 | **An agent with no skills at all** | — | The prepared repository still works. `AGENTS.md`, the documents and the plan are plain Markdown that anything can read |
 
@@ -110,7 +110,7 @@ A small change does not become a document. It becomes one task with its spec.
 
 ## Quick start
 
-Pick one. All four give you the same seven skills.
+Pick one. All four give you the same eight skills.
 
 ### 1. Claude Code, from the terminal
 
@@ -199,7 +199,7 @@ code, a product that calls a model.
 Every task the agent finishes ends with how to test it: what you run or open,
 and what you should see.
 
-## The seven skills
+## The eight skills
 
 | Skill | What it does |
 |---|---|
@@ -210,6 +210,7 @@ and what you should see.
 | `blueprint-record` | The project's state and journal, and what it learns about how you work |
 | `blueprint-status` | "Where are we?", answered from the files, and the project check |
 | `blueprint-setup` | Prepares the repository: the entry file, the journal, the playbooks |
+| `blueprint-explain` | Answers why a line of code is the way it is, from the code: the review brief, the tour |
 
 ## What stays yours
 
