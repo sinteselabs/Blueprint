@@ -1,6 +1,6 @@
 {
   "name": "blueprintlabs",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Takes a software project from an idea in plain language to requirements and a repository ready for agentic development.",
   "license": "MIT",
   "type": "module",

@@ -1,7 +1,7 @@
 {
   "name": "blueprint",
   "displayName": "Blueprint",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "From an idea to a repository ready for agentic development: a guided interview, the project documents and a prepared environment.",
   "author": {
     "name": "Síntese Labs"

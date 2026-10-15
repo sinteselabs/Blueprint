@@ -173,6 +173,17 @@ npx blueprintlabs check     # is the project whole? only reads
 npx blueprintlabs update    # bring the new version, showing what changes first
 ```
 
+And four that answer from the code, so understanding never costs you a document:
+
+```bash
+npx blueprintlabs why src/cancel.js:42   # what is this line there for?
+npx blueprintlabs trace FR-01            # where does this requirement live?
+npx blueprintlabs map                    # what did we promise that nothing implements?
+npx blueprintlabs budget                 # is this delivery small enough to review?
+```
+
+They only read, and `--json` gives an agent the same answer.
+
 `update` touches only Blueprint's own files, and only the ones you have not
 edited. A file of Blueprint that you changed is kept, with the new version
 written beside it. Your documents, your state and your journal are never
@@ -196,8 +207,15 @@ code, a product that calls a model.
 | The plan, one spec per task | AI features of the product |
 | | Test plan, playbooks per role |
 
-Every task the agent finishes ends with how to test it: what you run or open,
-and what you should see.
+Every task the agent finishes ends with how to test it — what you run or open,
+and what you should see — and with where to look first in what changed, hardest
+part first.
+
+And the documents are not the price of understanding. A requirement's id lives
+in the code that serves it, so you can ask why a line is the way it is and be
+answered from the code, in seconds, without opening any of them. That is the
+difference between AI-assisted software engineering and vibecoding: not more
+documents, but traceability and verification.
 
 ## The eight skills
 
