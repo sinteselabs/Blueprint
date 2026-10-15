@@ -1,5 +1,5 @@
 // `blueprint init`: puts Blueprint in this folder, and only in this folder.
-// It never overwrites what is already there (FR-39), and it creates no document:
+// It never overwrites what is already there, and it creates no document:
 // those are written by the interview.
 
 import { readFileSync, writeFileSync } from "node:fs";

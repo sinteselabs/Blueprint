@@ -48,6 +48,10 @@ use:
 - **It writes the documents** in your language: requirements, research,
   architecture, the decisions with their reasons, a plan with one spec per task,
   and the others your kind of project asks for.
+- **It keeps the reason reachable from the code.** A requirement's id goes in
+  the code that serves it, so three weeks later "why is this line like this?"
+  is a question you ask and get answered in seconds, instead of a document you
+  have to read.
 - **It leaves the repository ready**, so the next session — any session, any
   agent — opens the folder and knows what to do.
 - **Nothing is mandatory but files.** No server, no account, no model of ours.
@@ -211,11 +215,12 @@ Every task the agent finishes ends with how to test it — what you run or open,
 and what you should see — and with where to look first in what changed, hardest
 part first.
 
-And the documents are not the price of understanding. A requirement's id lives
-in the code that serves it, so you can ask why a line is the way it is and be
-answered from the code, in seconds, without opening any of them. That is the
-difference between AI-assisted software engineering and vibecoding: not more
-documents, but traceability and verification.
+And you are not expected to read those documents to understand the code. Each
+requirement has an id, and the id goes in the code that serves it — in a
+comment, or in the name of a test. `blueprint why src/cancel.js:42` then says
+what that line is for, what the requirement asks and which decision it depended
+on. `blueprint map` answers the other direction: what was promised that nothing
+implements yet, and which ids in the code no document explains.
 
 ## The eight skills
 
@@ -270,6 +275,7 @@ worth it instead of just asking:
 | How the method works, step by step | Each skill's `SKILL.md` under [`skills/`](skills/) |
 | What the project check verifies | [`skills/blueprint-status/references/check-list.md`](skills/blueprint-status/references/check-list.md) |
 | The state file's format | [`skills/blueprint-record/references/state-format.md`](skills/blueprint-record/references/state-format.md) |
+| The anchor convention: a requirement's id in the code | [`skills/blueprint-explain/references/anchors.md`](skills/blueprint-explain/references/anchors.md) |
 | Observability: when a tool is worth it | [`skills/blueprint-setup/references/observability.md`](skills/blueprint-setup/references/observability.md) |
 | Working on Blueprint itself | [`AGENTS.md`](AGENTS.md) |
 | This repository's own tooling and checks | [`tooling/README.md`](tooling/README.md) |
@@ -278,7 +284,7 @@ worth it instead of just asking:
 
 Issues and pull requests are welcome. Before opening one, two things worth
 knowing: every file in this repository is written in English, and a change has
-to pass the checks in [`AGENTS.md`](AGENTS.md) — seven Python checks, the CLI's
+to pass the checks in [`AGENTS.md`](AGENTS.md) — six Python checks, the CLI's
 tests on three operating systems, and the plugin validator.
 
 The most useful thing you can send is a real run that went wrong: what you

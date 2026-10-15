@@ -5,9 +5,9 @@ description: Explains a project from its code instead of from its documents. Use
 
 # Blueprint: explain
 
-A project's documents are worth nothing if reading them is the price of
-understanding. This skill is the other side: it answers the questions a
-developer actually asks, from the code, in seconds, without opening a document.
+A project's documents record what was decided. This skill answers from the code
+instead: the questions a developer asks while working, in seconds, with nobody
+having to open a document to get the answer.
 
 What someone asks while working, and what answers it:
 
@@ -22,7 +22,7 @@ What someone asks while working, and what answers it:
 
 The rule this skill exists for: **a developer asking "why is this the way it
 is?" gets the answer without opening a `.md` file.** If your answer begins with
-"let me read the requirements document", the layer has failed.
+"let me read the requirements document", you have not used this skill.
 
 ## How to talk
 
@@ -81,13 +81,13 @@ fields and how to order the riskiest first.
 - **Say it in the conversation,** and append it to the task's own spec, under
   "Result of the delivery". It does not get a file of its own: one more file per
   delivery is one more thing to rot.
-- **"Where to look first" is the field that earns the brief.** Two or three
-  places, hardest first, each with the file, the line and what makes it risky.
-  Risk is not size: what touches money, personal data, permissions or deletion
-  comes before what is merely long.
-- **"What I assumed" and "what I could not verify" are never left empty to look
-  finished.** When there was nothing, write that there was nothing — silence in
-  those two fields reads as "nothing to check", which is a lie if it is not true.
+- **Fill "where to look first" with two or three places, hardest first,** each
+  with the file, the line and what makes it risky. Risk is not size: what
+  touches money, personal data, permissions or deletion comes before what is
+  merely long.
+- **Never leave "what I assumed" or "what I could not verify" empty to look
+  finished.** When there was nothing, write that there was nothing. An empty
+  field reads as "nothing to check", and the reviewer will act on that.
 - **Anchor the code you wrote** before you write the brief, so that `why` answers
   for it from now on. [references/anchors.md](references/anchors.md) has the
   convention.
@@ -131,8 +131,8 @@ Rules for a tour:
 
 - **Name files, do not paste them.** The person opens them; that is the point.
 - **Fewer stops than five is a fine answer** for a small project. Say that it is
-  small and give what there is. Padding a tour to look thorough is the failure
-  this whole layer exists to undo.
+  small and give what there is. A tour padded to look thorough wastes the
+  reader's time and teaches them to skip the next one.
 - **A stop with no anchor and no architecture behind it does not go in.** Say
   "this part says nothing about why it exists" instead of inventing a reason.
 - The tour is made on the spot and thrown away. It is never written to a file:

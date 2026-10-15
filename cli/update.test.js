@@ -42,7 +42,7 @@ async function installed(name) {
 }
 
 before(() => {
-  // a path with an accent and a space, which is where this repository itself lives (NFR-08)
+  // a path with an accent and a space, which is where this repository itself lives
   root = mkdtempSync(join(tmpdir(), "blueprint é update "));
 });
 

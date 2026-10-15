@@ -1,5 +1,5 @@
 // `blueprint check`: the same script the skill carries, called from the CLI.
-// There is one source for the check (ARD-05), so the CLI and an agent that runs
+// There is one source for the check, so the CLI and an agent that runs
 // it by hand always get the same answer.
 
 import { join } from "node:path";

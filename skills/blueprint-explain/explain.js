@@ -16,7 +16,7 @@
 //
 // The project check lives in the blueprint-status skill and this engine lives
 // here: each is a single source for something that must always give the same
-// answer (ARD-05). A skill is copied on its own, so the few lines the two share
+// answer. A skill is copied on its own, so the few lines the two share
 // are copied here, not imported.
 
 import { execFileSync } from "node:child_process";

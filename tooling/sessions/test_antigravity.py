@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Runs Blueprint in the Antigravity CLI (the `gemini` command), to see whether the
-skills work in the third agent of NFR-01.
+skills work in a third agent, beside Claude Code and Codex.
 
 It is split in two on purpose, because the two halves cost different things:
 

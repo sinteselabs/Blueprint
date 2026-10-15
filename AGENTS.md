@@ -9,7 +9,7 @@ Blueprint takes a software project from an idea in plain language to requirement
 and a repository ready for agentic development. It is delivered as agent skills
 (the product), a Claude Code plugin that carries them, and a CLI.
 
-The eight skills in `skills/` are written, the CLI has its commands, and
+The eight skills in `skills/` are written, the CLI has its seven commands, and
 the method is measured in real sessions of Claude Code, Codex and the
 Antigravity CLI. The previous form of Blueprint, a template to copy into a
 project, was absorbed by the skills and deleted in October 2026; it is in the
@@ -25,7 +25,7 @@ change here reaches people: anything that ships — `skills/`, `cli/`, `LICENSE`
 |---|---|
 | `skills/` | The product: one folder per skill, in the open Agent Skills format |
 | `.claude-plugin/` | The plugin manifest and the marketplace file. The repository root is the plugin root |
-| `cli/` | The CLI: `init`, `check` and `update`. Node, no dependencies. Shipped to people, together with `skills/`. The check itself lives in `skills/blueprint-status/check.js`, so the CLI and an agent run the same file |
+| `cli/` | The CLI: `init`, `check`, `update`, and `why`, `trace`, `map` and `budget`. Node, no dependencies. Shipped to people, together with `skills/`. It holds no logic of its own: the project check lives in `skills/blueprint-status/check.js` and the anchor engine behind the last four commands in `skills/blueprint-explain/explain.js`, so the CLI and an agent run the same file |
 | `tooling/` | This repository's own tooling: the checks that guard a change, and the tests that run Blueprint in real agent sessions. Not shipped to anyone, and the plugin never loads or runs any of it |
 
 ## Rules
@@ -49,6 +49,16 @@ change here reaches people: anything that ships — `skills/`, `cli/`, `LICENSE`
 6. **Say when something does not work.** A skill, a script or a check that
    cannot do its job says so. It never degrades silently.
 7. **Small commits, one concern each.**
+8. **Nothing in the repository points at something only we can read.** This is a
+   public project, and every file here is read by people with no access to our
+   planning. So: no requirement, decision or friction numbers of our own
+   (`FR-39`, `ARD-05`, `decision 62`) — state the reason in the sentence
+   instead; no names or dated attributions (`X asked for this on the 11th`); no
+   links to our boards or notes. A `FR-01` inside a template or an example is a
+   different thing: it belongs to the reader's project, not to ours.
+9. **No filler.** A sentence that could be deleted without losing a fact should
+   be. Prefer the concrete claim to the slogan, and the measured number to
+   "fast" or "robust". Say what something does, not how good it is.
 
 ## Before integrating a change
 

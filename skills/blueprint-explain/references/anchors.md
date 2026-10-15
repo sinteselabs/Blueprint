@@ -38,8 +38,8 @@ document to be current. A grep over the code is always current.
 
 ## What is not an anchor
 
-Two things are deliberately not read as anchors, because reading them makes the
-layer cry wolf:
+Two things are deliberately not read as anchors, because reading them would
+report problems that are not problems:
 
 - **Prose.** A `.md`, `.txt` or `.rst` file that mentions an identifier is saying
   it, not anchoring it. Every README and entry file that explains this convention

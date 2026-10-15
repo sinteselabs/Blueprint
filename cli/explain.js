@@ -1,6 +1,6 @@
 // `blueprint why`, `blueprint trace`, `blueprint map` and `blueprint budget`:
 // the same engine the blueprint-explain skill carries, called from the CLI.
-// There is one source for it (ARD-05), so the CLI and an agent that runs it by
+// There is one source for it, so the CLI and an agent that runs it by
 // hand always get the same answer.
 
 import { join } from "node:path";

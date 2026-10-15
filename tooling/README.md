@@ -35,7 +35,7 @@ for the two keys on enabling. Then switch it on per repository, in
 { "env": { "TRACE_TO_LANGFUSE": "true" } }
 ```
 
-Why the copy here was deleted, on 11/10/2026: keeping a second copy of
+Why the copy here was deleted: keeping a second copy of
 something its own author maintains is work with no return, and it was the last
 thing in this repository that read a credential and spoke to a remote host,
 which held the plugin's directory listing for human review every time. What a

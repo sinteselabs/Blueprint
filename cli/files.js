@@ -31,7 +31,7 @@ export function hashOf(text) {
 
 /**
  * Writes `text` at `path` unless something is already there.
- * Returns "created", or "skipped" when the file exists, which is never overwritten (FR-39).
+ * Returns "created", or "skipped" when the file exists: Blueprint never overwrites one.
  */
 export function writeNew(path, text, { pretend = false } = {}) {
   if (existsSync(path)) return "skipped";

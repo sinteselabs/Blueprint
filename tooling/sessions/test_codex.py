@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Runs Blueprint in Codex, to see whether the skills work in an agent they were
-not written in (NFR-01).
+not written in.
 
 Two things are checked, both from the plan of the phase:
 

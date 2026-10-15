@@ -33,7 +33,7 @@ function installedFolders(files) {
 
 /**
  * What would change, one entry per file: new, changed, yours, gone, removed or same.
- * `yours` is a file of Blueprint that the person edited: it is never overwritten (FR-41).
+ * `yours` is a file of Blueprint that the person edited: it is never overwritten.
  */
 export function compare(project, record) {
   const wanted = new Map(); // where the file goes in the project -> where it comes from in the package

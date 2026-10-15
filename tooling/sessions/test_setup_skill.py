@@ -9,7 +9,7 @@ plan is closed and whose repository is not prepared yet.
 | a team | No `AGENTS.md`, and the state says two people develop | The file is created with the block alone, and there is a playbook per role |
 | going on after the plan | No `AGENTS.md`, and the person says "let's go on" | The repository is prepared first, before the first task, and the reply says why |
 
-Then the acceptance of a prepared repository (FR-30): a new session in the
+Then what a prepared repository has to make possible: a new session in the
 project of the first case, **without Blueprint loaded**, is told to start the
 first task. A bare agent has only the files, so what it knows comes from the
 entry file. It must name the task, where the task is written and where it

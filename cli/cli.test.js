@@ -26,7 +26,7 @@ function project(name) {
 }
 
 before(() => {
-  // a path with an accent and a space, which is where this repository itself lives (NFR-08)
+  // a path with an accent and a space, which is where this repository itself lives
   root = mkdtempSync(join(tmpdir(), "blueprint é cli "));
 });
 
@@ -166,8 +166,8 @@ describe("blueprint", () => {
     assert.match(out, /blueprint check \[folder\]/, "the usage names every command that works");
   });
 
-  it("names its three commands in the usage", async () => {
+  it("names every command in the usage", async () => {
     const { out } = await cli(root, "--help");
-    for (const command of ["init", "check", "update"]) assert.match(out, new RegExp(`^  ${command}\\s`, "m"), `the usage names ${command}`);
+    for (const command of ["init", "check", "update", "why", "trace", "map", "budget"]) assert.match(out, new RegExp(`^  ${command}\\s`, "m"), `the usage names ${command}`);
   });
 });
