@@ -193,11 +193,14 @@ edited. A file of Blueprint that you changed is kept, with the new version
 written beside it. Your documents, your state and your journal are never
 touched.
 
+In a project prepared before 0.3.0, `check` reports that there is no code
+roadmap. Run the `blueprint-setup` skill again and it writes one.
+
 Then open your coding agent in the folder and say what you want to do.
 
 ## What you get
 
-Six documents in every project, and the rest only when your project asks for
+Seven documents in every project, and the rest only when your project asks for
 them — screens, stored data, personal data, an interface used by command or by
 code, a product that calls a model.
 
@@ -209,7 +212,7 @@ code, a product that calls a model.
 | Architecture | Wireframes, design |
 | Decisions, each with its reason | Interface contract |
 | The plan, one spec per task | AI features of the product |
-| | Test plan, playbooks per role |
+| A roadmap of the code, so an agent reads only the area of its task | Test plan, playbooks per role |
 
 Every task the agent finishes ends with how to test it — what you run or open,
 and what you should see — and with where to look first in what changed, hardest
