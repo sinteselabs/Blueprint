@@ -155,11 +155,44 @@ describe("blueprint check", () => {
     assert.match(pointing.out, /GEMINI\.md/);
 
     put(join(folder, "GEMINI.md"), "See @AGENTS.md for how to work on this project.\n");
+    const mapless = await cli(folder, "check");
+    assert.equal(mapless.code, 1, "a prepared repository with no code roadmap makes an agent read the whole codebase");
+    assert.match(mapless.out, /problem\s+there is a code roadmap/);
+    assert.match(mapless.out, /code-roadmap\.md is not there/);
+
+    put(join(folder, "docs", "code-roadmap.md"), "# Roteiro do código\n\n| Área | Caminho |\n|---|---|\n| Consultas | `src/consultas/` |\n\n<!-- blueprint:planned -->\n| Lembretes | `src/lembretes/` |\n<!-- /blueprint:planned -->\n");
+    put(join(folder, "src", "consultas", "index.js"), "export {};\n");
     const again = await cli(folder, "check");
     assert.equal(again.code, 0, again.out);
+    assert.match(again.out, /ok\s+there is a code roadmap/);
+    assert.match(again.out, /ok\s+the code roadmap names only paths that exist/);
     assert.match(again.out, /ok\s+the repository is prepared for development/);
     assert.match(again.out, /ok\s+what the entry file names is there/);
     assert.match(again.out, /ok\s+the agents' own files name AGENTS\.md/);
+  });
+
+  it("finds a code roadmap row whose path is gone, and ignores planned rows", async () => {
+    const closed = (text) =>
+      text
+        .replace("| plan | not-started | 0 of 2 |", "| plan | closed | 2 of 2 |")
+        .replace("- [ ] O que vem primeiro\n- [ ] Quem faz o quê", "- [x] O que vem primeiro\n- [x] Quem faz o quê")
+        .replace("| plan | not-started | - |", "| plan | ready | docs/plan.md |");
+    const folder = project("roadmap-stale", closed);
+    put(join(folder, "docs", "plan.md"), "# Plano\n\n> **Em resumo:** duas fases.\n");
+    put(join(folder, "AGENTS.md"), `${MARKS[0]}\n## Blueprint\n\nO plano está em \`docs/plan.md\`.\n${MARKS[1]}\n`);
+    put(join(folder, "CLAUDE.md"), "See @AGENTS.md for how to work on this project.\n");
+    put(join(folder, "GEMINI.md"), "See @AGENTS.md for how to work on this project.\n");
+    put(join(folder, "docs", "code-roadmap.md"), "# Roteiro do código\n\n| Área | Caminho |\n|---|---|\n| Consultas | `src/consultas/` |\n| Pagamentos | `src/pagamentos/index.js` |\n\n<!-- blueprint:planned -->\n| Lembretes | `src/lembretes/` |\n<!-- /blueprint:planned -->\n");
+    put(join(folder, "src", "consultas", "index.js"), "export {};\n");
+    const { code, out } = await cli(folder, "check");
+    assert.equal(code, 1);
+    assert.match(out, /problem\s+the code roadmap names only paths that exist/);
+    assert.match(out, /src\/pagamentos\/index\.js/);
+    assert.ok(!out.includes("src/lembretes/"), "a planned row describes code not written yet");
+
+    put(join(folder, "docs", "code-roadmap.md"), "# Roteiro do código\n\n| Área | Caminho |\n|---|---|\n| Consultas | `src/consultas/` |\n| Modelo | {{`src/modelo/`}} |\n");
+    const leftover = await cli(folder, "check");
+    assert.match(leftover.out, /problem\s+the code roadmap has no leftover of its template/);
   });
 
   it("says plainly when there is no project here", async () => {

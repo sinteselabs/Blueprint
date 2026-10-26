@@ -124,10 +124,11 @@ tasks and a spec for every task.
 ## After the plan
 
 Prepare the repository for development with the `blueprint-setup` skill: the
-Blueprint block of the entry file, memory and observability, a playbook per
-role when a team develops, and the project check. It is the last thing the
-interview does, and it comes before the first task, so that an agent opening
-the project finds the rules, the plan and where to record.
+Blueprint block of the entry file, memory and observability, a roadmap of the
+code, a playbook per role when a team develops, and the project check. It is
+the last thing the interview does, and it comes before the first task, so that
+an agent opening the project finds the rules, the plan, where to look in the
+code and where to record.
 
 Then tell the person what they have, in a few lines: the documents, the plan
 with a spec per task, the state file that lets any session continue, and the

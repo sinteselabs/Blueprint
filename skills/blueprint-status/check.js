@@ -323,6 +323,28 @@ export async function check(project) {
       if (!many) problem("there is a playbook per role", `${developers} people develop this project, and ${playbooks} does not have one file per role`);
       else ok("there is a playbook per role");
     }
+
+    // With no map of the code, an agent reads the whole codebase to find where to work.
+    // Rows between the planned marks describe code that is not written yet, so they are not looked for.
+    if (folder) {
+      const roadmap = join(folder, "code-roadmap.md");
+      if (!there(roadmap)) {
+        problem("there is a code roadmap", `${roadmap} is not there: the blueprint-setup skill writes it, and without it an agent reads the codebase to find where to work`);
+      } else {
+        const text = read(roadmap);
+        if (/\{\{/.test(text) || text.includes("<!-- Template")) {
+          problem("the code roadmap has no leftover of its template", `${roadmap} still has a {{placeholder}} or the template comment`);
+        } else {
+          ok("there is a code roadmap");
+          const written = text.replace(/<!-- blueprint:planned -->[\s\S]*?<!-- \/blueprint:planned -->/g, "");
+          const lines = written.split("\n").filter((line) => line.trimStart().startsWith("|"));
+          const paths = lines.flatMap((line) => [...line.matchAll(/`([^`\s*]+)`/g)].map(([, path]) => path)).filter((path) => path.includes("/") || /\.[A-Za-z0-9]{1,6}$/.test(path));
+          const gone = [...new Set(paths)].filter((path) => !there(path.replace(/^\.\//, "")));
+          if (gone.length) problem("the code roadmap names only paths that exist", `${gone.join(", ")}: the roadmap names ${gone.length === 1 ? "it" : "them"} and ${gone.length === 1 ? "it is" : "they are"} not there. Update the row where it moved, or move it to the planned block if the code is not written yet`);
+          else ok("the code roadmap names only paths that exist");
+        }
+      }
+    }
   }
   return found;
 }

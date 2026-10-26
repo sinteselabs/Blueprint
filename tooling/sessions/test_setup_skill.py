@@ -5,8 +5,8 @@ plan is closed and whose repository is not prepared yet.
 
 | Case | The project | What must happen |
 |---|---|---|
-| one person | `AGENTS.md` already exists, with the person's own rules | The Blueprint block is added, the person's rules are untouched, `CLAUDE.md` points at `AGENTS.md`, and no playbook is created |
-| a team | No `AGENTS.md`, and the state says two people develop | The file is created with the block alone, and there is a playbook per role |
+| one person | `AGENTS.md` already exists, with the person's own rules | The Blueprint block is added, the person's rules are untouched, `CLAUDE.md` points at `AGENTS.md`, the code roadmap is written, and no playbook is created |
+| a team | No `AGENTS.md`, and the state says two people develop | The file is created with the block alone, there is a code roadmap, and there is a playbook per role |
 | going on after the plan | No `AGENTS.md`, and the person says "let's go on" | The repository is prepared first, before the first task, and the reply says why |
 
 Then what a prepared repository has to make possible: a new session in the
@@ -245,6 +245,10 @@ def main() -> int:
             check(f"{name}: no document of the project was rewritten", not [p for p in changed if p.startswith("docs/")], ", ".join(p for p in changed if p.startswith("docs/")))
             outside = sorted(p.name for p in (root / case["folder"]).rglob("*") if project not in p.parents and p != project and p != root / case["folder"] / "projetos")
             check(f"{name}: nothing was written beside the project folder", not outside, ", ".join(outside))
+            roadmap = read(project / "docs" / "code-roadmap.md")
+            check(f"{name}: the code roadmap exists, whoever develops", bool(roadmap.strip()), "no docs/code-roadmap.md")
+            check(f"{name}: the code roadmap carries no leftover of its template", "{{" not in roadmap and "<!-- Template" not in roadmap)
+            check(f"{name}: the block points at the code roadmap", "code-roadmap.md" in inside)
             playbooks = sorted(p.name for p in (project / "docs" / "playbooks").glob("*.md")) if (project / "docs" / "playbooks").is_dir() else []
             case["playbooks"] = playbooks
 

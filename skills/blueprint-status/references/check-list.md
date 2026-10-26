@@ -70,6 +70,10 @@ written yet.
     only its own file reads the same rules. Claude Code reads `CLAUDE.md` first;
     the Antigravity CLI reads `GEMINI.md` and does not read `AGENTS.md`.
 17. **A playbook per role,** only when the state's `developers` is more than 1.
+18. **A code roadmap,** `code-roadmap.md` in the documents folder, in every
+    project. Without it an agent reads the codebase to find where to work. It has
+    no `{{...}}` left, and every path in its tables exists, except the rows
+    between the two planned marks, which describe code not written yet.
 
 ## The code and the documents
 
@@ -78,12 +82,12 @@ A project with no anchor yet is not failing: it is the normal state of code that
 came before. An anchor is an identifier in the code -- a comment or a test name --
 and prose and installed tool folders are not read as anchors.
 
-18. **No anchor in the code names an id the documents do not have.** An `FR-99`
+19. **No anchor in the code names an id the documents do not have.** An `FR-99`
     in the code that no document says is a broken trail: either a document lost
     the requirement, or the anchor is wrong. Do not guess which; ask.
-19. **Every task spec comes from an id the documents have.** A spec whose "comes
+20. **Every task spec comes from an id the documents have.** A spec whose "comes
     from" names an identifier no document declares points nowhere.
-20. **A task whose done-when list is complete is anchored in the code.** Every
+21. **A task whose done-when list is complete is anchored in the code.** Every
     box ticked and no code carrying the id it comes from means one of two things:
     the code lost it, or the task is not done. The ticked box is a claim; the
     anchor is the evidence.

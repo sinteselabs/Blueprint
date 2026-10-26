@@ -232,7 +232,7 @@ implements yet, and which ids in the code no document explains.
 | `blueprint-survey` | Reads an existing project before asking anything |
 | `blueprint-record` | The project's state and journal, and what it learns about how you work |
 | `blueprint-status` | "Where are we?", answered from the files, and the project check |
-| `blueprint-setup` | Prepares the repository: the entry file, the journal, the playbooks |
+| `blueprint-setup` | Prepares the repository: the entry file, the journal, a roadmap of the code, the playbooks |
 | `blueprint-explain` | Answers why a line of code is the way it is, from the code: the review brief, the tour |
 
 ## What stays yours

@@ -1,6 +1,6 @@
 ---
 name: blueprint-setup
-description: Prepares a project for agentic development once its Blueprint documents are written. Use when the plan is closed and the repository has to be made ready, or when the user asks to prepare the environment, the agent entry file or the project journal. Writes the Blueprint block of the entry file, connects memory and observability through a tool or the project journal, adds a playbook per role when a team develops, runs the project check, and says what it could not connect.
+description: Prepares a project for agentic development once its Blueprint documents are written. Use when the plan is closed and the repository has to be made ready, or when the user asks to prepare the environment, the agent entry file or the project journal. Writes the Blueprint block of the entry file, connects memory and observability through a tool or the project journal, writes a roadmap of the code so an agent reads only the part a task touches, adds a playbook per role when a team develops, runs the project check, and says what it could not connect.
 ---
 
 # Blueprint: setup
@@ -100,28 +100,64 @@ it, when it is not, what to ask first, and what the person does to wire it.
 Blueprint ships no script for this and installs nothing: a no, or no answer, is
 a closed subject, and the journal keeps recording.
 
-## 4. A playbook per role
+## 4. The code roadmap
+
+For every project, whether one person develops it or a team. An agent that opens
+a session with no map reads the codebase to find where to work, and pays for
+that reading in every session. The roadmap is the map: which folder holds
+what, and which paths a task has to read. It is one file,
+`code-roadmap.md` in the documents folder, from
+[assets/code-roadmap.md](assets/code-roadmap.md). If the project already has one,
+keep it and bring it up to date.
+
+**Where the code exists,** read the folder tree, and open a file only when its
+name and place do not say what it is. Write one row per area: its path, what
+lives there, when a task has to read it, and which paths go with it (a schema, a
+shared module, the tests). Entry points, code that many areas depend on, and
+paths not worth opening (generated, vendored, bulky) get their own sections.
+This is the one time the codebase is read whole, and it is read once so that no
+later session has to.
+
+**Where there is no code yet,** write it from the architecture's "How the code
+is organised" and from the plan: each area the tasks will create goes between
+the planned marks, with the task that creates it. A delivery moves its rows
+out of the planned block into the tables, which is what the entry file's rule
+asks for.
+
+Keep it short enough to read at the start of every session: about 150 lines.
+Past that, group small folders into one row. Every path goes in backticks and
+is a path that exists, outside the planned block. Do not describe what a file
+does line by line: that is what opening it is for.
+
+Then check that each task spec in the plan has a "Where in the code" section
+naming areas of the roadmap. A spec without it is not rewritten: say which ones
+lack it, and the agent will add it when it starts that task.
+
+## 5. A playbook per role
 
 Only when the state's `developers` is more than 1. One file per role, in a
 `playbooks/` folder inside the documents folder, from
-[assets/playbook.md](assets/playbook.md).
+[assets/playbook.md](assets/playbook.md). Each playbook sends its role to the
+rows of the code roadmap that are its own.
 
 The roles come from the plan: who does what. If the plan does not say, ask the
 person, once, naming the roles you would create. With `developers` at 1, create
 nothing: a single person has no handover.
 
-## 5. Run the check
+## 6. Run the check
 
 Go through the project check with the `blueprint-status` skill, and report what
 it found. A problem is reported with how to fix it; fix only what belongs to
-this skill: the block of the entry file, the journal, a playbook.
+this skill: the block of the entry file, the journal, the code roadmap, a playbook.
 
 ## What you give back
 
 In this order, about ten lines:
 
 1. **What the project has now,** in one line: prepared, and where its rules are.
-2. **What you created and what you changed,** one line each.
+2. **What you created and what you changed,** one line each. For the code
+   roadmap, how many areas it has and whether it describes code that exists or
+   code that is planned.
 3. **Memory and observability:** one line each, saying what records what, or
    what is missing and what the person has to do once.
 4. **What the check found,** one line, or that it found nothing.
@@ -137,5 +173,7 @@ In this order, about ten lines:
 - Never write a key, a token or a password in a file of the project.
 - Never install anything on the person's machine, and never run the project's
   code.
+- Never write a path in the code roadmap, outside the planned block, that you
+  did not see in the folder.
 - Never write the first task yourself. Preparing the repository ends where the
   development begins.

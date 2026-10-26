@@ -19,7 +19,8 @@ Replace every {{placeholder}} and remove these comments. -->
 ## Before starting a task
 
 1. Read `.blueprint/state.md` and the task's spec.
-2. {{What else this role has to know first: a document, a convention, an access.}}
+2. Read the rows of {{docs/code-roadmap.md}} for the areas this role works in, and only those.
+3. {{What else this role has to know first: a document, a convention, an access.}}
 
 ## When the task is done
 

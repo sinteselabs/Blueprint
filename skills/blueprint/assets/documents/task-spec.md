@@ -19,6 +19,11 @@ task number: 01-01-task-name.md. -->
 
 - [ ] {{Something that can be checked.}}
 
+## Where in the code
+
+{{The areas of the code roadmap this task touches, by name, so the agent reads
+only those. For code that does not exist yet, the planned area it will create.}}
+
 ## Comes from
 
 {{The requirements and decisions this task serves: FR-01, D-002.}} These are the
