@@ -3,12 +3,12 @@
 What to verify in a Blueprint project. Each item is something that can be
 looked at, and each problem is reported with how to fix it. Nothing is changed.
 
-**The script in this skill, `check.js`, does all of this.** Run it, and this
-list is what it goes through. Read the list yourself only when there is no Node
-on the machine or the script cannot run, and then say that you checked by
+**`blueprint check` does all of this.** Run it, and this list is what it goes
+through. Read the list yourself only when there is no Node on the machine or the
+command cannot run, and then say that you checked by
 reading.
 
-Two items no script can settle, which it reports as skipped: whether a memory or
+Two items no command can settle, which it reports as skipped: whether a memory or
 observability tool is answering, and whether two documents with different names
 serve the same purpose. Those are for you to look at.
 

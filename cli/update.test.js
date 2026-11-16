@@ -146,7 +146,7 @@ describe("blueprint update", () => {
       "docs/requirements.md": "# Requisitos\n\nO que eu escrevi.\n",
       "docs/research.md": "# Pesquisa\n\nNada ainda.\n",
       "docs/decisions.md": "# Decisões\n\n## D-001 · Aplicativo web\n\n- **Situação:** decidida\n",
-      ".blueprint/state.md": readFileSync(join(PACKAGE, "skills", "blueprint-record", "assets", "state.example.md"), "utf8"),
+      ".blueprint/state.md": readFileSync(join(PACKAGE, "plugin", "skills", "blueprint-record", "assets", "state.example.md"), "utf8"),
       ".blueprint/journal/milestones.md": "# Marcos\n",
       "AGENTS.md": "# Meu projeto\n\n<!-- blueprint:start -->\nmeu bloco\n<!-- blueprint:end -->\n",
     };

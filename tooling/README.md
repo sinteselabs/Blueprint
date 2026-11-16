@@ -3,8 +3,8 @@
 This repository's own tooling: what guards a change to Blueprint and what
 measures whether it works. **None of it is part of the product.** The plugin
 never loads or runs any of it, nothing here is copied into a project, and the
-npm package does not carry it. It lives in this folder only because the
-repository root is the plugin root.
+npm package does not carry it. The plugin is the `plugin/` folder, and this
+folder sits outside it so that the plugin directory never sees a script.
 
 | Tool | Job |
 |---|---|
@@ -41,7 +41,7 @@ thing in this repository that read a credential and spoke to a remote host,
 which held the plugin's directory listing for human review every time. What a
 person who uses Blueprint should know about observability, including when it is
 not worth it at all, is in
-[`skills/blueprint-setup/references/observability.md`](../skills/blueprint-setup/references/observability.md).
+[`plugin/skills/blueprint-setup/references/observability.md`](../plugin/skills/blueprint-setup/references/observability.md).
 
 ---
 
@@ -53,7 +53,8 @@ Blueprint itself, not the projects made from it.
 | Check | What it guards | Run |
 |---|---|---|
 | [`checks/check_links.py`](checks/check_links.py) | No internal Markdown link points at a file that does not exist | `python tooling/checks/check_links.py` |
-| [`checks/check_root_names.py`](checks/check_root_names.py) | Nothing at the root has a name the plugin loads on its own (`.mcp.json`, `hooks/`, `bin/` and the like). The root is the plugin root | `python tooling/checks/check_root_names.py` |
+| [`checks/check_plugin_files.py`](checks/check_plugin_files.py) | Every file under `plugin/` is one the plugin directory takes from an organization that is not Verified: Markdown, text, JSON, YAML or an image, UTF-8, no `#!`, no package manager file | `python tooling/checks/check_plugin_files.py` |
+| [`checks/check_root_names.py`](checks/check_root_names.py) | Nothing at the root of `plugin/` has a name the plugin loads on its own (`.mcp.json`, `hooks/`, `bin/` and the like) | `python tooling/checks/check_root_names.py` |
 | [`checks/check_skills.py`](checks/check_skills.py) | Every skill follows the format: a name equal to its folder, a description within the limit, `SKILL.md` within 500 lines, no link out of its own folder | `python tooling/checks/check_skills.py` |
 | [`checks/check_shared_text.py`](checks/check_shared_text.py) | Copies of a text shared between skills are identical | `python tooling/checks/check_shared_text.py` |
 | [`checks/check_state.py`](checks/check_state.py) | The project state example and template that the record skill ships follow the state format. Given a file, it checks that file instead | `python tooling/checks/check_state.py` |
@@ -75,9 +76,9 @@ and `check_state.py` takes state files, which is how `test_checks.py` plants
 its errors.
 
 `check_state.py` reads the format described in
-[`skills/blueprint-record/references/state-format.md`](../skills/blueprint-record/references/state-format.md).
+[`plugin/skills/blueprint-record/references/state-format.md`](../plugin/skills/blueprint-record/references/state-format.md).
 It is this repository's own tooling: the check that Blueprint runs in a project
-is a separate script, shipped with the skills.
+is `cli/engine/check.js`, shipped with the CLI.
 
 ---
 

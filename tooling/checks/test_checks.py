@@ -3,7 +3,7 @@
 Test of the structure checks: each one must pass on a sound input and fail on an
 input with one planted error.
 
-Covers check_root_names.py, check_skills.py, check_shared_text.py and
+Covers check_root_names.py, check_plugin_files.py, check_skills.py, check_shared_text.py and
 check_state.py. Every case builds a throwaway folder, so nothing in the
 repository is touched. Needs only Python:
 
@@ -28,7 +28,7 @@ def run(check: str, root: Path) -> int:
 
 
 def skill(root: Path, folder: str, text: str | None = None, name: str | None = None) -> Path:
-    path = root / "skills" / folder
+    path = root / "plugin" / "skills" / folder
     path.mkdir(parents=True, exist_ok=True)
     # newline="" keeps the bytes as given, so a case can plant CRLF on any system.
     (path / "SKILL.md").write_text(text if text is not None else SOUND_SKILL.format(name=name or folder), encoding="utf-8", newline="")
@@ -51,6 +51,20 @@ def main() -> int:
         print(("PASS  " if ok else "FAIL  ") + name + ("" if ok else f"  [exit {got}, expected {expected}]"))
 
     # Reserved names at the root
+    def plugin_file(name: str, data: bytes):
+        def build(r: Path) -> None:
+            (r / "skills").mkdir()
+            (r / name).parent.mkdir(parents=True, exist_ok=True)
+            (r / name).write_bytes(data)
+        return build
+
+    case("plugin files: Markdown and JSON pass", "check_plugin_files.py", plugin_file("skills/a.md", b"# A\n"), 0)
+    case("plugin files: a script fails", "check_plugin_files.py", plugin_file("skills/a.js", b"export {};\n"), 1)
+    case("plugin files: a Python file fails", "check_plugin_files.py", plugin_file("skills/a.py", b"print(1)\n"), 1)
+    case("plugin files: a file starting with #! fails", "check_plugin_files.py", plugin_file("skills/a.md", b"#!/bin/sh\n"), 1)
+    case("plugin files: a package.json fails", "check_plugin_files.py", plugin_file("package.json", b"{}\n"), 1)
+    case("plugin files: a NUL byte fails", "check_plugin_files.py", plugin_file("skills/a.md", b"a\x00b"), 1)
+    case("plugin files: a stray file in .claude-plugin fails", "check_plugin_files.py", plugin_file(".claude-plugin/x.md", b"x\n"), 1)
     case("root names: a clean root passes", "check_root_names.py", lambda r: (r / "skills").mkdir(), 0)
     case("root names: .mcp.json fails", "check_root_names.py", lambda r: (r / ".mcp.json").write_text("{}", encoding="utf-8"), 1)
     case("root names: a hooks folder in another case fails", "check_root_names.py", lambda r: (r / "Hooks").mkdir(), 1)
@@ -59,7 +73,7 @@ def main() -> int:
     # Skill format
     case("skills: a sound skill passes", "check_skills.py", lambda r: skill(r, "sample-skill"), 0)
     case("skills: no skills folder fails", "check_skills.py", lambda r: None, 1)
-    case("skills: a folder without SKILL.md fails", "check_skills.py", lambda r: (r / "skills" / "empty").mkdir(parents=True), 1)
+    case("skills: a folder without SKILL.md fails", "check_skills.py", lambda r: (r / "plugin" / "skills" / "empty").mkdir(parents=True), 1)
     case("skills: a name that is not the folder name fails", "check_skills.py", lambda r: skill(r, "sample-skill", name="other-name"), 1)
     case("skills: an uppercase name fails", "check_skills.py", lambda r: skill(r, "Sample", name="Sample"), 1)
     case("skills: no frontmatter fails", "check_skills.py", lambda r: skill(r, "sample-skill", text="# Title\n"), 1)
@@ -122,7 +136,7 @@ def main() -> int:
 
     # The project state file
     repo = CHECKS.parents[1]
-    assets = repo / "skills" / "blueprint-record" / "assets"
+    assets = repo / "plugin" / "skills" / "blueprint-record" / "assets"
     example = (assets / "state.example.md").read_text(encoding="utf-8")
     template = (assets / "state.md").read_text(encoding="utf-8")
 
@@ -161,8 +175,8 @@ def main() -> int:
     state("state: a leftover placeholder fails", example + "\n{{SOMETHING}}\n", 1)
 
     # The repository itself
-    for check in ("check_root_names.py", "check_skills.py", "check_shared_text.py"):
-        got = run(check, repo)
+    for check in ("check_root_names.py", "check_plugin_files.py", "check_skills.py", "check_shared_text.py"):
+        got = run(check, repo / "plugin" if check in ("check_root_names.py", "check_plugin_files.py") else repo)
         ok = got == 0
         if not ok:
             failures.append(check)

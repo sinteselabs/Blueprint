@@ -31,20 +31,23 @@ were saved.
 
 ## 3. Run the project check
 
-This skill carries the check as a script, so it always gives the same answer:
+The check is a command of the Blueprint CLI, so it always gives the same answer:
 
 ```
-node <this skill's folder>/check.js [project folder] [--json]
+blueprint check [project folder] [--json]
+npx --yes blueprintlabs check [project folder] [--json]
 ```
+
+Use the first when `blueprint` is on the machine, the second when it is not.
 
 It only reads. It exits 0 when nothing is wrong, 1 when something is, 2 when it
 could not run, and `--json` gives the same result for you to read. Say in one
 line what it found, and fix nothing on your own: a problem is reported with how
 to fix it.
 
-If there is no Node on the machine, or the script cannot run, say so, and go
+If there is no Node on the machine, or the command cannot run, say so, and go
 through the list in [references/check-list.md](references/check-list.md) by
-reading. Say that you checked without the script, because by reading you may
+reading. Say that you checked without the command, because by reading you may
 miss something.
 
 ## 4. Answer

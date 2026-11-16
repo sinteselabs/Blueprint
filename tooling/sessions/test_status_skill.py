@@ -30,7 +30,7 @@ from pathlib import Path
 
 from harness import REPO, find_claude, refused, run, skills_changes, spent, verdict
 
-EXAMPLE_STATE = REPO / "skills" / "blueprint-record" / "assets" / "state.example.md"
+EXAMPLE_STATE = REPO / "plugin" / "skills" / "blueprint-record" / "assets" / "state.example.md"
 ASKS = "Onde estamos?"
 
 

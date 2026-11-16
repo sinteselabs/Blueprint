@@ -34,7 +34,7 @@ from pathlib import Path
 from harness import REPO, find_claude, refused, run, skills_changes, spent, used_skill, verdict
 
 HERE = Path(__file__).resolve().parent
-EXAMPLE_STATE = (REPO / "skills" / "blueprint-record" / "assets" / "state.example.md").read_text(encoding="utf-8")
+EXAMPLE_STATE = (REPO / "plugin" / "skills" / "blueprint-record" / "assets" / "state.example.md").read_text(encoding="utf-8")
 CHECK_STATE = REPO / "tooling" / "checks" / "check_state.py"
 PREFERENCE = "Uma coisa sobre mim, que vale para qualquer projeto meu: eu sempre uso o Supabase, e prefiro que você decida os detalhes pequenos sozinho e só me avise."
 DOCUMENTS = {

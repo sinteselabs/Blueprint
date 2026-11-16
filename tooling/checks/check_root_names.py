@@ -2,13 +2,13 @@
 """
 Reports names at the repository root that a Claude Code plugin loads on its own.
 
-The repository root is the plugin root. A file or folder with one of these names
+The plugin folder, `plugin/`, is the plugin root. A file or folder with one of these names
 would reach everyone who installs the plugin as an MCP server, a hook, an agent
 or an executable, without anyone having decided to ship it. Names are compared
 without regard to case, because a clone on Windows or macOS does not tell
 `Hooks/` from `hooks/`. Needs only Python:
 
-    python tooling/checks/check_root_names.py [root]
+    python tooling/checks/check_root_names.py [plugin folder]
 
 Exit code 0 when none of them is there, 1 otherwise.
 """
@@ -16,7 +16,7 @@ Exit code 0 when none of them is there, 1 otherwise.
 import sys
 from pathlib import Path
 
-REPO = Path(__file__).resolve().parents[2]
+REPO = Path(__file__).resolve().parents[2] / "plugin"
 RESERVED = {
     ".mcp.json": "MCP servers",
     ".lsp.json": "LSP servers",

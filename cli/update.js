@@ -45,7 +45,7 @@ export function compare(project, record) {
 
   const changes = [];
   for (const [path, source] of wanted) {
-    const want = hashOf(readPackageFile("skills", source));
+    const want = hashOf(readPackageFile("plugin", "skills", source));
     const recorded = record.files[path];
     const disk = diskHash(path);
     const change = { path, source, want };
@@ -72,13 +72,13 @@ function apply(project, changes, record) {
     const target = join(project, ...path.split("/"));
     if (["changed", "new", "gone"].includes(what)) {
       mkdirSync(dirname(target), { recursive: true });
-      writeFileSync(target, readPackageFile("skills", source), "utf8");
+      writeFileSync(target, readPackageFile("plugin", "skills", source), "utf8");
       files[path] = want;
     } else if (what === "removed") {
       rmSync(target, { force: true });
       delete files[path];
     } else if (what === "yours" && source && !same) {
-      writeFileSync(`${target}.new`, readPackageFile("skills", source), "utf8");
+      writeFileSync(`${target}.new`, readPackageFile("plugin", "skills", source), "utf8");
     }
   }
   return files;
@@ -149,7 +149,7 @@ export async function run(argv, folder, write, options) {
   const code = update(argv, folder, write, options);
   if (code !== 0 || argv.includes("--dry-run")) return code;
   write("");
-  const { main } = await import(`file:///${join(PACKAGE, "skills", "blueprint-status", "check.js").replace(/\\/g, "/")}`);
+  const { main } = await import(`file:///${join(PACKAGE, "cli", "engine", "check.js").replace(/\\/g, "/")}`);
   const checked = await main([], folder, write);
   return checked === 2 ? 0 : checked; // no project yet is not a problem of the update
 }

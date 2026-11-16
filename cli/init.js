@@ -44,7 +44,7 @@ function folders(agent) {
  */
 function entryFile(folder, { pretend }) {
   const path = join(folder, "AGENTS.md");
-  const block = readPackageFile("skills", "blueprint-setup", "assets", "agents-starter.md")
+  const block = readPackageFile("plugin", "skills", "blueprint-setup", "assets", "agents-starter.md")
     .split(MARKS.start)
     .slice(1)
     .join(MARKS.start);

@@ -155,7 +155,7 @@ gemini skills install https://github.com/sinteselabs/Blueprint --scope workspace
 
 On Windows, that last one clones and then fails clearing its own temporary
 folder (`EBUSY`), which is a bug in the installer. Clone the repository and give
-it the path instead: `gemini skills install ./Blueprint/skills --scope
+it the path instead: `gemini skills install ./Blueprint/plugin/skills --scope
 workspace`.
 
 ### 4. The CLI, in one project folder
@@ -243,7 +243,7 @@ implements yet, and which ids in the code no document explains.
 - **Nothing is sent anywhere.** Blueprint has no server and no telemetry. It is
   instructions your agent follows, inside the permissions you already gave it.
 - **Installing runs nothing.** The plugin carries skills, not hooks or servers.
-  The only script in the product is the project check, and it only reads.
+  The only code in the product is the CLI's project check and anchor engine, and they only read. The plugin itself holds no script.
 - **Keys never reach a file of the project,** and never the journal.
 - **Outside the project folder,** the agent reads only with your permission, and
   only folder names and Blueprint's own state.
@@ -268,18 +268,18 @@ worth it instead of just asking:
 - **Observability** — the project's journal, written in files, or
   [Langfuse](https://langfuse.com). Which one to pick, and when it is not worth
   it at all, is in
-  [the observability page](skills/blueprint-setup/references/observability.md).
+  [the observability page](plugin/skills/blueprint-setup/references/observability.md).
 - **Notion** — the documents and the tasks go there instead of into files.
 
 ## Documentation
 
 | For | Where |
 |---|---|
-| How the method works, step by step | Each skill's `SKILL.md` under [`skills/`](skills/) |
-| What the project check verifies | [`skills/blueprint-status/references/check-list.md`](skills/blueprint-status/references/check-list.md) |
-| The state file's format | [`skills/blueprint-record/references/state-format.md`](skills/blueprint-record/references/state-format.md) |
-| The anchor convention: a requirement's id in the code | [`skills/blueprint-explain/references/anchors.md`](skills/blueprint-explain/references/anchors.md) |
-| Observability: when a tool is worth it | [`skills/blueprint-setup/references/observability.md`](skills/blueprint-setup/references/observability.md) |
+| How the method works, step by step | Each skill's `SKILL.md` under [`plugin/skills/`](plugin/skills/) |
+| What the project check verifies | [`plugin/skills/blueprint-status/references/check-list.md`](plugin/skills/blueprint-status/references/check-list.md) |
+| The state file's format | [`plugin/skills/blueprint-record/references/state-format.md`](plugin/skills/blueprint-record/references/state-format.md) |
+| The anchor convention: a requirement's id in the code | [`plugin/skills/blueprint-explain/references/anchors.md`](plugin/skills/blueprint-explain/references/anchors.md) |
+| Observability: when a tool is worth it | [`plugin/skills/blueprint-setup/references/observability.md`](plugin/skills/blueprint-setup/references/observability.md) |
 | Working on Blueprint itself | [`AGENTS.md`](AGENTS.md) |
 | This repository's own tooling and checks | [`tooling/README.md`](tooling/README.md) |
 

@@ -113,7 +113,7 @@ def check(skill: Path) -> list[str]:
 def main(argv: list[str]) -> int:
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     root = Path(argv[1]).resolve() if len(argv) > 1 else REPO
-    skills_dir = root / "skills"
+    skills_dir = root / "plugin" / "skills"
     if not skills_dir.is_dir():
         print("NO SKILLS FOLDER: skills/ does not exist at the root")
         return 1

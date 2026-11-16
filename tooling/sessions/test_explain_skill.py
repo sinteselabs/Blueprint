@@ -34,7 +34,7 @@ from pathlib import Path
 
 from harness import REPO, find_claude, refused, run, skills_changes, spent, verdict
 
-EXAMPLE_STATE = REPO / "skills" / "blueprint-record" / "assets" / "state.example.md"
+EXAMPLE_STATE = REPO / "plugin" / "skills" / "blueprint-record" / "assets" / "state.example.md"
 
 REQUIREMENTS = """# Requisitos
 
@@ -159,7 +159,7 @@ def main() -> int:
             "anchored: does not tell the person to go read a document",
             not has(anchored.reply, ("leia o", "leia a", "consulte o documento", "veja o documento", "abra o documento", "leia os requisitos")),
         )
-        ran = [what for kind, what in anchored.steps if kind == "tool" and "explain.js" in what]
+        ran = [what for kind, what in anchored.steps if kind == "tool" and ("explain.js" in what or any(f"blueprint {v}" in what for v in ("why", "trace", "map")))]
         print(f"      (the engine was run {len(ran)} time(s))")
 
         check("orphaned: says no document says that id", has(orphaned.reply, ("fr-99",), ("nenhum documento", "não está em nenhum", "não aparece em nenhum", "não há documento", "órf", "orf", "nenhum requisito", "não encontrei", "não existe")))

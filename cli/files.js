@@ -6,8 +6,11 @@ import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSy
 import { dirname, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 
-/** The root of the installed package, which holds `cli/` and `skills/`. */
+/** The root of the installed package, which holds `cli/` and `plugin/`. */
 export const PACKAGE = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+
+/** The skills the package carries. They live in the plugin folder, so the plugin is submitted as it is. */
+export const SKILLS = join(PACKAGE, "plugin", "skills");
 
 export const MARKS = { start: "<!-- blueprint:start -->", end: "<!-- blueprint:end -->" };
 
@@ -44,7 +47,7 @@ export function writeNew(path, text, { pretend = false } = {}) {
 
 /** The skills this package carries, as paths relative to `skills/`. */
 export function skillFiles() {
-  return filesUnder(join(PACKAGE, "skills"));
+  return filesUnder(SKILLS);
 }
 
 /**
@@ -54,7 +57,7 @@ export function skillFiles() {
 export function copySkills(into, { relativeTo, pretend = false }) {
   const done = [];
   for (const path of skillFiles()) {
-    const text = readFileSync(join(PACKAGE, "skills", path), "utf8");
+    const text = readFileSync(join(SKILLS, path), "utf8");
     const target = join(into, ...path.split("/"));
     done.push({ path: relative(relativeTo, target).split(sep).join("/"), hash: hashOf(text), what: writeNew(target, text, { pretend }) });
   }

@@ -51,10 +51,10 @@ report problems that are not problems:
 
 ## What reads them
 
-- `explain.js why <file:line>` answers "why is this the way it is" from the
+- `blueprint why <file:line>` answers "why is this the way it is" from the
   anchors of that file.
-- `explain.js trace <ID>` answers "where does this live" from the id.
-- `explain.js map` says which requirements are anchored and which are not.
+- `blueprint trace <ID>` answers "where does this live" from the id.
+- `blueprint map` says which requirements are anchored and which are not.
 - The project check reports an anchor that names an id no document has, and a
   task whose "done when" list is complete while its requirement is anchored
   nowhere.

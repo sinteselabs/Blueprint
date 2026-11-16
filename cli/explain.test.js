@@ -13,7 +13,7 @@ import { after, before, describe, it } from "node:test";
 import { run } from "./blueprint.js";
 import { PACKAGE } from "./files.js";
 
-const STATE = readFileSync(join(PACKAGE, "skills", "blueprint-record", "assets", "state.example.md"), "utf8");
+const STATE = readFileSync(join(PACKAGE, "plugin", "skills", "blueprint-record", "assets", "state.example.md"), "utf8");
 let root;
 
 async function cli(folder, ...argv) {

@@ -14,16 +14,16 @@
 // Exit code 0 when it answered, 1 when there was nothing to answer with, or the
 // delivery is over budget, 2 when it could not run at all.
 //
-// The project check lives in the blueprint-status skill and this engine lives
-// here: each is a single source for something that must always give the same
-// answer. A skill is copied on its own, so the few lines the two share
-// are copied here, not imported.
+// The project check, check.js, sits beside this file. Each is a single source for
+// something that must always give the same answer, and the few lines the two
+// share are copied, not imported.
+//
 
 import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { dirname, extname, isAbsolute, join, relative, resolve, sep } from "node:path";
 
-/** The identifiers the documents number: the anchors. references/anchors.md has the convention. */
+/** The identifiers the documents number: the anchors. plugin/skills/blueprint-explain/references/anchors.md has the convention. */
 const ID = /\b(FR|NFR|UC|D|ARD)-(\d{1,4})\b/g;
 
 const SKIP = new Set([

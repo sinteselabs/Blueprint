@@ -53,7 +53,7 @@ def run(claude: str, project: Path, prompt: str, allow_folders: tuple[Path, ...]
     """
     command = [claude, "-p", "--strict-mcp-config"]
     if plugin:
-        command += ["--plugin-dir", str(REPO), "--add-dir", str(REPO / "skills")]
+        command += ["--plugin-dir", str(REPO / "plugin"), "--add-dir", str(REPO / "plugin" / "skills")]
     if resume:
         command += ["--resume", resume]
     for folder in allow_folders:
@@ -155,7 +155,7 @@ def spoke_before_leaving(session: Session, project: Path) -> bool | None:
     list folders with shell commands as often as with file tools, so both count.
     """
     project_text = str(project).replace("\\", "/").lower()
-    skills_text = str(REPO / "skills").replace("\\", "/").lower()
+    skills_text = str(REPO / "plugin" / "skills").replace("\\", "/").lower()
     around_text = str(Path(project).parent.parent).replace("\\", "/").lower()
     spoke = False
     for kind, what in session.steps:
@@ -215,4 +215,4 @@ def read_state(project: Path) -> tuple[dict[str, str], dict[str, tuple[str, str]
 
 def skills_changes() -> str:
     """What git sees changed under skills/, to tell whether a session touched the repository."""
-    return subprocess.run(["git", "-C", str(REPO), "status", "--porcelain", "skills"], capture_output=True, text=True).stdout
+    return subprocess.run(["git", "-C", str(REPO), "status", "--porcelain", "plugin/skills"], capture_output=True, text=True).stdout

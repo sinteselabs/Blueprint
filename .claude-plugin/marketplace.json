@@ -7,7 +7,7 @@
   "plugins": [
     {
       "name": "blueprint",
-      "source": "./",
+      "source": "./plugin",
       "description": "From an idea to a repository ready for agentic development: a guided interview, the project documents and a prepared environment."
     }
   ]

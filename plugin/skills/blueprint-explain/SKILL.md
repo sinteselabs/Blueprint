@@ -36,24 +36,25 @@ is?" gets the answer without opening a `.md` file.** If your answer begins with
 
 ## 1. The engine
 
-The four views are a script, because they must always give the same answer:
+The four views are commands of the Blueprint CLI, because they must always give the same answer:
 
 ```
-node <this skill's folder>/explain.js why <file[:line]> [folder] [--json]
-node <this skill's folder>/explain.js trace <ID> [folder] [--json]
-node <this skill's folder>/explain.js map [folder] [--json]
-node <this skill's folder>/explain.js budget [folder] [--base <ref>] [--json]
+blueprint why <file[:line]> [folder] [--json]
+blueprint trace <ID> [folder] [--json]
+blueprint map [folder] [--json]
+blueprint budget [folder] [--base <ref>] [--json]
 ```
+
+When `blueprint` is not on the machine, put `npx --yes blueprintlabs` in its
+place: `npx --yes blueprintlabs why <file[:line]>`.
 
 It only reads. Exit code 0 when it answered, 1 when there was nothing to answer
 with or the delivery is over budget, 2 when it could not run. `--json` gives
-the same answer for you to read. Whoever installed Blueprint as a CLI has the
-same four as `blueprint why`, `blueprint trace`, `blueprint map` and
-`blueprint budget`.
+the same answer for you to read.
 
-If there is no Node on the machine, do by hand what the script does: search the
+If there is no Node on the machine, do by hand what the command does: search the
 code for the identifier, and read the row that declares it in the documents. Say
-that you answered without the script.
+that you answered without the command.
 
 ## 2. Answering "why is this the way it is"
 
@@ -63,7 +64,7 @@ that you answered without the script.
    says, and the decision it depended on, when there is one.
 3. **When the file carries no anchor,** say so plainly — a file with no anchor is
    normal, not a defect. Then offer the next best thing: the anchors beside it,
-   which the script lists, and what the task spec that touched the file says.
+   which the command lists, and what the task spec that touched the file says.
 4. **When the anchor is orphaned** — an id in the code that no document has —
    say it, because it is a real finding: either the document lost the
    requirement, or the anchor is wrong. Do not guess which. Ask.

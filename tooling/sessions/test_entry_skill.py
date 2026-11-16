@@ -47,7 +47,7 @@ from harness import REPO, Session, find_claude, refused, run, skills_changes, sp
 
 HERE = Path(__file__).resolve().parent
 CHECK_STATE = REPO / "tooling" / "checks" / "check_state.py"
-EXAMPLE_STATE = REPO / "skills" / "blueprint-record" / "assets" / "state.example.md"
+EXAMPLE_STATE = REPO / "plugin" / "skills" / "blueprint-record" / "assets" / "state.example.md"
 BAKERY_STATE = HERE / "entry" / "padaria-pedidos-state.md"
 LAST_RUN = Path(tempfile.gettempdir()) / "blueprint-entry-last-run.json"
 BAKERY = "Quero começar um projeto novo: um site para a padaria receber encomendas."

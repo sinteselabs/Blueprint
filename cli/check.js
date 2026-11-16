@@ -1,4 +1,4 @@
-// `blueprint check`: the same script the skill carries, called from the CLI.
+// `blueprint check`: runs cli/engine/check.js, which the blueprint-status skill tells an agent to run.
 // There is one source for the check, so the CLI and an agent that runs
 // it by hand always get the same answer.
 
@@ -14,6 +14,6 @@ export const usage = `Usage: blueprint check [folder] [--json]
   Exit code   0 nothing wrong, 1 something to fix, 2 could not run`;
 
 export async function check(argv, folder, write) {
-  const { main } = await import(`file:///${join(PACKAGE, "skills", "blueprint-status", "check.js").replace(/\\/g, "/")}`);
+  const { main } = await import(`file:///${join(PACKAGE, "cli", "engine", "check.js").replace(/\\/g, "/")}`);
   return main(argv, folder, write);
 }

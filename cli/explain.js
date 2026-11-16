@@ -1,5 +1,5 @@
 // `blueprint why`, `blueprint trace`, `blueprint map` and `blueprint budget`:
-// the same engine the blueprint-explain skill carries, called from the CLI.
+// the engine in cli/engine/explain.js, which the blueprint-explain skill tells an agent to run.
 // There is one source for it, so the CLI and an agent that runs it by
 // hand always get the same answer.
 
@@ -21,6 +21,6 @@ export const usage = `Usage: blueprint why <file[:line]> [folder] [--json]
   Exit code   0 answered, 1 nothing to answer with or over budget, 2 could not run`;
 
 export async function explain(view, argv, folder, write) {
-  const { main } = await import(`file:///${join(PACKAGE, "skills", "blueprint-explain", "explain.js").replace(/\\/g, "/")}`);
+  const { main } = await import(`file:///${join(PACKAGE, "cli", "engine", "explain.js").replace(/\\/g, "/")}`);
   return main([view, ...argv], folder, write);
 }

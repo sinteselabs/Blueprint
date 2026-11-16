@@ -20,7 +20,7 @@ from datetime import datetime
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
-ASSETS = REPO / "skills" / "blueprint-record" / "assets"
+ASSETS = REPO / "plugin" / "skills" / "blueprint-record" / "assets"
 
 FORMAT = "1"
 KEYS = [

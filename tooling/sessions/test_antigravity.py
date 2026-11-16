@@ -115,11 +115,11 @@ def main() -> int:
         # 2. its own skills installer, against our folder: a way in that is not ours
         native = root / "instalador-nativo"
         native.mkdir()
-        code, log = gemini(native, "skills", "install", str(REPO / "skills"), "--scope", "workspace", "--consent", timeout=300)
+        code, log = gemini(native, "skills", "install", str(REPO / "plugin" / "skills"), "--scope", "workspace", "--consent", timeout=300)
         landed = sorted(p.parent.name for p in native.rglob("SKILL.md"))
         check("its native installer takes our skills/ folder whole", code == 0 and landed == SKILLS, f"exit {code}, it installed {landed or 'none'}: {log.strip()[-200:]}")
         files = len(list((native / ".gemini" / "skills").rglob("*"))) if (native / ".gemini" / "skills").is_dir() else 0
-        check("with the references, the templates and the check script", files >= 45 and (native / ".gemini" / "skills" / "blueprint-status" / "check.js").is_file(), f"{files} entries")
+        check("with the references and the templates", files >= 45 and (native / ".gemini" / "skills" / "blueprint-status" / "references" / "check-list.md").is_file(), f"{files} entries")
 
         if "--no-turn" in arguments:
             print("\n--no-turn: the half that spends the account was not run")

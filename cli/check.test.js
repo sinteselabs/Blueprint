@@ -1,5 +1,5 @@
 // What `blueprint check` has to find, on real folders in a temporary place.
-// The same script the blueprint-status skill carries, so these checks cover both.
+// The same script `blueprint check` runs, which the blueprint-status skill calls.
 // Run with: node --test "cli/**/*.test.js"
 
 import assert from "node:assert/strict";
@@ -11,7 +11,7 @@ import { after, before, describe, it } from "node:test";
 import { run } from "./blueprint.js";
 import { PACKAGE } from "./files.js";
 
-const STATE = readFileSync(join(PACKAGE, "skills", "blueprint-record", "assets", "state.example.md"), "utf8");
+const STATE = readFileSync(join(PACKAGE, "plugin", "skills", "blueprint-record", "assets", "state.example.md"), "utf8");
 const MARKS = ["<!-- blueprint:start -->", "<!-- blueprint:end -->"];
 let root;
 

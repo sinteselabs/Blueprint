@@ -2,13 +2,15 @@
 // The project check. It only reads, and it always gives the same answer, which
 // is why it is a script and not a list for an agent to follow.
 //
-// The same file is the one the CLI calls, so there is one source for the check.
+// `blueprint check` runs this file, and the blueprint-status skill tells an agent
+// to run that command, so there is one source for the check.
 // Run it from the project folder, or give the folder as an argument:
 //
 //     node check.js [folder] [--json]
 //
 // Exit code 0 when nothing is wrong, 1 when something is, 2 when it could not
-// run at all. The list it goes through is in references/check-list.md.
+// run at all. The list it goes through is in
+// plugin/skills/blueprint-status/references/check-list.md.
 
 import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { dirname, join, relative, resolve, sep } from "node:path";
@@ -24,13 +26,13 @@ const MARKS = { start: "<!-- blueprint:start -->", end: "<!-- blueprint:end -->"
 const LINK = /(?<!!)\[[^\]]*\]\(([^)\s]+)(?:\s+"[^"]*")?\)/g;
 
 /**
- * The anchor engine, which the blueprint-explain skill carries. There is one source
+ * The anchor engine, `explain.js`, which sits beside this file. There is one source
  * for what an anchor is, so this check never disagrees with what `why` and `trace`
- * answer. Null when that skill is not installed beside this one, and then the three
+ * answer. Null when it cannot be loaded, and then the three
  * checks that need it say they were skipped instead of guessing.
  */
 async function anchorEngine() {
-  const path = join(dirname(import.meta.filename), "..", "blueprint-explain", "explain.js");
+  const path = join(dirname(import.meta.filename), "explain.js");
   if (!existsSync(path)) return null;
   try {
     return await import(`file:///${path.replace(/\\/g, "/")}`);
@@ -120,7 +122,7 @@ function documentsFolder(state) {
 async function codeAndDocuments(project, { ok, problem, skipped }) {
   const engine = await anchorEngine();
   if (!engine) {
-    const why = "the blueprint-explain skill is not installed beside this one, and it is what knows how to read anchors";
+    const why = "explain.js could not be loaded, and it is what knows how to read anchors";
     for (const what of ANCHOR_CHECKS) skipped(what, why);
     return;
   }

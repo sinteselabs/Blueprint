@@ -1,7 +1,7 @@
 {
   "name": "blueprint",
-  "displayName": "Blueprint",
-  "version": "0.3.0",
+  "displayName": "Blueprint by Síntese Labs",
+  "version": "0.3.1",
   "description": "From an idea to a repository ready for agentic development: a guided interview, the project documents and a prepared environment.",
   "author": {
     "name": "Síntese Labs"

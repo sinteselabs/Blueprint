@@ -35,6 +35,7 @@ jobs:
           python-version: "3.13"
       - run: python tooling/checks/check_links.py
       - run: python tooling/checks/check_root_names.py
+      - run: python tooling/checks/check_plugin_files.py
       - run: python tooling/checks/check_skills.py
       - run: python tooling/checks/check_shared_text.py
       - run: python tooling/checks/check_state.py
@@ -56,7 +57,7 @@ jobs:
           npm pack --dry-run --json > packed.json
           node -e '
             const files = JSON.parse(require("fs").readFileSync("packed.json", "utf8"))[0].files.map((f) => f.path);
-            const missing = ["cli/blueprint.js", "skills/blueprint/SKILL.md", "skills/blueprint-status/check.js", "LICENSE"].filter((p) => !files.includes(p));
+            const missing = ["cli/blueprint.js", "plugin/skills/blueprint/SKILL.md", "cli/engine/check.js", "LICENSE"].filter((p) => !files.includes(p));
             if (missing.length) { console.error("the package would not carry: " + missing.join(", ")); process.exit(1); }
             console.log(files.length + " files, with the seven skills and the CLI");
           '

@@ -55,7 +55,7 @@ def blocks(path: Path, label: str) -> tuple[list[tuple[str, str, str]], list[str
 def main(argv: list[str]) -> int:
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     root = Path(argv[1]).resolve() if len(argv) > 1 else REPO
-    skills_dir = root / "skills"
+    skills_dir = root / "plugin" / "skills"
     by_name: dict[str, list[tuple[str, str]]] = {}
     problems = 0
     count = 0
