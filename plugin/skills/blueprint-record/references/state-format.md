@@ -146,8 +146,10 @@ keeps the agent from asking twice.
 ### `## Decisions`
 
 A list with one line per decision: its number in the decisions record, its
-title, and `decided` or `open`. The reasons live in the decisions record, not
-here. While it is empty, one line says there is nothing yet.
+title, and `decided`, `open` or `replaced`, separated by ` · `:
+`- D-001 · Web app instead of a phone app · decided`. A replaced decision keeps
+its line; the record says which decision replaced it. The reasons live in the
+decisions record, not here. While it is empty, one line says there is nothing yet.
 
 ### `## Open points`
 

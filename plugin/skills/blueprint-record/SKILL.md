@@ -102,12 +102,37 @@ a decision's heading is `## D-001 · Title`, and file names do not change.
 3. A decision that is left for later is recorded too, with the situation `open`
    and what depends on it.
 4. Never rewrite an entry. When a decision changes, add a new entry and set the
-   old one's situation to `replaced by D-NNN`.
+   old one's situation to `replaced by D-NNN`. See
+   [Replacing a decision](#replacing-a-decision) for what else changes.
 5. If the decision left something to verify, write it in `To test`. It is not
    tested before deciding: it goes into the test plan, as the next section says.
 6. Add the decision to `## Decisions` in the state file, set the document
    `decisions` to `ready` with its place, and save the state. The record is
    `ready` whenever every decision so far is in it, the open ones included.
+
+## Replacing a decision
+
+A decision that no longer holds leaves behind what was built on it: specs that
+come from it, code that carries its id, rows of the test plan, parts of the
+architecture. Replacing it in the record is not enough.
+
+1. **Find what depends on it** before you record the new one:
+   `blueprint trace D-NNN` lists the documents, the specs and the code that
+   name it. Without the command, search the documents and the code for the id,
+   and say that you searched by hand.
+2. **Record the new entry.** Its `Alternatives` names the old decision and why
+   it no longer holds.
+3. **In the state,** the old decision's line ends with `replaced`, and the new
+   one is added after it. The record says by which decision; the state does not.
+4. **Tell the person what depends on the old one,** one line each. Changing it
+   is a change to the project, made by the `blueprint` skill: the specs and the
+   code are not rewritten as part of recording.
+5. **Rows of the test plan that came from the old decision** stay, with a
+   result that says the decision was replaced. What the new one leaves to
+   verify gets rows of its own.
+
+Until that change is delivered, the project check reports the code and the open
+specs that still name the replaced decision.
 
 ## Recording what is left to test
 
