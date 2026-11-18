@@ -96,7 +96,9 @@ Step name in the state: `modeling`.
 Main questions, by the kind of project:
 
 - always: the journeys that cannot go wrong;
-- when it stores data: what the system stores, and whether there is personal data;
+- when it stores data: what the system stores, whether there is personal data,
+  and whether data that already exists (a spreadsheet, an old system) has to
+  come in;
 - when it has screens: which are the main screens;
 - when it is used by command or by code: which commands or calls it offers;
 - when it calls a model: what the model does in the product, and what the

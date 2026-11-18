@@ -35,7 +35,7 @@ or a child's data, and anything else the law of the person's country names.
 ## What the project does about it
 
 - **Collected:** {{at which moment, and what the person is told then.}}
-- **Deleted:** {{what deletes it, when, and what is left behind.}}
+- **Deleted:** {{what deletes it, when, and what is left behind: backups, logs, exports, copies sent to other services.}}
 - **Asked for:** {{what happens when someone asks for their data or asks to be forgotten.}}
 - **Leaked:** {{what would be done, and who would be told.}}
 
