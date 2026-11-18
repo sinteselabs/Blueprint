@@ -88,4 +88,39 @@ The documents and the plan of this project were written with Blueprint, and the
 rules above come from it. {{How to get the Blueprint skills, when they are not
 installed in the agent being used. When you do not know how this project got
 them, say instead: this file, the documents and the plan are enough to go on.}}
+
+<!-- Only when agents work on this project at the same time, or without the
+person watching. Otherwise drop this section whole. Drop the parts on worktrees
+and the work mode when only the unattended run applies. -->
+
+### When more than one agent works, or no one is watching
+
+1. **One agent that writes, one worktree, one branch,** made from the
+   up-to-date main branch. Never two agents in the same folder. Tasks that share
+   a file, a migration or an order are done one after another.
+2. **Declare before you start.** Read the open session records in
+   `{{MAIN_CHECKOUT}}/.blueprint/journal/sessions/`, then open yours there: the
+   task, the files or areas, the migration number you will use. If another open
+   record takes the same task or files, wait or take another task. Close your
+   record every time you stop, finished or not.
+3. **What a worktree does not isolate:** copy `.env` into it and install the
+   dependencies there; use a port no other agent uses; one database per
+   worktree, or one migration task at a time. Only the coordinator, who
+   integrates the branches, writes `.blueprint/state.md`, {{docs/decisions.md}}
+   and {{docs/test-plan.md}}: a worker writes what it decided or found in its
+   session record.
+4. **The coordinator integrates one branch at a time,** then removes its
+   worktree and branch once the branch is in the remote main branch.
+5. **Work mode: {{full / token-saving}}.** {{Full: every worker uses the
+   strongest model and runs every check above; the coordinator runs them again
+   on each branch before merging it. / Token-saving: a cheaper model for small,
+   clear tasks; a worker runs the fast checks and the tests of what it touched;
+   the coordinator runs every check once, on all the finished branches merged
+   together, before pushing.}} The person changes the mode by saying so.
+6. **An unattended run** starts with three questions, asked once and together:
+   may it merge and deploy, which tasks are in it, and when it stops. During it,
+   ask nothing: a decision that is costly to undo is taken with the recommended
+   option and recorded as `provisional`, and what only a person can do is
+   written down for them. It ends with a summary: what was done, what is
+   provisional, and what waits for the person.
 <!-- blueprint:end -->
