@@ -16,7 +16,8 @@ the design document. -->
 |---|---|---|---|
 | {{Name}} | {{Kind of user}} | {{In one line}} | {{UC-01}} |
 
-**Opened on:** {{a telephone, a computer, both. The narrowest width that has to work.}}
+**Opened on:** {{a telephone, a computer, both. The narrowest width that has to work, and what changes on a wider one: columns side by side, a menu that stops being hidden.}}
+**Accessibility:** {{the level from the requirements, by its NFR number, and what it asks of these screens: every action reachable by keyboard, a name for every image and button a screen reader reads out.}}
 
 ## {{Name of the screen}}
 
@@ -29,8 +30,11 @@ people read it. Mark what can be tapped or typed.}}
 |---|---|
 | {{Field or button}} | {{What happens when it is used, and where it goes next}} |
 
+**While it loads:** {{what the person sees, and whether they can already act.}}
 **When there is nothing to show:** {{what the person sees instead of an empty screen.}}
 **When something is wrong:** {{what the person sees, and what they can do about it.}}
+**When they may not see it,** when not everyone may: {{what someone without the right sees instead.}}
+**Without a connection,** when it has to work offline or on a weak one: {{what still works, and what happens to what they did once it is back.}}
 
 ## How people move between the screens
 
