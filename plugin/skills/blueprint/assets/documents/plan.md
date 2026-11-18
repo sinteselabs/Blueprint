@@ -37,7 +37,7 @@ does not exist yet names the task that creates it. -->
 | What | How | Set up by |
 |---|---|---|
 | Run it locally | {{The command, or what to open}} | {{01-01, or "exists"}} |
-| Tests | {{The levels, and what each covers: unit for the rules, integration for the data, end to end for the journeys that cannot go wrong. The command}} | {{Task}} |
+| Tests | {{The levels, and what each covers: unit for the rules, integration for the data, end to end for the journeys that cannot go wrong. The command. What each target and failure case is checked by is in the test plan}} | {{Task}} |
 | Checked on every change | {{What runs on its own, and where: lint, types, tests, on each push}} | {{Task}} |
 | Environments | {{Where it runs, one line each: local, test, production}} | {{Task}} |
 | Configuration and secrets | {{Where each environment reads them from. Never a file committed to git}} | {{Task}} |

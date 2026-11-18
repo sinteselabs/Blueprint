@@ -16,7 +16,7 @@ from its kind:
 | `design` | `has-screens` is `yes`: what was decided, or where the existing identity lives |
 | `interface-contract` | `used-by-command-or-code` is `yes` |
 | `ai-features` | `calls-a-model` is `yes` |
-| `test-plan` | Something must be validated beyond acceptance, the project is a refactor, or a decision left something to test |
+| `test-plan` | The architecture has a quality target or a failure case, `calls-a-model` is `yes`, the requirements set an accessibility level, the project is a refactor, or a decision left something to test |
 | `playbooks` | `developers` is more than 1 |
 <!-- /shared: documents-by-kind -->
 
