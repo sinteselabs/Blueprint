@@ -32,6 +32,19 @@ a row the project does not have. -->
 | Build it | {{`npm run build`}} |
 | Check what runs on every change | {{`npm run lint`}} |
 
+### Decisions not to go against
+
+<!-- From the decisions record: the 3 to 7 decided ones that a task is most
+likely to run into, such as the stack, where data lives, how personal data is
+handled, what is left out on purpose. One line each, with its id, as the record
+words it. Drop this section when the record has no decided decision. -->
+
+Each has its reason in {{docs/decisions.md}}. Do not work against one or argue it
+again: changing one is a decision that is costly to undo (rule 9). The session
+that replaces one changes its line here.
+
+- {{D-001}} · {{The decision, in one line}}
+
 ### How to work here
 
 1. **Read `.blueprint/state.md` before you answer.** It says where the project

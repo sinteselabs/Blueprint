@@ -72,6 +72,9 @@ in it, between two marks, and touches nothing else:
    plan, each with the task that creates it. You read them and do not run them,
    so say so: an agent learns whether they work at its first task. A command
    neither the files nor the plan give is left out, not guessed.
+7. **The decisions not to go against.** From the decisions record, the 3 to 7
+   decided ones a task is most likely to run into, each with its id. When the
+   block is rewritten, a decision replaced since then leaves the list.
 
 The block is also what says that this project was prepared. Nothing in the
 state file records it: the mark in the entry file is the fact.
