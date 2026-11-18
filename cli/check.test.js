@@ -282,7 +282,7 @@ describe("blueprint check: the test plan", () => {
         .replace("| architecture | not-started | - |", "| architecture | ready | docs/architecture.md |");
       if (planned) {
         state = state
-          .replace("| plan | not-started | 0 of 2 |", "| plan | closed | 2 of 2 |")
+          .replace("| plan | not-started | 0 of 3 |", "| plan | closed | 3 of 3 |")
           .replace("- [ ] O que vem primeiro\n- [ ] Quem faz o quê", "- [x] O que vem primeiro\n- [x] Quem faz o quê")
           .replace("| plan | not-started | - |", "| plan | ready | docs/plan.md |");
       }
