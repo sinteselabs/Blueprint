@@ -10,5 +10,5 @@ rewritten: when it changes, a new entry replaces it and says which one.
 - **Alternatives:** {{What else was considered, and why it was left out.}}
 - **Decided by:** {{Who}} · **Date:** {{YYYY-MM-DD}}
 - **Sources:** {{What was read, with the date it was read. "-" when none.}}
-- **Situation:** {{decided | open | replaced by D-NNN}}
+- **Situation:** {{decided | open | provisional | replaced by D-NNN}}
 - **To test:** {{What this decision left to verify, which goes into the test plan. "-" when nothing.}}

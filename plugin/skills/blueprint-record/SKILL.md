@@ -101,12 +101,17 @@ a decision's heading is `## D-001 · Title`, and file names do not change.
    Fill every line of the entry. `Reason` names the criterion that decided it.
 3. A decision that is left for later is recorded too, with the situation `open`
    and what depends on it.
-4. Never rewrite an entry. When a decision changes, add a new entry and set the
-   old one's situation to `replaced by D-NNN`. See
+4. A decision an agent took during an unattended run, in the person's absence,
+   is recorded with the situation `provisional`, `Decided by` naming the agent
+   and the run, and `Alternatives` saying what reversing it would take. When the person confirms it, its
+   situation becomes `decided`, in the record and in the state. When they
+   reverse it, it is replaced, as the next section says.
+5. Never rewrite an entry, except its situation. When a decision changes, add
+   a new entry and set the old one's situation to `replaced by D-NNN`. See
    [Replacing a decision](#replacing-a-decision) for what else changes.
-5. If the decision left something to verify, write it in `To test`. It is not
+6. If the decision left something to verify, write it in `To test`. It is not
    tested before deciding: it goes into the test plan, as the next section says.
-6. Add the decision to `## Decisions` in the state file, set the document
+7. Add the decision to `## Decisions` in the state file, set the document
    `decisions` to `ready` with its place, and save the state. The record is
    `ready` whenever every decision so far is in it, the open ones included.
 
