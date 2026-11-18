@@ -72,6 +72,9 @@ in it, between two marks, and touches nothing else:
    plan, each with the task that creates it. You read them and do not run them,
    so say so: an agent learns whether they work at its first task. A command
    neither the files nor the plan give is left out, not guessed.
+7. **The decisions not to go against.** From the decisions record, the 3 to 7
+   decided ones a task is most likely to run into, each with its id. When the
+   block is rewritten, a decision replaced since then leaves the list.
 
 The block is also what says that this project was prepared. Nothing in the
 state file records it: the mark in the entry file is the fact.
@@ -138,6 +141,13 @@ Keep it short enough to read at the start of every session: about 150 lines.
 Past that, group small folders into one row. Every path goes in backticks and
 is a path that exists, outside the planned block. Do not describe what a file
 does line by line: that is what opening it is for.
+
+**Tests, gotchas and conventions.** Each area's row gets the command that runs
+only its tests, from the test runner and its configuration. Gotchas are written
+only where the code or its comments already state one. "How code is written
+here" comes from the linter, formatter and migration configuration, the commit
+history and the decisions: a convention none of them shows is left out, never
+invented.
 
 Then check that each task spec in the plan has a "Where in the code" section
 naming areas of the roadmap. A spec without it is not rewritten: say which ones

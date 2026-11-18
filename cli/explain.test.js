@@ -205,6 +205,22 @@ describe("blueprint map", () => {
     }
   });
 
+  it("does not count a removed requirement as promised, and says where it is still named", async () => {
+    const removed = REQUIREMENTS.replace(
+      "| FR-02 | O paciente confirma a presença | Primeira versão | o que a pessoa disse |\n",
+      "",
+    ) + "\n## Removidos\n\n<!-- blueprint:removed -->\n| Nº | Requisito | Removido por | Por quê |\n|---|---|---|---|\n| FR-02 | O paciente confirma a presença | 02-01 | A clínica liga para confirmar |\n<!-- /blueprint:removed -->\n";
+    const folder = project("map-removed", {
+      "docs/requirements.md": removed,
+      "src/confirm.js": "// FR-02: o paciente confirma.\nexport function confirm() {}\n",
+    });
+    const { out } = await cli(folder, "map");
+    assert.match(out, /2 of 2 requirements and use cases anchored in the code/);
+    assert.match(out, /FR-02\s+removed, still named in 1 place of the code and tests/);
+    const trace = await cli(folder, "trace", "FR-02");
+    assert.match(trace.out, /removed\s+and still named by the code and tests above/);
+  });
+
   it("does not count a decision as something to implement", async () => {
     const { out } = await cli(project("map-decisions"), "map");
     // D-001 is listed, and it is not in the ratio: a decision explains a shape

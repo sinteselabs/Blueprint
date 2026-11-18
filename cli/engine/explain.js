@@ -25,6 +25,7 @@ import { dirname, extname, isAbsolute, join, relative, resolve, sep } from "node
 
 /** The identifiers the documents number: the anchors. plugin/skills/blueprint-explain/references/anchors.md has the convention. */
 const ID = /\b(FR|NFR|UC|D|ARD)-(\d{1,4})\b/g;
+const REMOVED = { start: "<!-- blueprint:removed -->", end: "<!-- /blueprint:removed -->" };
 
 const SKIP = new Set([
   "node_modules", ".git", ".hg", ".svn", "dist", "build", "out", "target", "coverage",
@@ -138,7 +139,12 @@ export function catalogue(project, state) {
     if (!where || where === "-") continue;
     const full = join(project, where);
     if (!existsSync(full) || !statSync(full).isFile()) continue;
+    // A requirement that left keeps its id between the removed marks, so old commits
+    // and anchors still resolve; it is no longer something the code has to carry.
+    let removed = false;
     readFileSync(full, "utf8").split(/\r?\n/).forEach((line, i) => {
+      if (line.includes(REMOVED.start)) removed = true;
+      if (line.includes(REMOVED.end)) removed = false;
       const here = idsIn(line);
       for (const id of here) {
         const declared = declares(line, id);
@@ -151,6 +157,7 @@ export function catalogue(project, state) {
           says: textBeside(line, id),
           with: here.filter((other) => other !== id),
           declared,
+          removed: removed && declared,
         });
       }
     });
@@ -296,6 +303,7 @@ export function trace(all, id) {
     tests: here.filter((anchor) => anchor.test).map((anchor) => `${anchor.path}:${anchor.line}`),
     tasks: all.specs.filter((spec) => spec.ids.includes(wanted)).map((spec) => spec.path),
     orphan: !said && here.length > 0,
+    removed: Boolean(said && said.removed),
   };
 }
 
@@ -309,12 +317,14 @@ export function map(all) {
       document: said.document,
       places: here.filter((anchor) => !anchor.test).length,
       tests: here.filter((anchor) => anchor.test).length,
+      removed: said.removed,
     };
   });
   const orphans = [...new Set(all.found.map((anchor) => anchor.id))].filter((id) => !all.says.has(id)).sort(order);
   // A decision with no anchor is ordinary: it explains a shape, it is not a thing
   // to build. The ratio is over what the documents promise will exist.
-  const promised = rows.filter((row) => ["FR", "NFR", "UC"].includes(row.id.split("-")[0]));
+  // A removed requirement is not promised any more, and code that still names it is left to remove.
+  const promised = rows.filter((row) => !row.removed && ["FR", "NFR", "UC"].includes(row.id.split("-")[0]));
   return {
     what: "map",
     rows,
@@ -425,6 +435,7 @@ function reportTrace(answer) {
   lines.push(`  code        ${answer.code.length ? answer.code.join(", ") : "nowhere yet"}`);
   lines.push(`  tests       ${answer.tests.length ? answer.tests.join(", ") : "nothing proves it"}`);
   if (answer.tasks.length) lines.push(`  tasks       ${answer.tasks.join(", ")}`);
+  if (answer.removed) lines.push(`  removed     ${answer.code.length + answer.tests.length ? "and still named by the code and tests above: the removal is done when they no longer name it" : "and nothing in the code or the tests names it any more"}`);
   if (answer.orphan) lines.push("  This id is in the code and in no document. Either the document lost it, or the anchor is wrong.");
   return lines.join("\n");
 }
@@ -433,6 +444,11 @@ function reportMap(answer) {
   if (!answer.rows.length) return "The documents of this project number nothing yet, so there is no map to draw.";
   const lines = [`${answer.anchored} of ${answer.total} requirements and use cases anchored in the code`];
   for (const row of answer.rows) {
+    if (row.removed) {
+      const left = row.places + row.tests;
+      lines.push(`  ${row.id.padEnd(7)} removed${left ? `, still named in ${left} place${left === 1 ? "" : "s"} of the code and tests` : ""}`);
+      continue;
+    }
     const places = row.places ? `${row.places} place${row.places === 1 ? "" : "s"}` : "nowhere";
     const tests = row.tests ? `${row.tests} test${row.tests === 1 ? "" : "s"}` : "no test";
     lines.push(`  ${row.id.padEnd(7)} ${places.padEnd(9)} ${tests.padEnd(8)} ${short(row.says, 56)}`);

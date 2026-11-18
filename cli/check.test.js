@@ -137,8 +137,8 @@ describe("blueprint check", () => {
   it("asks for the Blueprint block once the plan is closed", async () => {
     const closed = (text) =>
       text
-        .replace("| plan | not-started | 0 of 2 |", "| plan | closed | 2 of 2 |")
-        .replace("- [ ] O que vem primeiro\n- [ ] Quem faz o quê", "- [x] O que vem primeiro\n- [x] Quem faz o quê")
+        .replace("| plan | not-started | 0 of 3 |", "| plan | closed | 3 of 3 |")
+        .replace("- [ ] O que vem primeiro\n- [ ] Como o trabalho é verificado e entregue\n- [ ] Quem faz o quê", "- [x] O que vem primeiro\n- [x] Como o trabalho é verificado e entregue\n- [x] Quem faz o quê")
         .replace("| plan | not-started | - |", "| plan | ready | docs/plan.md |");
     const folder = project("plan-closed", closed);
     put(join(folder, "docs", "plan.md"), "# Plano\n\n> **Em resumo:** duas fases.\n");
@@ -174,8 +174,8 @@ describe("blueprint check", () => {
   it("finds a code roadmap row whose path is gone, and ignores planned rows", async () => {
     const closed = (text) =>
       text
-        .replace("| plan | not-started | 0 of 2 |", "| plan | closed | 2 of 2 |")
-        .replace("- [ ] O que vem primeiro\n- [ ] Quem faz o quê", "- [x] O que vem primeiro\n- [x] Quem faz o quê")
+        .replace("| plan | not-started | 0 of 3 |", "| plan | closed | 3 of 3 |")
+        .replace("- [ ] O que vem primeiro\n- [ ] Como o trabalho é verificado e entregue\n- [ ] Quem faz o quê", "- [x] O que vem primeiro\n- [x] Como o trabalho é verificado e entregue\n- [x] Quem faz o quê")
         .replace("| plan | not-started | - |", "| plan | ready | docs/plan.md |");
     const folder = project("roadmap-stale", closed);
     put(join(folder, "docs", "plan.md"), "# Plano\n\n> **Em resumo:** duas fases.\n");
