@@ -91,6 +91,12 @@ and prose and installed tool folders are not read as anchors.
     box ticked and no code carrying the id it comes from means one of two things:
     the code lost it, or the task is not done. The ticked box is a claim; the
     anchor is the evidence.
+22. **Nothing in the code or in an open task still serves a replaced
+    decision.** A decision the state calls `replaced` whose id is still in the
+    code, or in a spec whose done-when list is not complete, means that what was
+    built on it has not moved yet. A spec that also names a later decision still
+    in force is the task that moves it, and is not reported. Checked only when
+    the state has a replaced decision.
 
 ## Nothing twice
 
@@ -98,3 +104,21 @@ and prose and installed tool folders are not read as anchors.
     project.
 13. **One of each document.** No two files with the same purpose, such as two
     requirements documents under different names.
+
+## What the check does not see
+
+A check that passes says only that these items hold. Say what it cannot tell
+when the person asks whether the project is in order:
+
+- **Whether a document still says what the code does.** The check follows
+  paths, links and ids. A requirement whose behaviour changed, a flow the
+  architecture describes and the code no longer has, a field the data model
+  lists and nobody stores: none of these is seen. The `blueprint-survey` skill
+  compares a document with the code, for the parts it checks.
+- **A requirement that nothing implements.** It is not a problem: it may not be
+  built yet. `blueprint map` lists them.
+- **Work that happened after the state was saved.** Commits newer than the
+  state's `updated` are a sign the state is behind, which the `blueprint`
+  skill handles when the project is continued.
+- **Whether a test passes.** The check does not run the project, and a row of
+  the test plan marked done is a claim.

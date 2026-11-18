@@ -170,8 +170,8 @@ brings the data classification of what the change stores, not of everything
 the project has.
 
 The file an agent reads first (`AGENTS.md`) is prepared by the
-`blueprint-setup` skill, which is not built yet in this version of Blueprint.
-Say so when the project has none.
+`blueprint-setup` skill. When the project has none, say so, and propose it
+once the change's plan is written.
 
 ## Improving: the difference
 
@@ -185,6 +185,26 @@ Write the change as a difference from what exists, in the plan, under
 Each line names what it touches: the requirement, when the project has
 requirements, or the file. If the project has a plan, add the change to it.
 Never start a second plan.
+
+### When something leaves
+
+Removing a feature is a change like any other, and it is not small when
+someone outside the code depends on it.
+
+- **Find all of it first:** `blueprint trace <ID>` for each requirement that
+  leaves lists the documents, the specs, the code and the tests that name it.
+  Without anchors, read the area as for any change, and say that the list may
+  be incomplete.
+- **The requirement keeps its row and its id,** with a word that it was
+  removed and by which change. An id is never given to something else: old
+  commits, specs and anchors still name it.
+- **Someone depends on it** when it is part of the interface contract, when
+  stored data only it reads, or when people use it. Then it leaves in two
+  tasks: the first says it is going and how to do without it, the second
+  removes it. What happens to the stored data is a decision that is costly to
+  undo.
+- **The removal is done when nothing names it:** the spec's done-when list has
+  a line saying that `blueprint trace` finds no code and no test for the id.
 
 ## Refactoring: nothing may break
 
@@ -219,6 +239,32 @@ Written only when the person asks for it: "document this project".
 4. What the code does not tell is not invented. Ask it, three questions at a
    time, or leave it as an open point of the document.
 5. After each document, tell the person in one line where it is.
+
+## A bug, or an incident
+
+**A bug** is code that does not do what the documents say. The documents are
+right and stay as they are: the fix is a small change.
+
+- Its spec comes from the requirement the code breaks. Its done-when list has a
+  test, named with that id, that fails before the fix and passes after.
+- In the plan, the task goes ahead of the next one when the bug blocks people,
+  and at the end of the phase under way when it does not.
+- No requirement covers the behaviour, or the requirement itself is wrong: it is
+  not a bug but an improvement, and it goes as one.
+
+**An incident** is a bug that reached people in production. Fix first; write
+after. Once it is over, record it with the `blueprint-record` skill, in the
+session record of the session that dealt with it: what happened, from when to
+when, who was affected, the cause, and what changes. Each thing that changes
+goes where it belongs:
+
+- the fix, and anything else to build, as tasks with their specs;
+- what must not happen again, as a row of the test plan whose `Comes from`
+  names that session record;
+- a decision that did not hold, as a new decision that replaces it.
+
+There is no separate incident document: these three places are the ones the
+next session reads.
 
 ## When the change is delivered
 

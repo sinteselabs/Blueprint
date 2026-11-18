@@ -320,6 +320,44 @@ describe("blueprint check: the code and the documents", () => {
     assert.match(out, /skipped\s+a task whose done-when list is complete is anchored in the code \(no task spec has its done-when list complete yet\)/);
   });
 
+  /** A numbered project whose state says D-001 was replaced by D-002. */
+  function replacedDecision(name, files = {}) {
+    const folder = project(name, (text) =>
+      text.replace(/^- D-001 · (.*) · decided$/m, "- D-001 · $1 · replaced\n- D-002 · Aplicativo de celular · decided"));
+    put(join(folder, "docs", "requirements.md"), NUMBERED);
+    put(join(folder, "docs", "decisions.md"), "# Decisões\n\n## D-001 · Aplicativo web\n\n- **Situação:** substituída por D-002\n\n## D-002 · Aplicativo de celular\n\n- **Situação:** decidida\n");
+    for (const [path, text] of Object.entries(files)) put(join(folder, ...path.split("/")), text);
+    return folder;
+  }
+
+  it("skips the replaced-decision check while no decision is replaced", async () => {
+    const { out } = await cli(numbered("none-replaced"), "check");
+    assert.match(out, /skipped\s+nothing in the code or in an open task still serves a replaced decision \(the state has no replaced decision\)/);
+  });
+
+  it("finds code and an open task that still serve a replaced decision", async () => {
+    const folder = replacedDecision("still-replaced", {
+      "src/web.js": "// FR-01, D-001: a agenda é uma página web.\nexport function agenda() {}\n",
+      "docs/specs/01-03-agenda.md": "# Agenda\n\n## Quando está pronta\n\n- [ ] A agenda abre\n\n## Vem de\n\nFR-01, D-001\n",
+    });
+    const { code, out } = await cli(folder, "check");
+    assert.equal(code, 1, out);
+    assert.match(out, /problem\s+nothing in the code or in an open task still serves a replaced decision/);
+    assert.match(out, /src\/web\.js names D-001/);
+    assert.match(out, /01-03-agenda\.md comes from D-001/);
+  });
+
+  it("does not report the task that moves the code to the decision that replaced it", async () => {
+    const folder = replacedDecision("moving", {
+      "src/app.js": "// FR-01, D-002\nexport function agenda() {}\n",
+      "docs/specs/02-01-celular.md": "# Celular\n\n## Quando está pronta\n\n- [ ] A agenda abre no celular\n\n## Vem de\n\nFR-01, D-002, que substitui D-001\n",
+      "docs/specs/01-01-web.md": "# Web\n\n## Quando está pronta\n\n- [x] A agenda abre\n\n## Vem de\n\nFR-01, D-001\n",
+    });
+    const { code, out } = await cli(folder, "check");
+    assert.equal(code, 0, out);
+    assert.match(out, /ok\s+nothing in the code or in an open task still serves a replaced decision/);
+  });
+
   it("skips the three when the documents live in a tool", async () => {
     const folder = project("in-a-tool", (text) => text.replace("documents_at: docs/", "documents_at: notion"));
     const { code, out } = await cli(folder, "check");
