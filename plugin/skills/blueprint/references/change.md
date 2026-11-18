@@ -170,8 +170,8 @@ brings the data classification of what the change stores, not of everything
 the project has.
 
 The file an agent reads first (`AGENTS.md`) is prepared by the
-`blueprint-setup` skill, which is not built yet in this version of Blueprint.
-Say so when the project has none.
+`blueprint-setup` skill. When the project has none, say so, and propose it
+once the change's plan is written.
 
 ## Improving: the difference
 
