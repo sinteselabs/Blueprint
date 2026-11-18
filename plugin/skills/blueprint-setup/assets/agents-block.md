@@ -44,7 +44,10 @@ a row the project does not have. -->
    It is done when its spec's "Done when" and the plan's "Every task is done
    when" both hold. Run the tests before you say so: a check you could not run
    is said, never counted as passed. A task that adds or changes a command
-   above changes its row in the same commit.
+   above changes its row in the same commit. When it is delivered, its spec's
+   situation becomes done, and any document the task made untrue (a command,
+   a field, a flow, a path) is corrected in the same delivery, and you say
+   which.
 3. **Do not read the whole codebase to find where to work.** Open
    {{docs/code-roadmap.md}}, find the area the task touches, and read only the
    paths on its row and the ones it lists under "Also read". Open another file
@@ -76,7 +79,10 @@ a row the project does not have. -->
    decision that is costly to undo, it brings no new fact about the project (the
    first screen, the first stored data, the first personal data, the first
    command, the first call to a model), and it fits in one task. If it is not
-   small, write its spec with the person before you write code.
+   small, write its spec with the person before you write code. A bug is code
+   that breaks a requirement: its spec comes from that requirement, by its id.
+   When no requirement covers the behaviour, it is not a bug but a change to
+   what the system does.
 9. **A decision that is costly to undo is the person's:** the stack, hosting,
    how personal data is handled, anything that generates cost. Bring options and
    a recommendation, and wait.

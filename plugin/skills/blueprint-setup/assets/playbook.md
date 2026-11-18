@@ -24,9 +24,12 @@ Replace every {{placeholder}} and remove these comments. -->
 
 ## When the task is done
 
-1. Write the result in the spec's "How to test", and say it to whoever asked.
-2. Record the session in `.blueprint/journal/sessions/`.
-3. {{What is handed over, to which role, and how they are told.}}
+1. Write the result in the spec's "How to test", set its situation to done,
+   and say it to whoever asked.
+2. Correct, in the same delivery, any document the task made untrue, and say
+   which.
+3. Record the session in `.blueprint/journal/sessions/`.
+4. {{What is handed over, to which role, and how they are told.}}
 
 ## What this role does not decide
 
