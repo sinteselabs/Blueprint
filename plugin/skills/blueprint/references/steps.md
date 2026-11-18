@@ -116,10 +116,29 @@ Step name in the state: `plan`.
 Main questions:
 
 1. What comes first
-2. Who does what, only when more than one person develops
+2. How the work is checked and released: which tests run on their own, and how
+   a version reaches the people who use it
+3. Who does what, only when more than one person develops
+
+Most of the second question is deduced from the architecture and the
+decisions: the stack brings its test runner, the hosting brings its
+environments and its way to release. Say what you deduced, and ask only what is
+left: whether a change waits for the tests to pass on its own, and who lets a
+version out. A choice here that generates cost, such as a paid service to run
+the checks, is a costly decision ([conduct.md](conduct.md)).
+
+When there is no code yet, the first phase lays the ground: the project runs, a
+test runs and passes, and when the project is hosted, a first version reaches
+that place. Every later task is delivered on top of it, so the "How to test" of
+the first feature already has something to run.
+
+Each task names the tasks it needs, and fits in one delivery someone can review
+in one sitting. A task that will not fit is split while planning, not during
+delivery. A task with a choice in it gets the spec's "How it is built".
 
 Documents: `plan`, and one spec per task. The step closes when there are phases,
-tasks and a spec for every task.
+tasks, a spec for every task, and the plan says how the project is run, tested
+and, when it reaches people, released.
 
 ## After the plan
 
