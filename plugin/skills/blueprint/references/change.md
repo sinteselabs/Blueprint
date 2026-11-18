@@ -186,6 +186,26 @@ Each line names what it touches: the requirement, when the project has
 requirements, or the file. If the project has a plan, add the change to it.
 Never start a second plan.
 
+### When something leaves
+
+Removing a feature is a change like any other, and it is not small when
+someone outside the code depends on it.
+
+- **Find all of it first:** `blueprint trace <ID>` for each requirement that
+  leaves lists the documents, the specs, the code and the tests that name it.
+  Without anchors, read the area as for any change, and say that the list may
+  be incomplete.
+- **The requirement keeps its row and its id,** with a word that it was
+  removed and by which change. An id is never given to something else: old
+  commits, specs and anchors still name it.
+- **Someone depends on it** when it is part of the interface contract, when
+  stored data only it reads, or when people use it. Then it leaves in two
+  tasks: the first says it is going and how to do without it, the second
+  removes it. What happens to the stored data is a decision that is costly to
+  undo.
+- **The removal is done when nothing names it:** the spec's done-when list has
+  a line saying that `blueprint trace` finds no code and no test for the id.
+
 ## Refactoring: nothing may break
 
 - **The requirements are not rewritten.** They are the list of what must keep
