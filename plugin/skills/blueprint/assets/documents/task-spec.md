@@ -5,7 +5,7 @@ labels included. Replace every {{placeholder}} and remove these comments. One
 file per task, in the specs folder beside the plan, named with the phase and the
 task number: 01-01-task-name.md. -->
 
-**Phase:** {{1 · Name}} · **Situation:** {{not started / in progress / to test / done}}
+**Phase:** {{1 · Name}} · **Situation:** {{not started / in progress / to test / done}} · **Needs:** {{the tasks that must be done first, by number: 01-01. "Nothing" when it can start now.}}
 
 ## What it does
 
@@ -18,6 +18,15 @@ task number: 01-01-task-name.md. -->
 ## Done when
 
 - [ ] {{Something that can be checked.}}
+
+## How it is built
+
+<!-- Only when the task is not obvious from what it does: drop this section
+for a task one commit settles with no choice to make. -->
+
+- **Approach:** {{How it will be done, in two or three lines, and the option set aside when there was one.}}
+- **What it touches that others use:** {{An interface, a table, a command or a shared module this task creates or changes, and who depends on it. "Nothing" when nothing.}}
+- **Risk:** {{What could go wrong, and how the task finds out early: a test, a trial on real data, a question to the person.}}
 
 ## Where in the code
 

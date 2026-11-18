@@ -32,6 +32,10 @@ on the person's machine.
    that does not exist. Ask whether to go on all the same.
 4. **Look at what the project already has:** `AGENTS.md`, `CLAUDE.md`, a
    journal folder, a playbooks folder. What exists is kept.
+5. **Read the plan's "How it is built and checked".** It says how the project
+   is run, tested and released. If the plan has no such section, say so: the
+   commands of the entry file will then come from the code alone, or be left
+   out where there is no code.
 
 ## 2. The entry file
 
@@ -62,6 +66,12 @@ in it, between two marks, and touches nothing else:
    One that does not exist is created with that line alone; one that exists and
    does not name `AGENTS.md` gets the line at the end, and you say so. Never
    move the person's rules out of either.
+6. **The commands.** Where the code exists, take how to run, test and build it
+   from the project's own files: the scripts of `package.json`, a `Makefile`,
+   `pyproject.toml`, the CI configuration. Where it does not, take them from the
+   plan, each with the task that creates it. You read them and do not run them,
+   so say so: an agent learns whether they work at its first task. A command
+   neither the files nor the plan give is left out, not guessed.
 
 The block is also what says that this project was prepared. Nothing in the
 state file records it: the mark in the entry file is the fact.
@@ -157,7 +167,8 @@ In this order, about ten lines:
 1. **What the project has now,** in one line: prepared, and where its rules are.
 2. **What you created and what you changed,** one line each. For the code
    roadmap, how many areas it has and whether it describes code that exists or
-   code that is planned.
+   code that is planned. For the commands, which ones the entry file has and
+   where each came from.
 3. **Memory and observability:** one line each, saying what records what, or
    what is missing and what the person has to do once.
 4. **What the check found,** one line, or that it found nothing.

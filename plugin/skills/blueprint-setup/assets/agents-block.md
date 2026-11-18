@@ -20,6 +20,18 @@ The two marks stay exactly as they are: they are what the next session finds. --
 | Why a line of code is the way it is | Ask it: the `blueprint-explain` skill answers from the code |
 | The journal: one record per session, and the milestones | `.blueprint/journal/` |
 
+<!-- The commands: from the project's own files (package.json scripts, a
+Makefile, pyproject.toml) where the code exists, and from the plan's "How it is
+built and checked" where it does not, with the task that creates each one. Drop
+a row the project does not have. -->
+
+| To | Run |
+|---|---|
+| Run it | {{`npm run dev`, or "created by task 01-01"}} |
+| Test it | {{`npm test`}} |
+| Build it | {{`npm run build`}} |
+| Check what runs on every change | {{`npm run lint`}} |
+
 ### How to work here
 
 1. **Read `.blueprint/state.md` before you answer.** It says where the project
@@ -29,6 +41,10 @@ The two marks stay exactly as they are: they are what the next session finds. --
    does, what it does not do, and when it is done. **Say which task you are on,
    by its number and its name, before you start it** — the person has to be able
    to tell which one you chose without reading the plan again.
+   It is done when its spec's "Done when" and the plan's "Every task is done
+   when" both hold. Run the tests before you say so: a check you could not run
+   is said, never counted as passed. A task that adds or changes a command
+   above changes its row in the same commit.
 3. **Do not read the whole codebase to find where to work.** Open
    {{docs/code-roadmap.md}}, find the area the task touches, and read only the
    paths on its row and the ones it lists under "Also read". Open another file
