@@ -9,8 +9,8 @@ gone, and it may have happened with another agent. Never act as if you remembere
 1. `.blueprint/state.md`, whole.
 2. The newest session record in `.blueprint/journal/sessions/`, when there is
    one: what was left open, and the next step it names. When other agents work
-   on the project, also every record whose status is `in-progress`, `paused` or
-   `waiting`: what they take is not yours to start.
+   on the project, also their open claims, in the session records or on the
+   `blueprint-work` branch: what they take is not yours to start.
 3. The project check, with the `blueprint-status` skill. If it is not available,
    check at least that every document the state calls `ready` exists, and that
    each step's count agrees with its checklist.

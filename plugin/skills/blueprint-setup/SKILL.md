@@ -161,8 +161,10 @@ watching, the entry file gets one more section, the last of the block: one
 worktree and one branch per agent, the work declared before it starts, what a
 worktree does not isolate, who integrates, the work mode, and the unattended
 run. [references/parallel-work.md](references/parallel-work.md) says when to
-write it, the one question to ask when the state does not settle it, and why
-each rule is there. Ask the work mode there too, once, with the recommendation.
+write it, what to ask when the state does not settle it (whether agents work at
+once or unattended, and whether they run on more than one machine, which decides
+where they claim their work), and why each rule is there. Ask the work mode
+there too, once, with the recommendation.
 
 With one agent at a time and nobody running one unattended, leave the section
 out and ask nothing.

@@ -57,18 +57,28 @@ not independent: do them one after another.
 
 ## Declaring the work
 
-Agents in different worktrees do not see each other's files. What they see is
-one folder: the main checkout's `.blueprint/journal/sessions/`. Before an agent
-starts, it opens its session record there, with what it is taking: the task,
-the files or areas it touches, the migration number it will use. It reads the
-other open records first and, on an overlap, waits or takes another task. It
-closes the record every time it stops. The `blueprint-record` skill has the
-format and the statuses.
+Before an agent starts, it claims what it is taking: the task, the files or
+areas it touches, the numbers it reserves (a migration number, a `D-` or `T-`
+number). It reads the other open claims first and, on an overlap, waits or takes
+another task. It releases its claim every time it stops. A claim nobody updated
+for two hours is reported to the person or the coordinator as possibly stale,
+never taken over. Where the claim goes depends on where the agents run:
 
-Agents on another machine do not see that folder. When agents work from more
-than one machine, the declaration goes where all of them read, such as the
-memory tool the state names. Without one, say so: they cannot see each other's
-work, and the person splits the tasks among them.
+- **On one machine:** the session record, opened at the start in the main
+  checkout's `.blueprint/journal/sessions/`, the one folder every worktree of
+  the clone reads.
+- **On more than one machine:** one file per session in `.blueprint/work/`, on a
+  branch of its own, `blueprint-work`, pushed to the shared remote. It never
+  goes on the main branch or a task's branch, so claims stay out of the history
+  and out of pull requests. A rejected push means someone claimed first: fetch,
+  read again, decide again, and never force-push. Each clone checks the branch
+  out once, in a worktree of its own. Without a shared remote, say so: agents
+  on other machines cannot see each other's work.
+
+The `blueprint-record` skill has the commands and the format. A memory tool the
+state names may carry the claims too; it is not needed. When the entry file is
+written, it says which route the project uses: ask the person whether agents
+run on more than one machine when the state does not say.
 
 ## The coordinator
 

@@ -21,18 +21,21 @@ which is in use.
 Times are in UTC. The agent's name in a file name is lowercase with hyphens:
 `claude-code`, `codex`, `antigravity-cli`.
 
-## A session record as a declaration
+## A session record as a claim
 
-When more than one agent works on the project at once, a session record is
-opened when the session starts, not when it ends, and its `Status` and `Taking`
-lines tell the other agents what is taken. It lives in the main checkout, which
-every worktree on the machine can read.
+When more than one agent works on the project at once, on one machine, a
+session record is opened when the session starts, not when it ends, and its
+`Status` and `Taking` lines tell the other agents what is taken. It lives in the
+main checkout, which every worktree on the machine can read. When agents run on
+more than one machine, the live claim is a file on the `blueprint-work` branch
+instead, and the session record keeps only the history:
+[claims.md](claims.md) has both routes.
 
 | Status | Meaning |
 |---|---|
 | `in-progress` | Being worked on now. What `Taking` names is held |
 | `paused` | Stopped mid-way, to be resumed. Still holds what it names |
-| `waiting` | Blocked on the person or on another record: the record says on whom, and for what |
+| `waiting` | Blocked on the person or on another claim: the record says on whom, and for what |
 | `done` | Finished: the record names the commit, the branch or the deploy |
 | `abandoned` | Dropped: the record says why |
 

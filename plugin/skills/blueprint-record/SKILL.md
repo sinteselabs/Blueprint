@@ -34,13 +34,14 @@ every block.
 |---|---|---|
 | State file | `.blueprint/state.md` | [references/state-format.md](references/state-format.md) |
 | Session records | `.blueprint/journal/sessions/`, one file per session | [references/journal.md](references/journal.md) |
+| Claims, when agents run on more than one machine | `.blueprint/work/` on the branch `blueprint-work`, one file per session | [references/claims.md](references/claims.md) |
 | Milestones | `.blueprint/journal/milestones.md` | [references/journal.md](references/journal.md) |
 | Decisions record | `decisions.md` in the documents folder (the state's `documents_at`) | [references/journal.md](references/journal.md) |
 | Test plan | `test-plan.md` in the documents folder | The template, [assets/test-plan.md](assets/test-plan.md) |
 | The personal memory | `~/.blueprint/`, outside every project | [references/personal-memory.md](references/personal-memory.md) |
 
 Templates are in `assets/`: `state.md`, `session.md`, `milestones.md`,
-`decisions.md` and `test-plan.md`. `assets/state.example.md` is a filled state
+`decisions.md`, `test-plan.md` and `claim.md`. `assets/state.example.md` is a filled state
 to compare against.
 
 Read the format reference before writing a file for the first time in a session.
@@ -188,41 +189,54 @@ started, as the next section says: fill it, and close it.
 ## Declaring the work
 
 When more than one agent works on the project at the same time, each one says
-what it is taking before it starts, where the others look: its session record,
-opened at the start instead of the end. One agent working alone skips this.
+what it is taking before it starts, where the others look. That is its claim.
+One agent working alone skips this. Read
+[references/claims.md](references/claims.md) before you claim for the first
+time in a session: it has the commands and the format.
 
-1. **Look first.** Read the records in the main checkout's
-   `.blueprint/journal/sessions/` whose status is `in-progress`, `paused` or
-   `waiting`. The main checkout is the first folder `git worktree list` prints:
-   a worktree has its own copy of the journal, and the others do not see it.
-2. **Open yours there,** from `assets/session.md`, with the status
-   `in-progress` and the `Taking` line: the task, the files or areas it touches,
-   the migration number it will use, and the worktree and branch. A migration
-   number another open record already takes is not yours: take the next one.
-3. **On an overlap, do not start.** A record overlaps yours when it takes the
-   same task, the same files, the same migration number or the deploy. Take
-   another task whose files are free, or open yours as `waiting`, naming the
-   record you wait on, and read again every few minutes. A `paused` record still
-   holds what it takes. A record nobody has updated for two hours may be stale:
-   tell the person, and keep waiting. Only the person closes another agent's
-   record.
-4. **While you work,** update your own record when what you take changes.
-   Never write in another agent's record.
-5. **When you stop, every time,** close it: `done`, with the commit or branch;
-   `abandoned`, with why; `paused`; or `waiting`, with on whom and for what. A
-   record left `in-progress` by a session that ended is a false claim that
-   blocks the others.
+**Where the claim goes:**
+
+- **Agents on one machine:** your session record, opened at the start instead
+  of the end, in the main checkout's `.blueprint/journal/sessions/`. The main
+  checkout is the first folder `git worktree list` prints: a worktree has its
+  own copy of the journal, and the others do not see it.
+- **Agents on more than one machine:** a file of your own in `.blueprint/work/`,
+  on the branch `blueprint-work` of the shared remote, never on the main branch
+  or a task's branch. It needs only git. Without a shared remote, say that agents
+  on other machines cannot see each other's work.
+
+Say which of the two you use. A memory tool the state names may carry the claim
+too; it is never what the others rely on.
+
+1. **Look first.** Read the open claims: `in-progress`, `paused` or `waiting`.
+2. **Claim:** the task, the files or areas it touches, the numbers you reserve
+   (a migration number, a `D-` or `T-` number), and your branch. A number
+   another open claim reserves is not yours: take the next one. On the branch, a
+   rejected push means someone claimed first: fetch, read again, decide again.
+   Never force-push it.
+3. **On an overlap, do not start.** A claim overlaps yours when it takes the
+   same task, the same files, the same number or the deploy. Take another task
+   whose files are free, or claim as `waiting`, naming the claim you wait on,
+   and read again every few minutes. A `paused` claim still holds what it takes.
+4. **While you work,** update your own claim when what you take changes. Never
+   write in another agent's claim.
+5. **When you stop, every time,** release it: finished or dropped, with the
+   commit or the reason; `paused`; or `waiting`, with on whom and for what. A
+   claim left `in-progress` by a session that ended blocks the others.
+6. **A claim nobody updated for two hours may be stale.** Report it to the
+   person or the coordinator, and keep waiting. Never take it over: only the
+   person closes another agent's claim.
+
+The session record is the history of the session; on the branch, the work file
+is only the live claim, and the session record's `Taking` line keeps what was
+taken.
 
 A worker in a worktree does not write the state, the decisions record or the
 test plan: two copies of them diverge, and two agents take the same `D-` or
 `T-` number. It writes in its session record what it decided, what it left
 open and what is left to verify, and whoever integrates its branch records
-them. The session records are written in the main checkout and not committed on
-the worker's branch: the one who integrates commits them.
-
-Agents on other machines do not see that folder. When the state names a memory
-tool, declare there too, following its instructions. Without one, say that
-agents on other machines cannot see this work.
+them. On one machine, the session records are written in the main checkout and
+not committed on the worker's branch: the one who integrates commits them.
 
 ## The personal memory
 

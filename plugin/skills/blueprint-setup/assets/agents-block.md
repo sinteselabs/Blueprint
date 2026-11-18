@@ -98,11 +98,18 @@ and the work mode when only the unattended run applies. -->
 1. **One agent that writes, one worktree, one branch,** made from the
    up-to-date main branch. Never two agents in the same folder. Tasks that share
    a file, a migration or an order are done one after another.
-2. **Declare before you start.** Read the open session records in
-   `{{MAIN_CHECKOUT}}/.blueprint/journal/sessions/`, then open yours there: the
-   task, the files or areas, the migration number you will use. If another open
-   record takes the same task or files, wait or take another task. Close your
-   record every time you stop, finished or not.
+2. **Claim before you start,** and read the other claims first. {{One
+   machine: Your claim is your session record, opened at the start in
+   `MAIN_CHECKOUT/.blueprint/journal/sessions/`. / More than one machine: Your
+   claim is a file of your own in `.blueprint/work/` on the branch
+   `blueprint-work`, checked out in a worktree of its own: pull it, read the
+   files, commit only your file, push. A rejected push means someone claimed
+   first: pull, read again, decide again. Never force-push it.}} A claim names
+   the task, the files or areas, and the numbers you reserve (a migration
+   number, a `D-` or `T-` number). If another open claim takes the same task,
+   files or number, wait or take another task. Release your claim every time
+   you stop, finished or not. A claim not updated for two hours is reported to
+   the person, never taken over.
 3. **What a worktree does not isolate:** copy `.env` into it and install the
    dependencies there; use a port no other agent uses; one database per
    worktree, or one migration task at a time. Only the coordinator, who
