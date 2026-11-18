@@ -3,7 +3,9 @@
 <!-- Template. Write the document in the project's document language, headings
 and labels included. Replace every {{placeholder}} and remove these comments.
 One section per journey, and only the journeys that matter: the ones that
-cannot go wrong, and the ones the person named. -->
+cannot go wrong, and the ones the person named. In a journey that cannot go
+wrong, write the cases of "When it does not go well" that can happen to it, the
+deduced ones marked as deduced, not only the ones the person named. -->
 
 **Project:** {{PROJECT_NAME}} · **Version:** {{0.1}} · **Date:** {{YYYY-MM-DD}}
 
@@ -34,7 +36,7 @@ cannot go wrong, and the ones the person named. -->
 
 | What happens | What the system does |
 |---|---|
-| {{The case: something missing, something refused, something already there}} | {{What the person sees, and what is saved}} |
+| {{The case: something missing, something refused, something already there, someone without the right to do it, the connection lost halfway, the same thing sent twice, two people changing it at once}} | {{What the person sees, and what is saved}} |
 
 ## What is left out
 

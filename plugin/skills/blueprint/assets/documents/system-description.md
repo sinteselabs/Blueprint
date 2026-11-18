@@ -33,7 +33,7 @@ apply, and remove these comments. -->
 
 ## How it reaches people
 
-{{Website, mobile app, command line, library, and where it runs.}}
+{{Website, mobile app, command line, library, and where it runs. In which languages, and in which countries when that changes anything.}}
 
 ## Scope
 

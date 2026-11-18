@@ -13,9 +13,9 @@ and codes are written exactly as they are, in their own language. -->
 
 ## Who calls it
 
-| Who | How they call it | What they expect |
-|---|---|---|
-| {{A person at a terminal, another program, an agent}} | {{command, call, request}} | {{in one line}} |
+| Who | How they call it | How they are let in | What they expect |
+|---|---|---|---|
+| {{A person at a terminal, another program, an agent}} | {{command, call, request}} | {{nothing, a key, a signed-in account}} | {{in one line}} |
 
 ## What is offered
 
@@ -35,10 +35,14 @@ and codes are written exactly as they are, in their own language. -->
 
 **Comes back:** {{the shape of the answer, with one example.}}
 **When it fails:** {{what the caller gets, and how they tell one failure from another: a code, a name.}}
+**Called twice,** when it changes something: {{whether the second call does it again, and how the caller avoids that.}}
+**How much,** when there is a limit: {{how many calls, how big an input, and what the caller gets past it.}}
 
 ## What never changes without warning
 
 - {{The names, the shapes and the codes that others rely on. Changing one of these is a decision that is costly to undo.}}
+
+**How a change is announced:** {{the version number that says it, and how long the old form keeps working.}}
 
 ## What is left out
 

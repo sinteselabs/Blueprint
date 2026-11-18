@@ -28,11 +28,20 @@ field nobody asked for is a field to maintain. -->
 | {{field}} | {{what it holds, and in what unit}} | {{yes or no}} | {{what makes it valid, or "-"}} |
 
 **Situations,** when it has them: {{the situations it passes through, and what moves it from one to the next.}}
+**When one is deleted:** {{it is removed, it is hidden, or it cannot be deleted because something points at it. And how long it is kept, when not forever.}}
 **Personal data:** {{which fields, or "none". The detail is in the data classification.}}
 
 ## Rules that hold across them
 
 - {{Something that must always be true: what is unique, what cannot be deleted while something else points at it, what is counted where.}}
+
+## Data that already exists
+
+<!-- Only when something has to come in from before the system. -->
+
+| Where it is today | What comes in | Once or continuously | Who checks it came in right |
+|---|---|---|---|
+| {{a spreadsheet, the old system}} | {{which things, roughly how many}} | {{once, at launch / every night}} | {{who, and how}} |
 
 ## What is not stored
 

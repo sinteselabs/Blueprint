@@ -55,13 +55,39 @@ Step name in the state: `requirements`.
 
 Main questions:
 
-1. What each kind of user must be able to do
+1. What each kind of user must be able to do, and what only some of them may
+   do or see
 2. What limits the project: budget, deadline, law, what the person already uses
 3. How to know it worked
 
+Who may do what is part of the first question as soon as there is more than one
+kind of user: an action that only one role may take, data that one role must
+not see. Each rule becomes a requirement like any other, and a row of the "Who
+may do what" table of the requirements document.
+
+The non-functional requirements are rarely said unprompted, and the ones below
+are costly to add once the code exists. For each, deduce what you can from what
+the person said, write it as a deduced requirement with a number or a level,
+and say it in one line, so they can correct it:
+
+- **Languages and places:** which languages the product speaks, and whether
+  currencies, time zones or date formats vary. One language is the default when
+  nothing points at more.
+- **Accessibility,** when it has screens: the level the screens meet. WCAG 2.2
+  level AA is the default for anything the public uses; a law of the person's
+  country may require it.
+- **Devices:** the telephones, computers and browsers that must work.
+- **Speed and availability:** how long the main action may take, and when the
+  system may be down. A number from the person, or one deduced from how it is
+  used.
+
+Ask one of these as a refinement question only when you cannot deduce it and
+the answer changes the architecture: more than one language from the start, or
+a system that must never stop.
+
 Document: `requirements`. It closes when every requirement can be tested and
-says where it comes from, and the limits the person declared are in the state as
-criteria.
+says where it comes from, every non-functional one has a number or a level, and
+the limits the person declared are in the state as criteria.
 
 ## 3. Modeling
 
@@ -70,7 +96,9 @@ Step name in the state: `modeling`.
 Main questions, by the kind of project:
 
 - always: the journeys that cannot go wrong;
-- when it stores data: what the system stores, and whether there is personal data;
+- when it stores data: what the system stores, whether there is personal data,
+  and whether data that already exists (a spreadsheet, an old system) has to
+  come in;
 - when it has screens: which are the main screens, and whether a visual
   identity already exists, and where;
 - when it is used by command or by code: which commands or calls it offers;
