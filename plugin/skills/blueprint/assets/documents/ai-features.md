@@ -22,7 +22,7 @@ model once it is running. -->
 **What is expected back:** {{the shape of the answer, and what the product does with it.}}
 **Which model:** {{the model, and whether the choice is a decision in the record.}}
 **What the person sees:** {{how it is shown that this came from a model, and what the person can do about it.}}
-**Good enough when:** {{the examples it is checked against, with the answer expected for each, and how many must pass before it ships or a model or prompt changes.}}
+**Good enough when:** {{the examples it is checked against, with the answer expected for each, and how many must pass before it ships or a model or prompt changes.}} These examples are a row of the test plan, which names AI-01.
 
 ## When it gets it wrong
 

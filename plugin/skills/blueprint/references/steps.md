@@ -147,8 +147,10 @@ guess, each part only when the project has it:
 - each journey that cannot go wrong as a flow: a sequence when it crosses
   parts, its states when something in it has a lifecycle;
 - what happens when something fails halfway: a service that does not answer, a
-  write in two places, two people changing the same thing at once;
-- how each non-functional requirement is met and checked;
+  write in two places, two people changing the same thing at once, one row
+  each, numbered F-01;
+- how each non-functional requirement is met and checked, one row each,
+  numbered Q-01;
 - what it costs to run, when something generates cost or the person declared a
   budget.
 
