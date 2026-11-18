@@ -62,6 +62,7 @@ def main() -> int:
     case("plugin files: a script fails", "check_plugin_files.py", plugin_file("skills/a.js", b"export {};\n"), 1)
     case("plugin files: a Python file fails", "check_plugin_files.py", plugin_file("skills/a.py", b"print(1)\n"), 1)
     case("plugin files: a file starting with #! fails", "check_plugin_files.py", plugin_file("skills/a.md", b"#!/bin/sh\n"), 1)
+    case("plugin files: a .example template fails", "check_plugin_files.py", plugin_file("skills/a/ai-memory.toml.example", b"x = 1\n"), 1)
     case("plugin files: a package.json fails", "check_plugin_files.py", plugin_file("package.json", b"{}\n"), 1)
     case("plugin files: a NUL byte fails", "check_plugin_files.py", plugin_file("skills/a.md", b"a\x00b"), 1)
     case("plugin files: a stray file in .claude-plugin fails", "check_plugin_files.py", plugin_file(".claude-plugin/x.md", b"x\n"), 1)

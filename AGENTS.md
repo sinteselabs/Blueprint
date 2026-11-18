@@ -49,7 +49,8 @@ change here reaches people: anything that ships — `plugin/`, `cli/`, `LICENSE`
 4. **No local configuration and no keys in git.** `.env`, `.ai-memory.toml`,
    `.claude/` and anything that binds a clone to one person's tools stay out.
    The files a project starts from live in
-   `plugin/skills/blueprint-setup/assets/project-files/`, with an `.example` suffix.
+   `plugin/skills/blueprint-setup/assets/project-files/`, with a `.txt` suffix: the plugin directory takes no other
+   type of file, and each one says in its first line what to rename it to.
 5. **Blueprint is a general tool.** It carries no team's internal process and no
    client-service documents.
 6. **Say when something does not work.** A skill, a script or a check that
@@ -104,5 +105,5 @@ root and a silent fallback is not good enough for someone else's repository.
 ## Project memory
 
 To use lore while working on Blueprint, make your own `.ai-memory.toml` at the
-root from `plugin/skills/blueprint-setup/assets/project-files/ai-memory.toml.example`.
+root from `plugin/skills/blueprint-setup/assets/project-files/ai-memory.toml.txt`.
 It is git-ignored here on purpose.
