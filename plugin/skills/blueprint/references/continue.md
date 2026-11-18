@@ -84,6 +84,18 @@ check does not see that: it follows paths and ids, not what a document says.
   `updated`, read what they touched the same way, and say what they changed
   before naming the next task.
 
+## Someone new on the project
+
+A person or an agent who joins mid-project starts from the files, as any
+session does: where the project is, with the `blueprint-status` skill, and a
+walk through the code, with the `blueprint-explain` skill's tour. Do not hand
+them the documents to read first.
+
+When the newcomer develops too and the state's `developers` was `1`, that
+changes the project's kind: update it with the `blueprint-record` skill,
+add the `playbooks` document to the state as `not-started`, and say that the
+`blueprint-setup` skill writes the playbooks and the role each person takes.
+
 ## When the state is behind
 
 The last session may have stopped without saving. Signs: a document exists
