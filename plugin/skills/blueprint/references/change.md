@@ -195,9 +195,12 @@ someone outside the code depends on it.
   leaves lists the documents, the specs, the code and the tests that name it.
   Without anchors, read the area as for any change, and say that the list may
   be incomplete.
-- **The requirement keeps its row and its id,** with a word that it was
-  removed and by which change. An id is never given to something else: old
-  commits, specs and anchors still name it.
+- **The requirement keeps its row and its id,** moved to the `## Removed`
+  section of the requirements, between its two marks, with the task that
+  removes it and why, as `assets/documents/requirements.md` shows.
+  An id is never given to something else: old commits, specs and anchors
+  still name it, and `blueprint map` then lists it as removed, not as
+  something left to build.
 - **Someone depends on it** when it is part of the interface contract, when
   stored data only it reads, or when people use it. Then it leaves in two
   tasks: the first says it is going and how to do without it, the second

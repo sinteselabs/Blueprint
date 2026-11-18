@@ -50,6 +50,20 @@ availability, privacy. Each one has a number or a level, never "fast" or "easy".
 
 {{The acceptance, in the person's words. A number when they gave one.}}
 
+## Removed
+
+<!-- Only once a requirement has left. Its row moves here from the tables above,
+with the same id, which is never given to anything else: old commits, specs and
+anchors in the code still name it. The two marks stay exactly as they are:
+`blueprint map` does not count what is between them as something to build, and
+says where the code still names it. -->
+
+<!-- blueprint:removed -->
+| Nº | Requirement | Removed by | Why |
+|---|---|---|---|
+| {{FR-07}} | {{What it said}} | {{The task that removed it: 03-02}} | {{One line}} |
+<!-- /blueprint:removed -->
+
 ## Open points
 
 | Nº | Point | Depends on |
