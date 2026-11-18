@@ -62,7 +62,8 @@ everything is fine.
    open, which have not started. A step with `0 of 0` main questions belongs
    to a change that does not touch it: say that, and do not count it as left.
 3. **What is decided:** the decisions in the state, by number and title, in one
-   or two lines. When there are many, the last three and how many there are.
+   or two lines. When there are many, the last three and how many there are. A
+   decision the state calls `replaced` is not one of them: count it apart.
 4. **What is open:** the open points, the decisions left open, and the
    questions left for later.
 5. **What is left:** the main questions still unanswered, the documents that

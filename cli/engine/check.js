@@ -28,7 +28,7 @@ const LINK = /(?<!!)\[[^\]]*\]\(([^)\s]+)(?:\s+"[^"]*")?\)/g;
 /**
  * The anchor engine, `explain.js`, which sits beside this file. There is one source
  * for what an anchor is, so this check never disagrees with what `why` and `trace`
- * answer. Null when it cannot be loaded, and then the three
+ * answer. Null when it cannot be loaded, and then the four
  * checks that need it say they were skipped instead of guessing.
  */
 async function anchorEngine() {
@@ -45,6 +45,7 @@ const ANCHOR_CHECKS = [
   "no anchor in the code names an id the documents do not have",
   "every task spec comes from an id the documents have",
   "a task whose done-when list is complete is anchored in the code",
+  "nothing in the code or in an open task still serves a replaced decision",
 ];
 
 /** The project folder: the one given, or the nearest one above with `.blueprint/state.md`. */
@@ -114,12 +115,12 @@ function documentsFolder(state) {
 }
 
 /**
- * Whether the code and the documents still agree: the three checks that make the
+ * Whether the code and the documents still agree: the four checks that make the
  * project notice when understanding has decayed. They never fire on a project that
  * has no anchors yet, because having none is the normal state of a project whose
  * code came first.
  */
-async function codeAndDocuments(project, { ok, problem, skipped }) {
+async function codeAndDocuments(project, replaced, { ok, problem, skipped }) {
   const engine = await anchorEngine();
   if (!engine) {
     const why = "explain.js could not be loaded, and it is what knows how to read anchors";
@@ -165,6 +166,23 @@ async function codeAndDocuments(project, { ok, problem, skipped }) {
     if (drifted.length) {
       problem(ANCHOR_CHECKS[2], `${drifted.map((spec) => spec.path).join(", ")}: the task says it is done and nothing in the code carries the id it comes from. Either the code lost it, or the task is not done`);
     } else ok(ANCHOR_CHECKS[2]);
+  }
+
+  // A spec that names a replaced decision and a later one still in force is the change
+  // that moves the code from the old to the new: it is how the problem gets fixed.
+  const number = (id) => Number(id.slice(2));
+  const replacing = (spec, id) =>
+    spec.ids.some((other) => other.startsWith("D-") && !replaced.includes(other) && number(other) > number(id));
+  if (!replaced.length) {
+    skipped(ANCHOR_CHECKS[3], "the state has no replaced decision");
+  } else {
+    const stale = [
+      ...[...new Set(found.filter((anchor) => replaced.includes(anchor.id)).map((anchor) => `${anchor.path} names ${anchor.id}`))],
+      ...specs.filter((spec) => !spec.done).flatMap((spec) => spec.ids.filter((id) => replaced.includes(id) && !replacing(spec, id)).map((id) => `${spec.path} comes from ${id}`)),
+    ];
+    if (stale.length) {
+      problem(ANCHOR_CHECKS[3], `${stale.join("; ")}, and the state says that decision was replaced. What was built on it is a change to make: the decisions record says which decision replaced it`);
+    } else ok(ANCHOR_CHECKS[3]);
   }
 }
 
@@ -271,7 +289,8 @@ export async function check(project) {
     } else if (state.decisions.length) problem("every decision in the state is in the decisions record", "the state names decisions and there is no decisions record");
     else ok("every decision in the state is in the decisions record");
 
-    await codeAndDocuments(project, { ok, problem, skipped });
+    const replaced = state.decisions.filter(({ situation }) => situation === "replaced").map(({ id }) => id);
+    await codeAndDocuments(project, replaced, { ok, problem, skipped });
   }
 
   for (const kind of ["memory", "observability"]) {
