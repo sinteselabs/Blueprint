@@ -20,6 +20,16 @@ below: · **Bug:** {{blocks / has a way around / cosmetic}}, breaks {{FR-03}}. -
 
 - [ ] {{Something that can be checked.}}
 
+## Tests
+
+<!-- Only the levels the plan's "How it is built and checked" names. Drop a
+level the task adds nothing to. -->
+
+- **Unit:** {{The rules this task's functions hold, one test each.}}
+- **Integration:** {{What it does with the data or an outside service: the database, an API, a queue, the model.}}
+- **End to end:** {{The journey a person goes through that this task makes or changes.}}
+- **Rows of the test plan:** {{The rows this task's tests cover, by number. "None" when none.}}
+
 ## How it is built
 
 <!-- Only when the task is not obvious from what it does: drop this section

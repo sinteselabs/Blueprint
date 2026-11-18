@@ -81,6 +81,23 @@ a row the project does not have. -->
    how personal data is handled, anything that generates cost. Bring options and
    a recommendation, and wait.
 10. **Never write a key, a token or a password** in a file of this project.
+11. **A change to behaviour comes with its tests,** in the same delivery, at
+    the levels the plan's "How it is built and checked" names: unit tests for
+    every function with a rule in it, integration tests for what it does with
+    the data and with outside services (database, APIs, queues, the model), end
+    to end for what a person does with it, in the journeys that cannot go
+    wrong. The spec's "Tests" says which. A bug fix starts with a test, named
+    with the id of the requirement the bug breaks, that fails before the fix:
+    keep that failing run and give it with the delivery, beside the passing one
+    after. A bug no automated test can reproduce is said to be one, with what
+    was checked instead. A test does not depend on the clock, the time zone,
+    the locale, the network or the order the tests run in.
+12. **Measure before you assert.** "Faster", "fixed" or "the cause is X" is said
+    with the number or the run that shows it, not from reading the code. When
+    a measurement contradicts something you already said, say that first.
+13. **Fail loudly.** Code that meets a state it did not expect stops with a
+    message that names what is missing. It does not fall back to a default,
+    skip or swallow the error, and a guard against bad data also reports it.
 
 ### The method
 
