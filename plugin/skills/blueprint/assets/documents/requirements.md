@@ -21,13 +21,22 @@ What each kind of user must be able to do.
 |---|---|---|---|
 | FR-01 | {{One thing the system does, written so it can be tested}} | {{First version / Later}} | {{What the person said, or "deduced"}} |
 
+## Who may do what
+
+<!-- Only when there is more than one kind of user with different rights. -->
+
+| Kind of user | May | May not | Requirement |
+|---|---|---|---|
+| {{Role}} | {{What only this role does or sees}} | {{What it must not do or see}} | {{FR-02}} |
+
 ## Non-functional requirements
 
-How the system must behave: speed, devices, privacy, availability.
+How the system must behave: languages, accessibility, devices, speed,
+availability, privacy. Each one has a number or a level, never "fast" or "easy".
 
 | Nº | Requirement | Priority | Comes from |
 |---|---|---|---|
-| NFR-01 | {{One behaviour, written so it can be tested}} | {{First version / Later}} | {{What the person said, or "deduced"}} |
+| NFR-01 | {{One behaviour with its number or level: "the screens meet WCAG 2.2 AA", "the order is saved in under 2 seconds on a 4G telephone"}} | {{First version / Later}} | {{What the person said, or "deduced"}} |
 
 ## Limits
 
