@@ -143,8 +143,9 @@ and, when it reaches people, released.
 ## After the plan
 
 Prepare the repository for development with the `blueprint-setup` skill: the
-Blueprint block of the entry file, memory and observability, a roadmap of the
-code, a playbook per role when a team develops, and the project check. It is
+Blueprint block of the entry file, with the commands that run, test and build
+the project, memory and observability, a roadmap of the code, a playbook per
+role when a team develops, and the project check. It is
 the last thing the interview does, and it comes before the first task, so that
 an agent opening the project finds the rules, the plan, where to look in the
 code and where to record.
