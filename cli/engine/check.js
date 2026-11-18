@@ -48,6 +48,76 @@ const ANCHOR_CHECKS = [
   "nothing in the code or in an open task still serves a replaced decision",
 ];
 
+const TEST_PLAN_CHECKS = [
+  "every quality target, failure case and AI feature has a row in the test plan",
+  "every test-plan row that comes from one of them names a task of the plan",
+];
+// The columns of the test plan's table, in the template's order. Headings are written
+// in the document language, so the Task column is found by its place, not its name.
+const TEST_PLAN_COLUMNS = 7;
+const TASK_COLUMN = 4;
+
+/** The cells of every table row in a document whose first cell matches `first`. */
+function idRows(text, first) {
+  return text
+    .split(/\r?\n/)
+    .filter((line) => line.trim().startsWith("|"))
+    .map((line) => line.trim().replace(/^\|/, "").replace(/\|$/, "").split("|").map((cell) => cell.trim()))
+    .filter((cells) => first.test(cells[0]));
+}
+
+/**
+ * Whether what the architecture and the AI features say must be verified reaches the
+ * test plan, and whether each of those rows names the task that builds it. Only ids
+ * and the shape of the tables are read: the documents are written in the person's language.
+ */
+function testPlan(state, documentText, { ok, problem, skipped }) {
+  const closed = (step) => state.steps.some((row) => row.step === step && row.situation === "closed");
+  if (!closed("architecture")) {
+    for (const what of TEST_PLAN_CHECKS) skipped(what, "the architecture is not closed yet, and the test plan is written after it");
+    return;
+  }
+  const targets = [
+    ...idRows(documentText("architecture") || "", /^[QF]-\d+$/),
+    ...idRows(documentText("ai-features") || "", /^AI-\d+$/),
+  ].map(([id]) => id);
+  const plan = documentText("test-plan");
+  const tests = plan ? idRows(plan, /^T-\d+$/) : [];
+  const names = (cells, id) => cells.slice(1).some((cell) => new RegExp(`\\b${id}\\b`).test(cell));
+
+  if (!targets.length) {
+    skipped(TEST_PLAN_CHECKS[0], "the architecture numbers no quality target or failure case, and there is no numbered AI feature");
+  } else if (!plan) {
+    problem(TEST_PLAN_CHECKS[0], `${targets.join(", ")}: each one is to be verified and there is no test plan. The blueprint-record skill writes it, one row for each`);
+  } else {
+    const uncovered = targets.filter((id) => !tests.some((cells) => names(cells, id)));
+    if (uncovered.length) problem(TEST_PLAN_CHECKS[0], `${uncovered.join(", ")}: no row of the test plan comes from it. Add one, with what is checked, at which level, and the task that builds it`);
+    else ok(TEST_PLAN_CHECKS[0]);
+  }
+
+  const traced = tests.filter((cells) => targets.some((id) => names(cells, id)));
+  const tasks = new Set(
+    [...(documentText("plan") || "").matchAll(/specs\/(\d+-\d+)-[^`\s]*\.md/g)].map(([, id]) => id),
+  );
+  if (!closed("plan")) skipped(TEST_PLAN_CHECKS[1], "the plan is not closed yet, so its tasks are still being written");
+  else if (!traced.length) skipped(TEST_PLAN_CHECKS[1], "no row of the test plan comes from a quality target, a failure case or an AI feature");
+  else if (!tasks.size) skipped(TEST_PLAN_CHECKS[1], "the plan names no task spec, so there is no task number to look for");
+  else if (traced.some((cells) => cells.length !== TEST_PLAN_COLUMNS)) {
+    skipped(TEST_PLAN_CHECKS[1], `the test plan's table does not have the template's ${TEST_PLAN_COLUMNS} columns, so its Task column cannot be found`);
+  } else {
+    const loose = traced
+      .map((cells) => {
+        const named = cells[TASK_COLUMN].match(/\b\d+-\d+\b/g) || [];
+        if (!named.length) return `${cells[0]} names no task`;
+        const unknown = named.filter((id) => !tasks.has(id));
+        return unknown.length ? `${cells[0]} names ${unknown.join(", ")}, which the plan does not have` : null;
+      })
+      .filter(Boolean);
+    if (loose.length) problem(TEST_PLAN_CHECKS[1], `${loose.join("; ")}. A row nobody builds is not tested: name the task whose spec implements it, and list the row in that spec's Tests line`);
+    else ok(TEST_PLAN_CHECKS[1]);
+  }
+}
+
 /** The project folder: the one given, or the nearest one above with `.blueprint/state.md`. */
 export function findProject(from) {
   let at = resolve(from);
@@ -235,6 +305,7 @@ export async function check(project) {
   const folder = documentsFolder(state);
   if (!folder) {
     skipped("the documents are where the state says", `the documents are in ${state.header.documents_at}, not in this folder`);
+    for (const what of TEST_PLAN_CHECKS) skipped(what, `the documents are in ${state.header.documents_at}, so the test plan cannot be read from this folder`);
     for (const what of ANCHOR_CHECKS) {
       skipped(what, `the documents are in ${state.header.documents_at}, so what the code points at cannot be read from this folder`);
     }
@@ -288,6 +359,12 @@ export async function check(project) {
       else ok("every decision in the state is in the decisions record");
     } else if (state.decisions.length) problem("every decision in the state is in the decisions record", "the state names decisions and there is no decisions record");
     else ok("every decision in the state is in the decisions record");
+
+    const documentText = (name) => {
+      const row = state.documents.find((one) => one.document === name);
+      return row && row.situation !== "not-started" && row.where && row.where !== "-" && there(row.where) ? read(row.where) : null;
+    };
+    testPlan(state, documentText, { ok, problem, skipped });
 
     const replaced = state.decisions.filter(({ situation }) => situation === "replaced").map(({ id }) => id);
     await codeAndDocuments(project, replaced, { ok, problem, skipped });

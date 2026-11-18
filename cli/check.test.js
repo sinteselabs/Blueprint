@@ -247,6 +247,117 @@ describe("blueprint check", () => {
   });
 });
 
+describe("blueprint check: the test plan", () => {
+  const ARCHITECTURE = [
+    "# Arquitetura",
+    "",
+    "## Quando algo falha",
+    "",
+    "| Nº | O que falha | O que o sistema faz | O que o usuário vê | Vem de |",
+    "|---|---|---|---|---|",
+    "| F-01 | O serviço de mensagens não responde | Tenta de novo duas vezes | \"O lembrete não saiu\" | FR-09 |",
+    "",
+    "## Qualidades",
+    "",
+    "| Nº | Qualidade | Meta | Como a arquitetura atende | Como é verificada | Vem de |",
+    "|---|---|---|---|---|---|",
+    "| Q-01 | Tempo de resposta | A agenda abre em menos de 1 segundo | Páginas estáticas | Medição depois do lançamento | NFR-01 |",
+    "",
+    "## Conferida contra os requisitos",
+    "",
+    "| Requisito | O que falta | O que foi feito |",
+    "|---|---|---|",
+    "| FR-09 | Nada envia o lembrete | Uma tarefa agendada na API |",
+    "",
+  ].join("\n");
+  const PLAN = "# Plano\n\n## Tarefas\n\n1. Agenda: abre a agenda. Precisa: nada. Spec: `specs/01-01-agenda.md`\n2. Lembrete: envia o lembrete. Precisa: 01-01. Spec: `specs/01-02-lembrete.md`\n";
+  const HEAD = "# Plano de testes\n\n| # | O que verificar | Nível | Vem de | Tarefa | Como | Situação |\n|---|---|---|---|---|---|---|\n";
+
+  /** A project whose architecture is closed, and whose plan is closed when `planned`. */
+  function verified(name, { testPlan, planned = false, ai = null } = {}) {
+    const folder = project(name, (text) => {
+      let state = text
+        .replace("| architecture | not-started | 0 of 2 |", "| architecture | closed | 2 of 2 |")
+        .replace("- [ ] Stack\n- [ ] Hospedagem", "- [x] Stack\n- [x] Hospedagem")
+        .replace("| architecture | not-started | - |", "| architecture | ready | docs/architecture.md |");
+      if (planned) {
+        state = state
+          .replace("| plan | not-started | 0 of 2 |", "| plan | closed | 2 of 2 |")
+          .replace("- [ ] O que vem primeiro\n- [ ] Quem faz o quê", "- [x] O que vem primeiro\n- [x] Quem faz o quê")
+          .replace("| plan | not-started | - |", "| plan | ready | docs/plan.md |");
+      }
+      if (testPlan) state = state.replace("| decisions | ready | docs/decisions.md |", "| decisions | ready | docs/decisions.md |\n| test-plan | ready | docs/test-plan.md |");
+      if (ai) state = state.replace("| decisions | ready | docs/decisions.md |", "| decisions | ready | docs/decisions.md |\n| ai-features | ready | docs/ai-features.md |");
+      return state;
+    });
+    put(join(folder, "docs", "architecture.md"), ARCHITECTURE);
+    if (planned) {
+      put(join(folder, "docs", "plan.md"), PLAN);
+      put(join(folder, "docs", "specs", "01-01-agenda.md"), "# Agenda\n");
+      put(join(folder, "docs", "specs", "01-02-lembrete.md"), "# Lembrete\n");
+    }
+    if (testPlan) put(join(folder, "docs", "test-plan.md"), testPlan);
+    if (ai) put(join(folder, "docs", "ai-features.md"), ai);
+    return folder;
+  }
+
+  it("leaves the test plan alone while the architecture is not closed", async () => {
+    const { out } = await cli(project("architecture-open"), "check");
+    assert.match(out, /skipped\s+every quality target, failure case and AI feature has a row in the test plan \(the architecture is not closed yet/);
+  });
+
+  it("finds a quality target and a failure case with no test plan at all", async () => {
+    const { code, out } = await cli(verified("no-test-plan"), "check");
+    assert.equal(code, 1, out);
+    assert.match(out, /problem\s+every quality target, failure case and AI feature has a row in the test plan/);
+    assert.match(out, /F-01, Q-01: each one is to be verified and there is no test plan/);
+  });
+
+  it("finds an AI feature and a failure case that no row of the test plan comes from", async () => {
+    const folder = verified("uncovered", {
+      testPlan: `${HEAD}| T-001 | A agenda abre em menos de 1 segundo | medição depois do lançamento | Q-01 | 01-01 | O painel da hospedagem | a fazer |\n`,
+      ai: "# Recursos de IA\n\n| Nº | O que faz | Para quem | Custo por uso |\n|---|---|---|---|\n| AI-01 | Resume o histórico | Recepção | uma chamada |\n",
+    });
+    const { code, out } = await cli(folder, "check");
+    assert.equal(code, 1, out);
+    assert.match(out, /F-01, AI-01: no row of the test plan comes from it/);
+    assert.ok(!/Q-01: no row/.test(out), out);
+  });
+
+  it("finds a row from the architecture that names no task, or a task the plan does not have", async () => {
+    const folder = verified("taskless", {
+      planned: true,
+      testPlan: `${HEAD}| T-001 | A agenda abre rápido | medição depois do lançamento | Q-01 | - | O painel | a fazer |\n| T-002 | O lembrete tenta de novo | integração | F-01 | 03-09 | O teste do lembrete | a fazer |\n| T-003 | O plano gratuito cobre o site | por uma pessoa | D-001 | - | As páginas de preço | a fazer |\n`,
+    });
+    const { code, out } = await cli(folder, "check");
+    assert.match(out, /ok\s+every quality target, failure case and AI feature has a row in the test plan/);
+    assert.match(out, /problem\s+every test-plan row that comes from one of them names a task of the plan/);
+    assert.match(out, /T-001 names no task; T-002 names 03-09, which the plan does not have/);
+    assert.ok(!out.includes("T-003"), "a row from a decision may be checked by a person outside any task");
+    assert.equal(code, 1);
+  });
+
+  it("says nothing is wrong when every row is covered and names its task", async () => {
+    const folder = verified("covered", {
+      planned: true,
+      testPlan: `${HEAD}| T-001 | A agenda abre rápido | medição depois do lançamento | Q-01 | 01-01 | O painel | a fazer |\n| T-002 | O lembrete tenta de novo | integração | F-01 | 01-02 | O teste do lembrete | a fazer |\n`,
+    });
+    const { out } = await cli(folder, "check");
+    assert.match(out, /ok\s+every quality target, failure case and AI feature has a row in the test plan/);
+    assert.match(out, /ok\s+every test-plan row that comes from one of them names a task of the plan/);
+  });
+
+  it("does not guess the Task column of a test plan in an older shape", async () => {
+    const folder = verified("older-shape", {
+      planned: true,
+      testPlan: "# Plano de testes\n\n| # | O que verificar | Vem de | Como | Situação |\n|---|---|---|---|---|\n| T-001 | A agenda abre rápido | Q-01 | O painel | a fazer |\n| T-002 | O lembrete tenta de novo | F-01 | O teste | a fazer |\n",
+    });
+    const { out } = await cli(folder, "check");
+    assert.match(out, /ok\s+every quality target, failure case and AI feature has a row in the test plan/);
+    assert.match(out, /skipped\s+every test-plan row that comes from one of them names a task of the plan \(the test plan's table does not have the template's 7 columns/);
+  });
+});
+
 describe("blueprint check: the code and the documents", () => {
   const NUMBERED = "# Requisitos\n\n| Nº | Requisito | Prioridade | Vem de |\n|---|---|---|---|\n| FR-01 | A recepção cancela uma consulta | Primeira versão | o que a pessoa disse |\n| FR-02 | O paciente confirma a presença | Primeira versão | o que a pessoa disse |\n";
 
