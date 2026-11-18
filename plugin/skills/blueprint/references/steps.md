@@ -71,7 +71,8 @@ Main questions, by the kind of project:
 
 - always: the journeys that cannot go wrong;
 - when it stores data: what the system stores, and whether there is personal data;
-- when it has screens: which are the main screens;
+- when it has screens: which are the main screens, and whether a visual
+  identity already exists, and where;
 - when it is used by command or by code: which commands or calls it offers;
 - when it calls a model: what the model does in the product, and what the
   product does when it gets it wrong.
@@ -80,9 +81,9 @@ Documents: the ones the kind of project brings
 ([documents.md](documents.md) has the table and the templates). One question of
 this step usually brings one document: the journeys bring `use-cases`, what is
 stored brings `data-model` and, when there is personal data,
-`data-classification`, the screens bring `wireframes` and, when the visual
-identity is still open, `design`, the commands bring `interface-contract`, and
-the model brings `ai-features`.
+`data-classification`, the screens bring `wireframes` and `design` (the
+visual identity, or where the existing one lives), the commands bring
+`interface-contract`, and the model brings `ai-features`.
 
 Write each one from what the person answered, and no more: a field nobody asked
 for is a field to maintain. What they did not say is left as an open point of
@@ -102,12 +103,43 @@ List them when the step opens:
 - anything else that generates cost.
 
 Each one is asked as a costly decision ([conduct.md](conduct.md)): options, a
-recommendation, and the person chooses.
+recommendation, and the person chooses. Each option is weighed against the
+non-functional requirements and the limits the person declared: one that
+cannot meet one of them says so.
 
 Documents: `architecture`, with `research` for what was researched and
-`decisions` for each decision. The step closes when every costly decision is in
-the decisions record, decided or left open with what depends on it, and the
-architecture is written.
+`decisions` for each decision.
+
+The architecture is more than the stack. From the decisions, the requirements
+and the modeling documents, write what a task will need and should not have to
+guess, each part only when the project has it:
+
+- the modules, what each owns and what it offers the others, when a task could
+  cross a boundary between them;
+- each journey that cannot go wrong as a flow: a sequence when it crosses
+  parts, its states when something in it has a lifecycle;
+- what happens when something fails halfway: a service that does not answer, a
+  write in two places, two people changing the same thing at once;
+- how each non-functional requirement is met and checked;
+- what it costs to run, when something generates cost or the person declared a
+  budget.
+
+This is deduced, not asked. Only two kinds of question come out of it: what the
+user sees when something fails, asked as a refinement question when the person
+did not say it, and a new costly decision, asked as one.
+
+**Check it against the requirements before the step closes.** Go through every
+requirement and every limit in the state: each one has a part that serves it,
+each non-functional one has a target and a way to check it, the running cost
+fits the budget. A gap is fixed in the architecture when it is small, brought
+as a costly decision when it is costly, or left as an open point with what
+depends on it. Write the result in the architecture, gaps included. A check
+that could not be done, because the requirements are not numbered or a
+document is missing, is said, not skipped.
+
+The step closes when every costly decision is in the decisions record, decided
+or left open with what depends on it, and the architecture is written and
+checked against the requirements.
 
 ## 5. Plan
 

@@ -96,7 +96,7 @@ Which of the others a project gets follows from its kind:
 | `data-model` | `stores-data` is `yes` |
 | `data-classification` | `holds-personal-data` is `yes` |
 | `wireframes` | `has-screens` is `yes` |
-| `design` | `has-screens` is `yes` and the visual identity is still to be decided |
+| `design` | `has-screens` is `yes`: what was decided, or where the existing identity lives |
 | `interface-contract` | `used-by-command-or-code` is `yes` |
 | `ai-features` | `calls-a-model` is `yes` |
 | `test-plan` | Something must be validated beyond acceptance, the project is a refactor, or a decision left something to test |
