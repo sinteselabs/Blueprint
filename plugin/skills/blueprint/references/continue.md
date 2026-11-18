@@ -61,7 +61,28 @@ file, `AGENTS.md` at the project root.
   not know its rules, its plan or where to record. Then prepare it, and say
   which task is first.
 - **The block is there:** the next thing is the first task of the plan that is
-  not done. Name it, with its spec.
+  not done. Name it, with its spec. When every task is done, say so, and that
+  what comes next is a change: [change.md](change.md).
+
+## Keeping the documents true
+
+Once the repository is prepared, the work is tasks, and every delivered task
+can leave a document saying something the code no longer does. The project
+check does not see that: it follows paths and ids, not what a document says.
+
+- **When a task is delivered,** its spec gets its result and how to test it,
+  and its situation becomes `done`. If the task changed something a document
+  states, such as a command, a field, a flow or a path, correct that part of
+  that document in the same delivery, and say which. If the change was
+  meant to change what the system does, it was not a task of the plan: it is a
+  change, and [change.md](change.md) says how it goes.
+- **When a phase is delivered,** before recording the milestone, compare the
+  documents the phase touched with the code, with the `blueprint-survey`
+  skill. Report each difference, one line each, and correct only with the
+  person's go-ahead.
+- **When the history has commits that no task explains,** newer than the state's
+  `updated`, read what they touched the same way, and say what they changed
+  before naming the next task.
 
 ## When the state is behind
 
