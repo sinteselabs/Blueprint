@@ -15,7 +15,7 @@ which is in use.
 | Record | Where it lives in the project | Template | Written |
 |---|---|---|---|
 | Session record | `.blueprint/journal/sessions/`, one file per session, named `YYYY-MM-DD-HHMM-agent.md` | [session.md](../assets/session.md) | At the end of every agent session |
-| Milestones | `.blueprint/journal/milestones.md`, one file | [milestones.md](../assets/milestones.md) | When a step closes, a document becomes ready, or a phase of the plan is delivered |
+| Milestones | `.blueprint/journal/milestones.md`, one file | [milestones.md](../assets/milestones.md) | When a step closes, a document becomes ready, a phase of the plan is delivered, or a version is released |
 | Decisions record | `decisions.md` in the documents folder, one file | [decisions.md](../assets/decisions.md) | Every time a decision is taken, and when one is left open |
 
 Times are in UTC. The agent's name in a file name is lowercase with hyphens:

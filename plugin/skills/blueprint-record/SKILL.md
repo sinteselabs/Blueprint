@@ -19,7 +19,7 @@ own folder, outside every project, and only with their permission: see
 |---|---|
 | The person answered a block of questions | The state file |
 | A decision was taken, or left open | The decisions record, then the state file |
-| A step closed, a document became ready, or a phase of the plan was delivered | The milestones file, then the state file |
+| A step closed, a document became ready, a phase of the plan was delivered, or a version was released | The milestones file, then the state file |
 | The session is ending, or the person says they are stopping | The session record, then the state file |
 | The conversation is getting long | The state file, before anything is lost |
 | You learned something about the person that is true in any project | The personal memory, with their permission |
@@ -155,6 +155,12 @@ it is not lost and nobody has to test it before deciding.
 Add one line at the end of the table in `.blueprint/journal/milestones.md`
 (create the file from `assets/milestones.md` if it does not exist): the date,
 what was reached, and what is possible now that was not before.
+
+A version of the project released to the people who use it is a milestone too.
+Its line names the version, the tag or commit it was released from, and the
+phases or changes it carries, so anyone can tell which requirements were in
+the hands of users from which day. How the project numbers its versions is the
+project's: when it has no rule yet, ask, and save the answer as a criterion.
 
 ## Recording the session
 
