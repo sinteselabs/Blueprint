@@ -71,7 +71,8 @@ Main questions, by the kind of project:
 
 - always: the journeys that cannot go wrong;
 - when it stores data: what the system stores, and whether there is personal data;
-- when it has screens: which are the main screens;
+- when it has screens: which are the main screens, and whether a visual
+  identity already exists, and where;
 - when it is used by command or by code: which commands or calls it offers;
 - when it calls a model: what the model does in the product, and what the
   product does when it gets it wrong.
@@ -80,9 +81,9 @@ Documents: the ones the kind of project brings
 ([documents.md](documents.md) has the table and the templates). One question of
 this step usually brings one document: the journeys bring `use-cases`, what is
 stored brings `data-model` and, when there is personal data,
-`data-classification`, the screens bring `wireframes` and, when the visual
-identity is still open, `design`, the commands bring `interface-contract`, and
-the model brings `ai-features`.
+`data-classification`, the screens bring `wireframes` and `design` (the
+visual identity, or where the existing one lives), the commands bring
+`interface-contract`, and the model brings `ai-features`.
 
 Write each one from what the person answered, and no more: a field nobody asked
 for is a field to maintain. What they did not say is left as an open point of
