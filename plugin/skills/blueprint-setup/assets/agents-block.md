@@ -86,7 +86,9 @@ that replaces one changes its line here.
    new files included; past that, split the delivery and say how you split it. A
    change nobody can review is not understood, however well it is documented.
 7. **Record what happened.** At the end of a session, one record in
-   `.blueprint/journal/sessions/`. A decision that is costly to undo goes to
+   `.blueprint/journal/sessions/`; when agents work at the same time, it is
+   opened at the start (see "When more than one agent works, or no one is
+   watching" below). A decision that is costly to undo goes to
    {{docs/decisions.md}} with its reason, who decided and the date. A phase
    delivered goes to the milestones. {{When a tool keeps the memory: and to
    NAME, following its own instructions.}}
@@ -101,7 +103,9 @@ that replaces one changes its line here.
    what the system does.
 9. **A decision that is costly to undo is the person's:** the stack, hosting,
    how personal data is handled, anything that generates cost. Bring options and
-   a recommendation, and wait.
+   a recommendation, and wait. In a run no one watches, take the recommended
+   option and record it as `provisional`, for the person to confirm or reverse
+   (same section below).
 10. **Never write a key, a token or a password** in a file of this project.
 11. **A change to behaviour comes with its tests,** in the same delivery, at
     the levels the plan's "How it is built and checked" names: unit tests for
