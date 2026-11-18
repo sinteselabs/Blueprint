@@ -39,7 +39,7 @@ Deduced: aplicativo web com telas, que guarda dados de pacientes.
 | requirements | open | 2 of 3 |
 | modeling | not-started | 0 of 3 |
 | architecture | not-started | 0 of 2 |
-| plan | not-started | 0 of 2 |
+| plan | not-started | 0 of 3 |
 
 ## Documents
 
@@ -85,6 +85,7 @@ Deduced: aplicativo web com telas, que guarda dados de pacientes.
 ### plan
 
 - [ ] O que vem primeiro
+- [ ] Como o trabalho é verificado e entregue
 - [ ] Quem faz o quê
 
 ## Refinement questions left for later
