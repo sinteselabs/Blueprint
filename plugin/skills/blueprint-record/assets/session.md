@@ -3,6 +3,8 @@
 - **Started:** {{YYYY-MM-DDTHH:MM:SSZ}}
 - **Ended:** {{YYYY-MM-DDTHH:MM:SSZ}}
 - **Branch:** {{BRANCH, or "-"}}
+- **Status:** {{in-progress / paused / waiting / done / abandoned}}
+- **Taking:** {{When other agents work at the same time: the task, the files or areas it touches, the migration number, and the worktree. "-" when one agent works alone.}}
 
 ## Asked
 

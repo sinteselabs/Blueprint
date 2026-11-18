@@ -21,6 +21,7 @@ own folder, outside every project, and only with their permission: see
 | A decision was taken, or left open | The decisions record, then the state file |
 | A step closed, a document became ready, a phase of the plan was delivered, or a version was released | The milestones file, then the state file |
 | The session is ending, or the person says they are stopping | The session record, then the state file |
+| You are about to start a task while other agents work on the project | The session record, opened with what you take: [Declaring the work](#declaring-the-work) |
 | The conversation is getting long | The state file, before anything is lost |
 | You learned something about the person that is true in any project | The personal memory, with their permission |
 
@@ -180,6 +181,48 @@ When the session is ending:
    what was left open with the next step.
 3. Save the state file last, so `## Next question` says where the next session
    starts.
+
+When other agents work on the project, the record was opened when the session
+started, as the next section says: fill it, and close it.
+
+## Declaring the work
+
+When more than one agent works on the project at the same time, each one says
+what it is taking before it starts, where the others look: its session record,
+opened at the start instead of the end. One agent working alone skips this.
+
+1. **Look first.** Read the records in the main checkout's
+   `.blueprint/journal/sessions/` whose status is `in-progress`, `paused` or
+   `waiting`. The main checkout is the first folder `git worktree list` prints:
+   a worktree has its own copy of the journal, and the others do not see it.
+2. **Open yours there,** from `assets/session.md`, with the status
+   `in-progress` and the `Taking` line: the task, the files or areas it touches,
+   the migration number it will use, and the worktree and branch. A migration
+   number another open record already takes is not yours: take the next one.
+3. **On an overlap, do not start.** A record overlaps yours when it takes the
+   same task, the same files, the same migration number or the deploy. Take
+   another task whose files are free, or open yours as `waiting`, naming the
+   record you wait on, and read again every few minutes. A `paused` record still
+   holds what it takes. A record nobody has updated for two hours may be stale:
+   tell the person, and keep waiting. Only the person closes another agent's
+   record.
+4. **While you work,** update your own record when what you take changes.
+   Never write in another agent's record.
+5. **When you stop, every time,** close it: `done`, with the commit or branch;
+   `abandoned`, with why; `paused`; or `waiting`, with on whom and for what. A
+   record left `in-progress` by a session that ended is a false claim that
+   blocks the others.
+
+A worker in a worktree does not write the state, the decisions record or the
+test plan: two copies of them diverge, and two agents take the same `D-` or
+`T-` number. It writes in its session record what it decided, what it left
+open and what is left to verify, and whoever integrates its branch records
+them. The session records are written in the main checkout and not committed on
+the worker's branch: the one who integrates commits them.
+
+Agents on other machines do not see that folder. When the state names a memory
+tool, declare there too, following its instructions. Without one, say that
+agents on other machines cannot see this work.
 
 ## The personal memory
 
