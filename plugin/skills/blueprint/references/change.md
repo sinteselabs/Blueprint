@@ -240,6 +240,32 @@ Written only when the person asks for it: "document this project".
    time, or leave it as an open point of the document.
 5. After each document, tell the person in one line where it is.
 
+## A bug, or an incident
+
+**A bug** is code that does not do what the documents say. The documents are
+right and stay as they are: the fix is a small change.
+
+- Its spec comes from the requirement the code breaks. Its done-when list has a
+  test, named with that id, that fails before the fix and passes after.
+- In the plan, the task goes ahead of the next one when the bug blocks people,
+  and at the end of the phase under way when it does not.
+- No requirement covers the behaviour, or the requirement itself is wrong: it is
+  not a bug but an improvement, and it goes as one.
+
+**An incident** is a bug that reached people in production. Fix first; write
+after. Once it is over, record it with the `blueprint-record` skill, in the
+session record of the session that dealt with it: what happened, from when to
+when, who was affected, the cause, and what changes. Each thing that changes
+goes where it belongs:
+
+- the fix, and anything else to build, as tasks with their specs;
+- what must not happen again, as a row of the test plan whose `Comes from`
+  names that session record;
+- a decision that did not hold, as a new decision that replaces it.
+
+There is no separate incident document: these three places are the ones the
+next session reads.
+
 ## When the change is delivered
 
 When the tasks of the change are done:
