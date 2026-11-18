@@ -142,6 +142,13 @@ Past that, group small folders into one row. Every path goes in backticks and
 is a path that exists, outside the planned block. Do not describe what a file
 does line by line: that is what opening it is for.
 
+**Tests, gotchas and conventions.** Each area's row gets the command that runs
+only its tests, from the test runner and its configuration. Gotchas are written
+only where the code or its comments already state one. "How code is written
+here" comes from the linter, formatter and migration configuration, the commit
+history and the decisions: a convention none of them shows is left out, never
+invented.
+
 Then check that each task spec in the plan has a "Where in the code" section
 naming areas of the roadmap. A spec without it is not rewritten: say which ones
 lack it, and the agent will add it when it starts that task.

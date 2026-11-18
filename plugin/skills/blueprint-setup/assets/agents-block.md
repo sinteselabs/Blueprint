@@ -63,10 +63,13 @@ that replaces one changes its line here.
    which.
 3. **Do not read the whole codebase to find where to work.** Open
    {{docs/code-roadmap.md}}, find the area the task touches, and read only the
-   paths on its row and the ones it lists under "Also read". Open another file
-   only when the task needs it, and add it to the roadmap when you do. A commit
-   that creates, moves, renames or deletes a folder or an important file
-   updates the roadmap in the same commit.
+   paths on its row and the ones it lists under "Also read", with the area's
+   gotchas. The row also says how to run only that area's tests, and the
+   roadmap's "How code is written here" says how to name, format, handle
+   errors, migrate data, branch and commit. Open another file only when the
+   task needs it, and add it to the roadmap when you do. A commit that creates,
+   moves, renames or deletes a folder or an important file updates the roadmap
+   in the same commit.
 4. **Every delivery says how to test it, and where to look first:** what to run
    or open, what should be seen, and the two or three riskiest places in what
    changed, hardest first. It goes in the spec's "Result of the delivery" and
