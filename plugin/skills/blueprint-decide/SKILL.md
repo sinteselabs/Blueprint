@@ -32,6 +32,12 @@ first: taking it costs the person three words.
 2. **The criteria are the person's.** Read `Criteria the person declared` in
    `.blueprint/state.md`, then what they said in this conversation. Where they
    declared none, use what is best for this kind of project, and say so.
+3. **The requirements it touches.** Read the project's non-functional
+   requirements and limits that the decision bears on: load, response time,
+   availability, how long data is kept, budget. Judge each option against
+   them. An option that cannot meet one says which, in its line. When an
+   option generates cost, its line gives the cost per month at the expected
+   use, and where that cost jumps.
 
 ## The shape of a decision
 
