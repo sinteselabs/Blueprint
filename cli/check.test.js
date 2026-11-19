@@ -335,6 +335,16 @@ describe("blueprint check: the code and the documents", () => {
     assert.match(out, /skipped\s+nothing in the code or in an open task still serves a replaced decision \(the state has no replaced decision\)/);
   });
 
+  it("reads a provisional decision as one still in force", async () => {
+    const folder = project("provisional", (text) => text.replace(/^(- D-001 · .*) · decided$/m, "$1 · provisional"));
+    put(join(folder, "docs", "requirements.md"), NUMBERED);
+    put(join(folder, "src", "web.js"), "// FR-01, D-001\nexport function agenda() {}\n");
+    const { code, out } = await cli(folder, "check");
+    assert.equal(code, 0, out);
+    assert.match(out, /ok\s+every decision in the state is in the decisions record/);
+    assert.match(out, /skipped\s+nothing in the code or in an open task still serves a replaced decision \(the state has no replaced decision\)/);
+  });
+
   it("finds code and an open task that still serve a replaced decision", async () => {
     const folder = replacedDecision("still-replaced", {
       "src/web.js": "// FR-01, D-001: a agenda é uma página web.\nexport function agenda() {}\n",

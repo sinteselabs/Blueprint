@@ -154,7 +154,22 @@ The roles come from the plan: who does what. If the plan does not say, ask the
 person, once, naming the roles you would create. With `developers` at 1, create
 nothing: a single person has no handover.
 
-## 6. Run the check
+## 6. When more than one agent works
+
+When agents will work on the project at the same time, or without the person
+watching, the entry file gets one more section, the last of the block: one
+worktree and one branch per agent, the work declared before it starts, what a
+worktree does not isolate, who integrates, the work mode, and the unattended
+run. [references/parallel-work.md](references/parallel-work.md) says when to
+write it, what to ask when the state does not settle it (whether agents work at
+once or unattended, and whether they run on more than one machine, which decides
+where they claim their work), and why each rule is there. Ask the work mode
+there too, once, with the recommendation.
+
+With one agent at a time and nobody running one unattended, leave the section
+out and ask nothing.
+
+## 7. Run the check
 
 Go through the project check with the `blueprint-status` skill, and report what
 it found. A problem is reported with how to fix it; fix only what belongs to
@@ -171,6 +186,8 @@ In this order, about ten lines:
    where each came from.
 3. **Memory and observability:** one line each, saying what records what, or
    what is missing and what the person has to do once.
+   When the entry file got the section for more than one agent, one line
+   saying so, with the work mode.
 4. **What the check found,** one line, or that it found nothing.
 5. **The next thing:** the first task of the plan that is not done, by its
    number and its spec file, and that the person can say to start it.

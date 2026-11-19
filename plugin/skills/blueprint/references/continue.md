@@ -8,7 +8,9 @@ gone, and it may have happened with another agent. Never act as if you remembere
 
 1. `.blueprint/state.md`, whole.
 2. The newest session record in `.blueprint/journal/sessions/`, when there is
-   one: what was left open, and the next step it names.
+   one: what was left open, and the next step it names. When other agents work
+   on the project, also their open claims, in the session records or on the
+   `blueprint-work` branch: what they take is not yours to start.
 3. The project check, with the `blueprint-status` skill. If it is not available,
    check at least that every document the state calls `ready` exists, and that
    each step's count agrees with its checklist.
@@ -63,6 +65,18 @@ file, `AGENTS.md` at the project root.
 - **The block is there:** the next thing is the first task of the plan that is
   not done. Name it, with its spec. When every task is done, say so, and that
   what comes next is a change: [change.md](change.md).
+
+## An unattended run
+
+When the person asks for work to go on without them, such as overnight, read
+[unattended-run.md](unattended-run.md) and follow it. In short: three questions
+before it starts (may it merge and deploy, which tasks, when it stops); during
+it, a costly decision is taken with the recommended option and recorded as
+`provisional`; at the end, a summary of what was done, what is provisional and
+what waits for the person.
+
+When the state has `provisional` decisions from an earlier run, say so in the
+first message, one line each, and ask the person to confirm or reverse them.
 
 ## Keeping the documents true
 

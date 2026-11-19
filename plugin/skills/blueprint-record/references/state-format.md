@@ -146,9 +146,12 @@ keeps the agent from asking twice.
 ### `## Decisions`
 
 A list with one line per decision: its number in the decisions record, its
-title, and `decided`, `open` or `replaced`, separated by ` · `:
+title, and `decided`, `open`, `provisional` or `replaced`, separated by ` · `:
 `- D-001 · Web app instead of a phone app · decided`. A replaced decision keeps
-its line; the record says which decision replaced it. The reasons live in the
+its line; the record says which decision replaced it. `provisional` is a
+decision an agent took during an unattended run, waiting for the person to
+confirm it, which makes it `decided`, or to reverse it, which makes it
+`replaced`. The reasons live in the
 decisions record, not here. While it is empty, one line says there is nothing yet.
 
 ### `## Open points`

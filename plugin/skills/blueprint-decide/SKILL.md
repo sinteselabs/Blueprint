@@ -96,6 +96,8 @@ Taking the recommendations is their choice, and it is recorded as theirs.
 | likes none of the options | Ask what is missing, take the answer as a criterion, research again, and bring other options |
 | wants to decide later | Record the decision as `open`, with what depends on it. Tell them what waits for it, and go on with everything that does not |
 | accepts in advance every decision of a kind, on a condition | Save the condition as a criterion in the state. From then on, tell them each such decision in one line as you take it. If the condition does not hold, bring the decision back to them |
+| reverses a decision already taken | It is a new decision that replaces the old one. Present it in the same shape, then record it as "Replacing a decision" in the `blueprint-record` skill says: what was built on the old one is listed, and changing it is a change to the project |
+| confirms or reverses a `provisional` decision | Confirmed: its situation becomes `decided`. Reversed: as the row above |
 
 Recording is done by the `blueprint-record` skill: the decision, the reason,
 the alternatives, who decided, the date, the sources and the situation. If it is
@@ -104,6 +106,16 @@ record, with those same parts.
 
 Outside a Blueprint project, create no file: give the decision back in the
 conversation, with those parts, and offer to save it where the person says.
+
+## During an unattended run
+
+When the person started a run and is not there to answer, the decision does
+not wait for them. Prepare it the same way, research and recommendation
+included, take the recommended option, and record it as `provisional`, with
+who took it, during which run, and how to reverse it. It stays inside the
+repository: nothing is bought, no account is created and no stored data is
+moved until the person confirms. The run's summary lists it for them to
+confirm or reverse.
 
 ## What is left to verify
 
@@ -119,7 +131,8 @@ thing runs. That is not a reason to hold the decision.
 
 ## Never
 
-- Never decide in the person's place what is costly to undo.
+- Never decide in the person's place what is costly to undo, except as
+  `provisional` during an unattended run they started.
 - Never say the recommendation is weak, and never recommend without a reason.
 - Never propose a test before deciding, and never make a test a condition for
   deciding.
