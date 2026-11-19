@@ -196,6 +196,10 @@ touched.
 In a project prepared before 0.3.0, `check` reports that there is no code
 roadmap. Run the `blueprint-setup` skill again and it writes one.
 
+A project prepared before 0.4.0 passes `check` as before, and its `AGENTS.md`
+block has no commands, no list of the decisions not to go against and no rule
+on tests. Run the `blueprint-setup` skill again to rewrite the block.
+
 Then open your coding agent in the folder and say what you want to do.
 
 ## What you get
@@ -216,7 +220,17 @@ code, a product that calls a model.
 
 Every task the agent finishes ends with how to test it — what you run or open,
 and what you should see — and with where to look first in what changed, hardest
-part first.
+part first. A task is done when its own list and the plan's shared definition of
+done both hold, and a change to behaviour comes with its tests. What the
+architecture says must hold — a response time, what happens when a payment
+service does not answer, the examples a model feature is checked against — gets
+a row in the test plan and the task that builds it, and `check` reports a target
+that no row covers.
+
+When several agents work at once, or one works while nobody watches, the
+repository gets the rules for it: one worktree and one branch per agent, each
+agent saying what it takes before it starts, and a costly decision taken during
+an unattended run recorded as provisional, for you to confirm or reverse.
 
 And you are not expected to read those documents to understand the code. Each
 requirement has an id, and the id goes in the code that serves it — in a
@@ -235,7 +249,7 @@ implements yet, and which ids in the code no document explains.
 | `blueprint-survey` | Reads an existing project before asking anything |
 | `blueprint-record` | The project's state and journal, and what it learns about how you work |
 | `blueprint-status` | "Where are we?", answered from the files, and the project check |
-| `blueprint-setup` | Prepares the repository: the entry file, the journal, a roadmap of the code, the playbooks |
+| `blueprint-setup` | Prepares the repository: the entry file with its commands and rules, the journal, a roadmap of the code, the playbooks, the rules for several agents |
 | `blueprint-explain` | Answers why a line of code is the way it is, from the code: the review brief, the tour |
 
 ## What stays yours
@@ -287,7 +301,7 @@ worth it instead of just asking:
 
 Issues and pull requests are welcome. Before opening one, two things worth
 knowing: every file in this repository is written in English, and a change has
-to pass the checks in [`AGENTS.md`](AGENTS.md) — six Python checks, the CLI's
+to pass the checks in [`AGENTS.md`](AGENTS.md) — seven Python checks, the CLI's
 tests on three operating systems, and the plugin validator.
 
 The most useful thing you can send is a real run that went wrong: what you
