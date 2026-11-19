@@ -23,9 +23,6 @@ ALLOWED = {".md", ".txt", ".json", ".yaml", ".yml", ".png", ".jpg", ".jpeg", ".g
 IMAGES = {".png", ".jpg", ".jpeg", ".gif", ".webp", ".ico"}
 # Files with no extension, or a dotfile, that are plain text and are allowed.
 PLAIN = {"license", "readme", ".gitignore", ".gitattributes"}
-# Templates the setup skill copies into a project. They are text with a suffix that says
-# what they are for, so they are read as text and checked for what a script would carry.
-TEMPLATE_SUFFIX = ".example"
 PACKAGE_MANAGER = {"package.json", "pnpm-workspace.yaml", "pnpm-lock.yaml", "yarn.lock", "package-lock.json", ".npmrc", ".yarnrc", ".yarnrc.yml"}
 
 
@@ -51,9 +48,7 @@ def problems(root: Path) -> list[str]:
             continue
         if b"\x00" in data:
             found.append(f"{rel}: has NUL bytes")
-        if suffix == TEMPLATE_SUFFIX or name in PLAIN:
-            pass
-        elif suffix not in ALLOWED:
+        if name not in PLAIN and suffix not in ALLOWED:
             found.append(f"{rel}: type {suffix or 'none'} is not Markdown, text, JSON, YAML or an image")
             continue
         try:

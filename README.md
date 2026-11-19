@@ -120,11 +120,11 @@ Pick one. All four give you the same eight skills.
 
 ```bash
 claude plugin marketplace add sinteselabs/Blueprint
-claude plugin install blueprint@sinteselabs
+claude plugin install sintese-blueprint@sinteselabs
 ```
 
 From inside a session, the same two with a slash: `/plugin marketplace add
-sinteselabs/Blueprint`, then `/plugin install blueprint@sinteselabs`. The skills
+sinteselabs/Blueprint`, then `/plugin install sintese-blueprint@sinteselabs`. The skills
 work in every project you open, and nothing is written into your projects.
 
 ### 2. claude.ai, the desktop app and Cowork
