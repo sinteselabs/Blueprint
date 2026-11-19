@@ -96,7 +96,7 @@ Taking the recommendations is their choice, and it is recorded as theirs.
 | likes none of the options | Ask what is missing, take the answer as a criterion, research again, and bring other options |
 | wants to decide later | Record the decision as `open`, with what depends on it. Tell them what waits for it, and go on with everything that does not |
 | accepts in advance every decision of a kind, on a condition | Save the condition as a criterion in the state. From then on, tell them each such decision in one line as you take it. If the condition does not hold, bring the decision back to them |
-| reverses a decision already taken | It is a new decision that replaces the old one. Present it in the same shape, then record it as "Replacing a decision" in the `blueprint-record` skill says: what was built on the old one is listed, and changing it is a change to the project |
+| reverses a decision already taken | It is a new decision that replaces the old one. Present it in the same shape, then record it as "Replacing a decision", in the `blueprint-record` skill, says: what was built on the old one is listed, and changing it is a change to the project |
 | confirms or reverses a `provisional` decision | Confirmed: its situation becomes `decided`. Reversed: as the row above |
 
 Recording is done by the `blueprint-record` skill: the decision, the reason,
