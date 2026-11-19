@@ -195,9 +195,12 @@ someone outside the code depends on it.
   leaves lists the documents, the specs, the code and the tests that name it.
   Without anchors, read the area as for any change, and say that the list may
   be incomplete.
-- **The requirement keeps its row and its id,** with a word that it was
-  removed and by which change. An id is never given to something else: old
-  commits, specs and anchors still name it.
+- **The requirement keeps its row and its id,** moved to the `## Removed`
+  section of the requirements, between its two marks, with the task that
+  removes it and why, as `assets/documents/requirements.md` shows.
+  An id is never given to something else: old commits, specs and anchors
+  still name it, and `blueprint map` then lists it as removed, not as
+  something left to build.
 - **Someone depends on it** when it is part of the interface contract, when
   stored data only it reads, or when people use it. Then it leaves in two
   tasks: the first says it is going and how to do without it, the second
@@ -243,14 +246,34 @@ Written only when the person asks for it: "document this project".
 ## A bug, or an incident
 
 **A bug** is code that does not do what the documents say. The documents are
-right and stay as they are: the fix is a small change.
+right and stay as they are: the fix is a small change. When one is reported:
 
-- Its spec comes from the requirement the code breaks. Its done-when list has a
-  test, named with that id, that fails before the fix and passes after.
-- In the plan, the task goes ahead of the next one when the bug blocks people,
-  and at the end of the phase under way when it does not.
-- No requirement covers the behaviour, or the requirement itself is wrong: it is
-  not a bug but an improvement, and it goes as one.
+1. **Reproduce it,** from what the person said: what they did, what they saw,
+   what they expected. One you cannot reproduce is said, with what you tried,
+   and goes under `## Open points` in the state: no task is written for it.
+2. **Name the requirement it breaks,** by its id. `blueprint trace <ID>` lists
+   the code and the tests that carry it, and so where to read. No requirement
+   covers the behaviour, or the requirement itself is wrong: it is not a bug
+   but an improvement, and it goes as one.
+3. **Say its severity,** in one line, for the person to correct:
+   - **blocks:** people cannot do what the requirement promises, or stored
+     data is lost or wrong. The task goes ahead of the next one in the plan.
+   - **has a way around:** it works, worse. The task goes at the end of the
+     phase under way.
+   - **cosmetic:** nothing is lost and nothing is stopped. Same place, after
+     the others.
+   Personal data shown to whoever must not see it is never cosmetic: it
+   blocks, and in production it is an incident.
+4. **Write its spec** from `assets/documents/task-spec.md`, as for any small
+   change, with the bug line in its header. `Comes from` names the
+   requirement. Its done-when list has a test, named with that id, that fails
+   before the fix and passes after; the failing run goes in the result of the
+   delivery. A bug no automated test can reproduce says so in the spec, with
+   what will be checked instead.
+
+A fix that touches several parts of the code or needs a decision that is
+costly to undo is not small: it goes as any other change, from its first
+message.
 
 **An incident** is a bug that reached people in production. Fix first; write
 after. Once it is over, record it with the `blueprint-record` skill, in the

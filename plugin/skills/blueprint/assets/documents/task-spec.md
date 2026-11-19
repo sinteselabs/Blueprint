@@ -3,7 +3,8 @@
 <!-- Template. Write the spec in the project's document language, headings and
 labels included. Replace every {{placeholder}} and remove these comments. One
 file per task, in the specs folder beside the plan, named with the phase and the
-task number: 01-01-task-name.md. -->
+task number: 01-01-task-name.md. A bug fix adds, at the end of the line
+below: · **Bug:** {{blocks / has a way around / cosmetic}}, breaks {{FR-03}}. -->
 
 **Phase:** {{1 · Name}} · **Situation:** {{not started / in progress / to test / done}} · **Needs:** {{the tasks that must be done first, by number: 01-01. "Nothing" when it can start now.}}
 
@@ -18,6 +19,16 @@ task number: 01-01-task-name.md. -->
 ## Done when
 
 - [ ] {{Something that can be checked.}}
+
+## Tests
+
+<!-- Only the levels the plan's "How it is built and checked" names. Drop a
+level the task adds nothing to. -->
+
+- **Unit:** {{The rules this task's functions hold, one test each.}}
+- **Integration:** {{What it does with the data or an outside service: the database, an API, a queue, the model.}}
+- **End to end:** {{The journey a person goes through that this task makes or changes.}}
+- **Rows of the test plan:** {{The rows this task's tests cover, by number. "None" when none.}}
 
 ## How it is built
 
@@ -44,7 +55,8 @@ exists and get the answer from the code itself.
 {{Written when the task is delivered, from the review brief: what changed, which
 requirement it serves, which decision it depended on, what was assumed, what
 could not be verified, and where to look first — the two or three riskiest
-places, hardest first. Until then: "To be written on delivery."}}
+places, hardest first. For a bug fix, the run of its test that failed before
+the fix. Until then: "To be written on delivery."}}
 
 ## How to test
 
