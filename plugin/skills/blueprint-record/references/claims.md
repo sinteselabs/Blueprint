@@ -70,8 +70,12 @@ origin blueprint-work`.
 **To claim:**
 
 ```
-git -C <work> pull --rebase origin blueprint-work
+git -C <work> pull --rebase --autostash origin blueprint-work
 ```
+
+`--autostash` is needed because the worktree is shared: without it, git refuses
+to pull while another agent of this clone has a claim written and not yet
+committed, and puts that claim back untouched once the pull is done.
 
 Read every file in `<work>/.blueprint/work/`. On an overlap, do not start: see below.
 Otherwise write your file, and commit only that file, because another agent of
@@ -84,7 +88,7 @@ git -C <work> push origin blueprint-work
 ```
 
 **A rejected push means someone claimed first.** Run `git -C <work> pull
---rebase origin blueprint-work`, read the files again, and decide again: the claim already on
+--rebase --autostash origin blueprint-work`, read the files again, and decide again: the claim already on
 the remote keeps what it took, and you take another task or wait. Then push.
 Never force-push this branch: it would delete other agents' claims. A commit
 refused because git's index is locked means another agent of this clone is
