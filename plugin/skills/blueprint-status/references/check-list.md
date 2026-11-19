@@ -46,6 +46,20 @@ Report the result as one line per problem. When there is none, one line says so.
 9. **Every decision listed in the state is in the decisions record,** under the
    same number. A decision the state calls `open` is `open` there too.
 
+## The test plan
+
+Only when the architecture is closed: the test plan is written after it.
+
+23. **Every quality target, failure case and AI feature has a row in the test
+    plan.** Each `Q-01` and `F-01` that opens a row of the architecture, and each
+    `AI-01` that opens a row of the AI features, is named by a `T-NNN` row of the
+    test plan. With none of them, nothing is looked for.
+24. **Every test-plan row that comes from one of them names a task of the
+    plan,** only when the plan is closed. The Task column, the fifth of the
+    template's seven, holds a task number the plan's spec files carry, such as
+    `01-03`. A row from a decision may have `-`. A test plan whose table does
+    not have the seven columns is reported as skipped, not guessed.
+
 ## The journal and the tools
 
 10. **When `memory` or `observability` is `journal`,** the folder
@@ -122,3 +136,9 @@ when the person asks whether the project is in order:
   skill handles when the project is continued.
 - **Whether a test passes.** The check does not run the project, and a row of
   the test plan marked done is a claim.
+- **The accessibility level, and whether a test-plan row tests what it says.**
+  An accessibility level is one non-functional requirement among others, told
+  apart only by its words, which are in the person's language; so its row in
+  the test plan is not looked for. Nor is whether a row's level fits what it
+  checks, or whether the spec's Tests line names the same rows as the test
+  plan's Task column.

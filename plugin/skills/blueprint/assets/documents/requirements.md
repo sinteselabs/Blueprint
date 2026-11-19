@@ -33,6 +33,7 @@ What each kind of user must be able to do.
 
 How the system must behave: languages, accessibility, devices, speed,
 availability, privacy. Each one has a number or a level, never "fast" or "easy".
+An accessibility level gets a row in the test plan, which names its NFR.
 
 | Nº | Requirement | Priority | Comes from |
 |---|---|---|---|

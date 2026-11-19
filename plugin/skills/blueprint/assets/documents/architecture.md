@@ -73,24 +73,26 @@ Payments --> API: paid}}
 <!-- Only for what can fail halfway: a call to another service, a write in
 two places, a job that runs later, two people changing the same thing at once.
 Drop this section when nothing can. What the user sees is the person's choice:
-ask it as a refinement question when they did not say it. -->
+ask it as a refinement question when they did not say it. Each row gets a row
+in the test plan, which names its F-NN. -->
 
-| What fails | What the system does | What the user sees | Comes from |
-|---|---|---|---|
-| {{The payment service does not answer}} | {{Retries twice, 2 and 8 seconds apart, with the same key so nothing is charged twice; then releases the slot}} | {{"Payment failed, nothing was charged"}} | {{UC-02, NFR-03}} |
-| {{Two people book the same slot}} | {{The database accepts the first write; the second gets a conflict}} | {{"This time was just taken"}} | {{FR-07}} |
+| Nº | What fails | What the system does | What the user sees | Comes from |
+|---|---|---|---|---|
+| F-01 | {{The payment service does not answer}} | {{Retries twice, 2 and 8 seconds apart, with the same key so nothing is charged twice; then releases the slot}} | {{"Payment failed, nothing was charged"}} | {{UC-02, NFR-03}} |
+| F-02 | {{Two people book the same slot}} | {{The database accepts the first write; the second gets a conflict}} | {{"This time was just taken"}} | {{FR-07}} |
 
 ## Qualities
 
 <!-- One row per non-functional requirement and per limit the person declared
 that the architecture has to meet: response time, load, availability, how
 long data is kept, how problems are noticed. Only those: drop the section
-when there are none. -->
+when there are none. Each row gets a row in the test plan, which names its
+Q-NN. -->
 
-| Quality | Target | How the architecture meets it | How it is checked | Comes from |
-|---|---|---|---|---|
-| {{Response time}} | {{The booking page answers in under 1 second on a telephone}} | {{Static pages served from the edge; one database query}} | {{A test in the test plan, or a measurement after launch}} | {{NFR-01}} |
-| {{Noticing problems}} | {{An error reaches the person within an hour}} | {{Errors go to the error tracker, which emails them}} | {{A test error sent before launch, seen arriving}} | {{NFR-04}} |
+| Nº | Quality | Target | How the architecture meets it | How it is checked | Comes from |
+|---|---|---|---|---|---|
+| Q-01 | {{Response time}} | {{The booking page answers in under 1 second on a telephone}} | {{Static pages served from the edge; one database query}} | {{An end-to-end test, or a measurement after launch}} | {{NFR-01}} |
+| Q-02 | {{Noticing problems}} | {{An error reaches the person within an hour}} | {{Errors go to the error tracker, which emails them}} | {{By a person: a test error sent before launch, seen arriving}} | {{NFR-04}} |
 
 ## What it costs to run
 

@@ -147,8 +147,10 @@ guess, each part only when the project has it:
 - each journey that cannot go wrong as a flow: a sequence when it crosses
   parts, its states when something in it has a lifecycle;
 - what happens when something fails halfway: a service that does not answer, a
-  write in two places, two people changing the same thing at once;
-- how each non-functional requirement is met and checked;
+  write in two places, two people changing the same thing at once, one row
+  each, numbered F-01;
+- how each non-functional requirement is met and checked, one row each,
+  numbered Q-01;
 - what it costs to run, when something generates cost or the person declared a
   budget.
 
@@ -192,13 +194,21 @@ test runs and passes, and when the project is hosted, a first version reaches
 that place. Every later task is delivered on top of it, so the "How to test" of
 the first feature already has something to run.
 
+When the step opens, before the tasks, write the test plan with the
+`blueprint-record` skill, when the project has one: a row for each quality and
+failure row of the architecture, each AI feature's examples and the
+accessibility level, each at its level. Every task that implements a row lists
+it in its spec's Tests line, and the row names the task.
+
 Each task names the tasks it needs, and fits in one delivery someone can review
 in one sitting. A task that will not fit is split while planning, not during
 delivery. A task with a choice in it gets the spec's "How it is built".
 
-Documents: `plan`, and one spec per task. The step closes when there are phases,
-tasks, a spec for every task, and the plan says how the project is run, tested
-and, when it reaches people, released.
+Documents: `plan`, one spec per task, and `test-plan` when the project has
+one. The step closes when
+there are phases, tasks, a spec for every task, every row of the test plan that
+comes from the architecture or the AI features names its task, and the plan
+says how the project is run, tested and, when it reaches people, released.
 
 ## After the plan
 

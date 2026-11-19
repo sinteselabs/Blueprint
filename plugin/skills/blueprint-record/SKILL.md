@@ -143,13 +143,23 @@ specs that still name the replaced decision.
 
 ## Recording what is left to test
 
-What a decision left to verify becomes an item of the project's test plan, so
-it is not lost and nobody has to test it before deciding.
+The test plan is where everything the documents say must be verified meets, so
+nothing written as a target becomes nobody's test. Its rows come from:
+
+- what a decision left to verify, so nobody has to test it before deciding;
+- when the architecture closes, each row of its Qualities (`Q-01`) and of "When
+  something fails" (`F-01`), each AI feature's examples (`AI-01`), and the
+  accessibility level in the non-functional requirements.
+
+Deduce these rows from the documents; ask nothing new.
 
 1. Open `test-plan.md` in the documents folder. If it does not exist, create it
    from `assets/test-plan.md`, in the document language.
 2. Add one row per thing to verify, numbered after the last one: `T-001`,
-   `T-002`. `Comes from` names the decision, such as `D-001`.
+   `T-002`. `Comes from` names its id, such as `D-001` or `Q-01`; `Level` how it
+   is checked, from the row it comes from. `Task` stays `-` until the plan has
+   the task that implements it, and then names it, as that task's spec names
+   the row in its Tests line.
 3. In the state file, set the document `test-plan` to `ready`, with its place.
    It is `ready` whenever every item so far is in it: the row says whether the
    item was verified.
